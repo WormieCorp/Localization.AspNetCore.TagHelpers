@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DOTNET="$(which dotnet)"
+
+$DOTNET restore

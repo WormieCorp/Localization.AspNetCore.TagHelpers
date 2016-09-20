@@ -1,0 +1,37 @@
+version: '0.1.0.{build}'
+configuration: Release
+environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  VERSION_SUFFIX: alpha
+  OPENCOVER_VERSION: 4.6.519
+
+init:
+- "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+- if NOT "%APPVEYOR_REPO_BRANCH%" == "master" (set VERSION_SUFFIX=%VERSION_SUFFIX%-%APPVEYOR_BUILD_NUMBER%)
+
+install:
+- nuget install opencover -Version %OPENCOVER_VERSION% -OutputDirectory packages
+- pip install codecov
+
+before_build:
+- ps: .\build.ps1 -Restore -Configuration $env:Configuration
+build_script:
+- ps: .\build.ps1 -Build -VersionSuffix $env:VERSION_SUFFIX
+after_build:
+- dotnet pack src/Localization.AspNetCore.TagHelpers -c %CONFIGURATION% --no-build --version-suffix %VERSION_SUFFIX% -o artifacts
+
+test_script:
+- packages\OpenCover.%OPENCOVER_VERSION%\tools\OpenCover.Console.exe -register:user -target:build.cmd -targetargs:"-Tests -Configuration %CONFIGURATION%" -output:test-results/coverage.xml -oldstyle -skipautoprops -returntargetcode -mergebyhash -filter:"+[Localization.AspNetCore*]* -[*Tests*]*"
+- ps: |
+    $wc = New-Object 'System.Net.WebClient'
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path test-results/TestResult-net451.xml))
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path test-results/TestResult-netcore.xml))
+- codecov
+
+artifacts:
+- path: artifacts\**\*.*
+
+cache:
+- '%USERPROFILE%\.nuget\packages -> **\project.json'
+- 'packages -> appveyor.yml'

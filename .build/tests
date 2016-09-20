@@ -1,0 +1,46 @@
+#!/bin/bash
+
+DOTNET="$(which dotnet)"
+CONFIGURATION=$1
+MONO=$2
+NETCORE=$3
+
+if [ ! -d "test-results" ]; then
+	mkdir test-results
+fi
+
+if [ "$NETCORE" == "true" ]; then
+	$DOTNET test -c $CONFIGURATION -f netcoreapp1.0 test/Localization.AspNetCore.TagHelpers.Tests --no-build
+	mv TestResult.xml test-results/TestResult-netcore.xml
+fi
+
+if [ "$MONO" == "true" ]; then
+	MONO_EXEC="$(which mono)"
+	EXECUTABLE=""
+	NUNIT="$(which nunit3-console 2>/dev/null)"
+	if [ "$NUNIT" == "" ]; then
+		NUNIT="$(find ./packages -name nunit3-console.exe 2>/dev/null)"
+		if [ "$NUNIT" == "" ]; then
+			NUGET="$(which nuget)"
+			if [ "$NUGET" == "" ]; then
+				exit 3
+			fi
+			$NUGET install NUnit.ConsoleRunner -OutputDirectory packages
+			NUNIT="$(find ./packages -name nunit3-console.exe 2>/dev/null)"
+		fi
+		EXECUTABLE="$MONO_EXEC $NUNIT"
+	else
+		EXECUTABLE=$NUNIT
+	fi
+
+	TESTS="$(find test/*/bin/${CONFIGURATION}/net4*/*/ -name *.Tests.dll)"
+
+	$EXECUTABLE $TESTS --out=test-results/TestResult-mono.xml
+	rm -f TestResult.xml
+
+	if [ -f coverageKnowns ]; then
+		SHARPCOVER="$(find ./packages -name SharpCover.exe)"
+		$MONO_EXEC $SHARPCOVER check
+		mv coverageResults.txt test-results/coverageResults.txt
+	fi
+fi

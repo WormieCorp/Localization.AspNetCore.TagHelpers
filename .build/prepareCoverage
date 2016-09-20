@@ -1,0 +1,32 @@
+#!/bin/bash
+CONFIGURATION=$1
+MONO="$(which mono)"
+CURL="$(which curl)"
+TAR="$(which tar)"
+SHARPCOVER="$(find ./packages -name SharpCover.exe 2>/dev/null)"
+if [ "$SHARPCOVER" == "" ]; then
+	mkdir -p packages/SharpCover
+	$CURL -L "https://dl.dropboxusercontent.com/u/8261542/scripts/SharpCover.tar.gz" | tar xz -C packages/SharpCover
+	SHARPCOVER="$(find ./packages -name SharpCover.exe)"
+fi
+
+if [ "$MONO" == "" ]; then
+	(>&2 echo -e "\e[91mERROR: Mono not located\e[39m")
+	exit 2
+fi
+
+ASSEMBLIES=$(find test -type f -name Localization.*.dll | grep -v /obj/ | grep -v "/$CONFUGRATION/" | grep -v netcore | grep -v Tests.dll | perl -e '@in=grep(s/\n$//, <>); print "[\"".join("\", \"", @in)."\"],\n";')
+
+if [ ! -d "test-results" ]; then
+	mkdir test-results
+fi
+
+cat <<-EOF > test-results/coverageConfig.json
+{
+  "assemblies": ${ASSEMBLIES}
+  "typeInclude": "Localization.*",
+  "typeExclude": "Localization.*.Tests"
+}
+EOF
+
+$MONO $SHARPCOVER instrument test-results/coverageConfig.json

@@ -1,0 +1,21 @@
+box: admiringworm/dotnet-mono
+
+build:
+  steps:
+    - script:
+      name: "Restoring all packages"
+      code: ./build -r -c Release
+    - script:
+      name: "Building Projects"
+      code: ./build -b -c Release
+    - script:
+      name: "Running unit tests"
+      code: |
+        ./.build/prepareCoverage
+        ./build -t -c Release
+
+coverage:
+  steps:
+    - script:
+      name: "Publishing Code Coverage Report"
+      code: bash <(curl -s https://codecov.io/bash)
