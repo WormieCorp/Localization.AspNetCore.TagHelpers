@@ -1,3 +1,5 @@
 * text=auto  whitespace=space-before-tab,indent-with-non-tab,trailing-space
 
 *.cs  diff=csharp
+
+*.yml  whitespace=indent-with-tab,trailing-space

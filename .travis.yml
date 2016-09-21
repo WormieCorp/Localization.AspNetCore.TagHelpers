@@ -1,4 +1,6 @@
 language: csharp
+sudo: required
+
 env:
   global:
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -9,7 +11,7 @@ mono:
   - 4.0.5
 
 dotnet:
-  - 1.0.0-preview2-003131
+  - 1.0.0-preview2-003121
 
 os:
   - linux
@@ -21,7 +23,7 @@ branches:
     - ci/wercker
 
 script:
-  - ./build -r -b -c $CONFIGURATION
-  - ./.build/prepareCoverage
-  - ./build -t -c $CONFIGURATION
+  - bash build -r -b -c $CONFIGURATION
+  - bash .build/prepareCoverage
+  - bash build -t -c $CONFIGURATION
   - bash <(curl -s https://codecov.io/bash)

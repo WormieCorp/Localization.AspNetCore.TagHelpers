@@ -22,6 +22,7 @@ after_build:
 - dotnet pack src/Localization.AspNetCore.TagHelpers -c %CONFIGURATION% --no-build --version-suffix %VERSION_SUFFIX% -o artifacts
 
 test_script:
+- mkdir test-results
 - packages\OpenCover.%OPENCOVER_VERSION%\tools\OpenCover.Console.exe -register:user -target:build.cmd -targetargs:"-Tests -Configuration %CONFIGURATION%" -output:test-results/coverage.xml -oldstyle -skipautoprops -returntargetcode -mergebyhash -filter:"+[Localization.AspNetCore*]* -[*Tests*]*"
 - ps: |
     $wc = New-Object 'System.Net.WebClient'

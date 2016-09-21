@@ -4,15 +4,15 @@ build:
   steps:
     - script:
       name: "Restoring all packages"
-      code: ./build -r -c Release
+      code: bash build -r -c Release
     - script:
       name: "Building Projects"
-      code: ./build -b -c Release
+      code: bash build -b -c Release
     - script:
       name: "Running unit tests"
       code: |
-        ./.build/prepareCoverage
-        ./build -t -c Release
+        bash .build/prepareCoverage
+        bash build -t -c Release
 
 coverage:
   steps:
