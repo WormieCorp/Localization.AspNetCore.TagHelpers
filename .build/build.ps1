@@ -14,12 +14,12 @@ if ($VersionSuffix -ne "") {
 $TestParameters=$SrcParameters
 
 if ($NetFull -and !$NetCore) {
-	$SrcParameters+=@("net451")
-	$TestParameters+=@("net451")
+	$SrcParameters+=@("-f", "net451")
+	$TestParameters+=@("-f", "net451")
 }
 elseif ($NetCore -and !$NetFull) {
 	$SrcParameters+=@("-f", "netstandard1.6")
-	$TestFramework+=@("-f", "netcoreapp1.0")
+	$TestParameters+=@("-f", "netcoreapp1.0")
 }
 
 
