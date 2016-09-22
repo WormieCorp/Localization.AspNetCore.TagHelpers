@@ -12,7 +12,6 @@ matrix:
       osx_image: xcode7.3
       dotnet: 1.0.0-preview2-003131
       mono: 4.0.5
-      env: DYLIB_LIBRARY_PATH=/usr/local/opt/openssl/lib
     - os: linux
       dist: trusty
       sudo: required
@@ -25,8 +24,8 @@ branches:
     - ci/wercker
     
 before_install:
-    if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
-    if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
+  -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
+  -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
 
 script:
   - bash build -r -b -c $CONFIGURATION
