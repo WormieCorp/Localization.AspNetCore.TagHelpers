@@ -154,14 +154,24 @@ echo "CONFIGURATION: ${CONFIGURATION}"
 if [ "${RESTORE}" == "true" ]; then
 	info "Restoring packages"
 	bash .build/restore
+	ret_code=$?
+	if [ "$ret_code" != "0" ]; then
+		exit $ret_code
+	fi
 fi
 
 if [ "${BUILD}" == "true" ]; then
 	info "Building projects"
 	bash .build/build $CONFIGURATION $MONO $NETCORE
+	ret_code=$?
+	if [ "$ret_code" != "0" ]; then
+		exit $ret_code
+	fi
 fi
 
 if [ "${TESTS}" == "true" ]; then
 	info "Running unit tests"
 	bash .build/tests $CONFIGURATION $MONO $NETCORE
+	ret_code=$?
+	exit $ret_code
 fi

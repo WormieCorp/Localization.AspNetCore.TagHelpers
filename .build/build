@@ -10,11 +10,18 @@ TEST_FRAME=""
 
 if [[ ("$MONO" == "true") && ("$NETCORE" == "false") ]]; then
 	SRC_FRAME="-f net451"
-        TEST_FRAME="-f net451"
+    TEST_FRAME="-f net451"
 elif [[ ("$NETCORE" == "true") && ("$MONO" == "false") ]]; then
 	SRC_FRAME="-f netstandard1.6"
 	TEST_FRAME="-f netcoreapp1.0"
 fi
 
 $DOTNET $PARAMETERS $SRC_FRAME src/Localization.AspNetCore.TagHelpers/project.json
+ret_code=$?
+if [ "$ret_code" != "0" ]; then
+	exit $ret_code
+fi
+
 $DOTNET $PARAMETERS $TEST_FRAME test/Localization.AspNetCore.TagHelpers.Tests/project.json
+ret_code=$?
+exit $ret_code
