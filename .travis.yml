@@ -23,6 +23,10 @@ branches:
   except:
     - ci/appveyor
     - ci/wercker
+    
+before_install:
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
 
 script:
   - bash build -r -b -c $CONFIGURATION
