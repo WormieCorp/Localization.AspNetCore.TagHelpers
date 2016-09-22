@@ -24,4 +24,8 @@ elseif ($NetCore -and !$NetFull) {
 
 
 dotnet $SrcParameters src/Localization.AspNetCore.TagHelpers/project.json
+if ($NetCore) {
+	dotnet $TestParameters src/Localization.Demo/project.json
+}
+
 dotnet $TestParameters test/Localization.AspNetCore.TagHelpers.Tests/project.json

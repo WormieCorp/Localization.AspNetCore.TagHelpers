@@ -10,12 +10,4 @@ build:
       code: bash build -b -c Release
     - script:
       name: "Running unit tests"
-      code: |
-#        bash .build/prepareCoverage
-        bash build -t -c Release
-
-coverage:
-  steps:
-    - script:
-      name: "Publishing Code Coverage Report"
-      code: bash <(curl -s https://codecov.io/bash)
+      code: bash build -t -c Release

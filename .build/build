@@ -22,6 +22,10 @@ if [ "$ret_code" != "0" ]; then
 	exit $ret_code
 fi
 
+if [[ ("$NETCORE" == "true") ]]; then
+	$DOTNET $PARAMETERS $TEST_FRAME src/Localization.Demo/project.json
+fi
+
 $DOTNET $PARAMETERS $TEST_FRAME test/Localization.AspNetCore.TagHelpers.Tests/project.json
 ret_code=$?
 exit $ret_code
