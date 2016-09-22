@@ -3,3 +3,6 @@
 *.cs  diff=csharp
 
 *.yml  whitespace=indent-with-tab,trailing-space
+
+*.cshtml eol=lf
+*.resx   eol=lf

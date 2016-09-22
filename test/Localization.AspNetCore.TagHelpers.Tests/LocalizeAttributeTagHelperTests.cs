@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -91,6 +90,30 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		#region Process
 
 		[Test]
+		public void Process_CanLocalizeMultipleAttributes()
+		{
+			var tagHelper = InitTagHelper();
+			var context = CreateTagContext();
+			var output = CreateTagOutput("span", "Oh Yeah");
+			tagHelper.AttributeValues = new Dictionary<string, string>
+			{
+				{"title","Localize Me" },
+				{"alt", "Me too" }
+			};
+			_locMock.Setup(x => x.GetString("Localize Me")).Returns<string>(x => new LocalizedString(x, "I was localized"));
+			_locMock.Setup(x => x.GetString("Me too")).Returns<string>(x => new LocalizedString(x, "I was also localized"));
+			var expected = "<span title=\"I was localized\" alt=\"I was also localized\">Oh Yeah</span>";
+
+			var actual = CreateHtmlOutput(tagHelper, context, output);
+
+			Assert.That(output.Attributes.ContainsName("title"), Is.True, "Title attribute has not been set");
+			Assert.That(output.Attributes.ContainsName("alt"), Is.True, "Alt attribute has not been set");
+			Assert.That(actual, Is.EqualTo(expected));
+
+			_locMock.Verify(x => x.GetString(It.IsAny<string>()), Times.Exactly(2));
+		}
+
+		[Test]
 		public void Process_CanLocalizeSingleAttributeValue()
 		{
 			var tagHelper = InitTagHelper();
@@ -125,30 +148,6 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			Assert.That(actual, Is.EqualTo(expected));
 
 			_locMock.Verify(x => x.GetString(value), Times.Never());
-		}
-
-		[Test]
-		public void Process_CanLocalizeMultipleAttributes()
-		{
-			var tagHelper = InitTagHelper();
-			var context = CreateTagContext();
-			var output = CreateTagOutput("span", "Oh Yeah");
-			tagHelper.AttributeValues = new Dictionary<string, string>
-			{
-				{"title","Localize Me" },
-				{"alt", "Me too" }
-			};
-			_locMock.Setup(x => x.GetString("Localize Me")).Returns<string>(x => new LocalizedString(x, "I was localized"));
-			_locMock.Setup(x => x.GetString("Me too")).Returns<string>(x => new LocalizedString(x, "I was also localized"));
-			var expected = "<span title=\"I was localized\" alt=\"I was also localized\">Oh Yeah</span>";
-
-			var actual = CreateHtmlOutput(tagHelper, context, output);
-
-			Assert.That(output.Attributes.ContainsName("title"), Is.True, "Title attribute has not been set");
-			Assert.That(output.Attributes.ContainsName("alt"), Is.True, "Alt attribute has not been set");
-			Assert.That(actual, Is.EqualTo(expected));
-
-			_locMock.Verify(x => x.GetString(It.IsAny<string>()), Times.Exactly(2));
 		}
 
 		#endregion Process

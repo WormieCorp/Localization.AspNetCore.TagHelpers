@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
 using Moq;
@@ -32,6 +31,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			_locMock.Reset();
 			_locMock.Setup(x => x.GetString(It.IsAny<string>())).Returns<string>(s => new LocalizedString(s, s, true));
 			_locMock.Setup(x => x[It.IsAny<string>()]).Returns<string>(s => new LocalizedHtmlString(s, s, true));
+			_locMock.Setup(x => x.GetString(It.IsAny<string>(), It.IsAny<object[]>()))
+					.Returns<string, object[]>((s, o) => new LocalizedString(s, string.Format(s, o), true));
+			_locMock.Setup(x => x[It.IsAny<string>(), It.IsAny<object[]>()])
+					.Returns<string, object[]>((s, o) => new LocalizedHtmlString(s, string.Format(s, o), true));
 
 			_locMockFactory.Reset();
 			_locMockFactory.Setup(x => x.Create(It.IsAny<Type>())).Returns(_locMock.Object);
@@ -104,6 +107,66 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		#region ProcessAsync
 
 		[Test]
+		public void Init_AppendsANewListToStackIfAlreadyExists()
+		{
+			var tagHelper = InitTagHelper();
+			var tagContext = CreateTagContext();
+			tagHelper.Init(tagContext);
+
+			var stack = (Stack<List<string>>)tagContext.Items[typeof(LocalizeTagHelper)];
+
+			Assert.That(stack, Has.Count.EqualTo(2));
+		}
+
+		[Test]
+		public void Init_CreatesANewKeyWithStackIfNoneExists()
+		{
+			var tagHelper = InitTagHelper();
+			var tagContext = CreateTagContext();
+			tagContext.Items.Remove(typeof(LocalizeTagHelper));
+			tagHelper.Init(tagContext);
+
+			var stack = (Stack<List<string>>)tagContext.Items[typeof(LocalizeTagHelper)];
+
+			Assert.That(stack, Has.Count.EqualTo(1));
+		}
+
+		[Test]
+		public async Task ProcessAsync_CallsFormatIfParametersAreSpecified()
+		{
+			var tagHelper = InitTagHelper();
+			var context = CreateTagContext("This should be the text");
+			tagHelper.Init(context);
+			// Remove the stack created by the init method
+			var stack = (Stack<List<string>>)context.Items[typeof(LocalizeTagHelper)];
+			stack.Pop();
+
+			var output = CreateTagOutput("localize", "{0}");
+
+			var content = await CreateHtmlOutput(tagHelper, context, output);
+
+			Assert.That(content, Is.EqualTo("This should be the text"));
+		}
+
+		[Test]
+		public async Task ProcessAsync_CallsFormatWithHtmlIfParametersAreSpecified()
+		{
+			var tagHelper = InitTagHelper();
+			tagHelper.IsHtml = true;
+			var context = CreateTagContext("https://www.google.com", "Google");
+			tagHelper.Init(context);
+			// Remove the stack created by the init method
+			var stack = (Stack<List<string>>)context.Items[typeof(LocalizeTagHelper)];
+			stack.Pop();
+			var expected = "<a href=\"https://www.google.com\">Google</a>";
+			var output = CreateTagOutput("localize", "<a href=\"{0}\">{1}</a>");
+
+			var content = await CreateHtmlOutput(tagHelper, context, output);
+
+			Assert.That(content, Is.EqualTo(expected));
+		}
+
+		[Test]
 		public async Task ProcessAsync_CanLocalizeAllTextInContent()
 		{
 			var tagHelper = InitTagHelper();
@@ -133,6 +196,21 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 			Assert.That(output.TagName, Is.EqualTo("span"));
 			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[Test]
+		public async Task ProcessAsync_DoesNotTrimWhitespaceIfTrimIsFalse()
+		{
+			var tagHelper = InitTagHelper();
+			tagHelper.Trim = false;
+			var tagContext = CreateTagContext();
+			tagHelper.Init(tagContext);
+			var expected = "    This should not trim the whitespace               ";
+			var tagOutput = CreateTagOutput("localize", expected);
+
+			await tagHelper.ProcessAsync(tagContext, tagOutput);
+
+			Assert.That(tagOutput.Content.GetContent(), Is.EqualTo(expected));
 		}
 
 		[Test]
@@ -171,7 +249,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		public async Task ProcessAsync_NeverCallsLocalizerIfContentIsEmpty()
 		{
 			var tagHelper = InitTagHelper();
-			var context = CreateTagContext();
+			var context = CreateTagContext("");
 			var output = CreateTagOutput("localize", string.Empty);
 
 			await tagHelper.ProcessAsync(context, output);
@@ -238,8 +316,30 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 		private TagHelperContext CreateTagContext(params TagHelperAttribute[] attributes)
 		{
+			var dictionary = new Dictionary<object, object>
+			{
+				{typeof(LocalizeTagHelper), new Stack<List<string>>(new[] {new List<string>() }) }
+			};
+
 			return new TagHelperContext(new TagHelperAttributeList(attributes),
-				new Dictionary<object, object>(),
+				dictionary,
+				Guid.NewGuid().ToString());
+		}
+
+		private TagHelperContext CreateTagContext(string firstParam, params string[] parameters)
+		{
+			var paramList = new List<string>();
+			paramList.Add(firstParam);
+			paramList.AddRange(parameters);
+
+			var stack = new Stack<List<string>>();
+			stack.Push(paramList);
+
+			var dictionary = new Dictionary<object, object>();
+			dictionary.Add(typeof(LocalizeTagHelper), stack);
+
+			return new TagHelperContext(new TagHelperAttributeList(),
+				dictionary,
 				Guid.NewGuid().ToString());
 		}
 

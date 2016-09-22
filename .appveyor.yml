@@ -3,12 +3,10 @@ configuration: Release
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  VERSION_SUFFIX: alpha
   OPENCOVER_VERSION: 4.6.519
 
 init:
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-- if NOT "%APPVEYOR_REPO_BRANCH%" == "master" (set VERSION_SUFFIX=%VERSION_SUFFIX%-%APPVEYOR_BUILD_NUMBER%)
 
 install:
 - nuget install opencover -Version %OPENCOVER_VERSION% -OutputDirectory packages
@@ -17,9 +15,9 @@ install:
 before_build:
 - ps: .\build.ps1 -Restore -Configuration $env:Configuration
 build_script:
-- ps: .\build.ps1 -Build -VersionSuffix $env:VERSION_SUFFIX
+- ps: .\build.ps1 -Build -Configuration $env:Configuration
 after_build:
-- dotnet pack src/Localization.AspNetCore.TagHelpers -c %CONFIGURATION% --no-build --version-suffix %VERSION_SUFFIX% -o artifacts
+- dotnet pack src/Localization.AspNetCore.TagHelpers -c %CONFIGURATION% --no-build -o artifacts
 
 test_script:
 - mkdir test-results

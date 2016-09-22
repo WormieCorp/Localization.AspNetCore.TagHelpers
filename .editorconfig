@@ -2,10 +2,11 @@
 insert_final_newline = true
 charset = utf-8
 trim_trailing_whitespace = true
-
-[*.{cs,json,js,css}]
 indent_style = tab
 
 [*.yml]
 indent_style = space
 indent_size = 2
+
+[*.{cshtml,resx}]
+end_of_line = lf

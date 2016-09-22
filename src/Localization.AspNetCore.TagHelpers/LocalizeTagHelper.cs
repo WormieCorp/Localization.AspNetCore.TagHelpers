@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Localization;
 
 namespace Localization.AspNetCore.TagHelpers
 {
@@ -40,6 +42,27 @@ namespace Localization.AspNetCore.TagHelpers
 		[HtmlAttributeName("html")]
 		public bool IsHtml { get; set; } = false;
 
+		public override int Order
+		{
+			get
+			{
+				return 1;
+			}
+		}
+
+		/// <summary>
+		///   Gets or sets a flag indicating whether to trim whitespace before
+		///   and after the text to be localized.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> to trim whitespace; otherwise, <c>false</c>.
+		/// </value>
+		/// <remarks>
+		///   Defaults to <see langword="true"/>
+		/// </remarks>
+		[HtmlAttributeName("trim")]
+		public bool Trim { get; set; } = true;
+
 		[HtmlAttributeNotBound]
 		[ViewContext]
 		public ViewContext ViewContext { get; set; }
@@ -59,23 +82,68 @@ namespace Localization.AspNetCore.TagHelpers
 
 			_localizer = _localizerFactory.Create(baseName, _applicationName);
 
+			var parameters = new List<string>();
+			Stack<List<string>> stack;
+			if (!context.Items.ContainsKey(this.GetType()))
+			{
+				stack = new Stack<List<string>>();
+
+				context.Items.Add(this.GetType(), stack);
+			}
+			else
+			{
+				stack = (Stack<List<string>>)context.Items[this.GetType()];
+			}
+
+			stack.Push(parameters);
+
 			base.Init(context);
 		}
 
 		public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
 		{
+			var stack = (Stack<List<string>>)context.Items[this.GetType()];
+
 			var content = await output.GetChildContentAsync();
+			if (output.IsContentModified)
+				content = output.Content;
+
+			var parameters = stack.Pop();
+
 			var stringContent = content.GetContent(NullHtmlEncoder.Default);
+			if (Trim)
+				stringContent = stringContent.Trim();
 			if (!string.IsNullOrEmpty(stringContent))
 			{
 				if (!IsHtml)
 				{
-					var newContent = _localizer.GetString(stringContent);
+					LocalizedString newContent;
+					if (parameters.Any())
+					{
+						//var parameters = (IList<string>)context.Items[typeof(ParamTagHelper)];
+
+						newContent = _localizer.GetString(stringContent, parameters.ToArray());
+					}
+					else
+					{
+						newContent = _localizer.GetString(stringContent);
+					}
 					content.SetContent(newContent);
 				}
 				else
 				{
-					var newContent = _localizer[stringContent];
+					LocalizedHtmlString newContent;
+					if (parameters.Any())
+					{
+						//var parameters = (IList<string>)context.Items[typeof(ParamTagHelper)];
+
+						newContent = _localizer[stringContent, parameters.ToArray()];
+					}
+					else
+					{
+						newContent = _localizer[stringContent];
+					}
+
 					content.SetHtmlContent(newContent);
 				}
 			}
