@@ -1,5 +1,18 @@
 {
-	"version": "1.0.0-*",
+	"version": "0.1.0-*",
+
+	"packOptions": {
+		"owners": [
+			"AdmiringWorm"
+		],
+		"licenseUrl": "https://github.com/AdmiringWorm/Localization.AspNetCore.TagHelpers/blob/master/LICENSE",
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/AdmiringWorm/Localization.AspNetCore.TagHelpers"
+		},
+		"releaseNotes": "",
+		"summary": "Asp.Net Core Tag Helpers to use when localizing Asp.Net Core application instead of manually injecting IViewLocator"
+	},
 
 	"dependencies": {
 		"Microsoft.AspNetCore.Mvc.Localization": "1.0.1",
