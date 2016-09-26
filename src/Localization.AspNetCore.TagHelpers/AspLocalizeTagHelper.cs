@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,12 +19,13 @@ namespace Localization.AspNetCore.TagHelpers
 	// your project
 	[HtmlTargetElement(Attributes = ASP_LOCALIZE_NAME)]
 	[HtmlTargetElement(Attributes = ASP_LOCALIZE_TYPE)]
+	[HtmlTargetElement(Attributes = ASP_LOCALIZE_HTML)]
 	public class AspLocalizeTagHelper : TagHelper
 	{
-		private const string ASP_LOCALIZE_HTML = "asp-localize-html";
-		private const string ASP_LOCALIZE_NAME = "asp-localize";
-		private const string ASP_LOCALIZE_TRIM = "asp-localize-trim";
-		private const string ASP_LOCALIZE_TYPE = "asp-localize-type";
+		private const string ASP_LOCALIZE_HTML = "localize-html";
+		private const string ASP_LOCALIZE_NAME = "localize";
+		private const string ASP_LOCALIZE_TRIM = "localize-trim";
+		private const string ASP_LOCALIZE_TYPE = "localize-type";
 
 		private readonly string _applicationName;
 		private readonly IHtmlLocalizerFactory _localizerFactory;
@@ -104,14 +106,24 @@ namespace Localization.AspNetCore.TagHelpers
 			var content = await GetContentAsync(context, output);
 			if (TrimWhitespace)
 				content = content.Trim();
-
+			var parameters = GetParameters(context);
 			if (IsHtml)
 			{
-				SetHtmlContent(context, output.Content, _localizer[content]);
+				LocalizedHtmlString locString;
+				if (parameters.Any())
+					locString = _localizer[content, parameters.ToArray()];
+				else
+					locString = _localizer[content];
+				SetHtmlContent(context, output.Content, locString);
 			}
 			else
 			{
-				SetContent(context, output.Content, _localizer.GetString(content));
+				LocalizedString locString;
+				if (parameters.Any())
+					locString = _localizer.GetString(content, parameters.ToArray());
+				else
+					locString = _localizer.GetString(content);
+				SetContent(context, output.Content, locString);
 			}
 		}
 
@@ -131,6 +143,18 @@ namespace Localization.AspNetCore.TagHelpers
 		protected virtual void SetHtmlContent(TagHelperContext context, TagHelperContent outputContent, IHtmlContent htmlContent)
 		{
 			outputContent.SetHtmlContent(htmlContent);
+		}
+
+		protected virtual IEnumerable<object> GetParameters(TagHelperContext context)
+		{
+			if (!context.Items.ContainsKey(typeof(AspLocalizeTagHelper)))
+			{
+				return new object[0];
+			}
+
+			var stack = (Stack<List<object>>)context.Items[typeof(AspLocalizeTagHelper)];
+
+			return stack.Pop();
 		}
 
 		private static string BuildBaseName(string path, string applicationName)

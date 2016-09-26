@@ -28,14 +28,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		{
 			var helper = CreateTagHelper();
 			var context = CreateTagContext("First Localized", "Second Localized");
-			var expected = new List<string>
+			var expected = new List<object>
 			{
 				"First Localized",
 				"Second Localized",
 				"Third Localized"
 			};
 			var output = CreateTagOutput("parameter", "Third Localized");
-			var stack = (Stack<List<string>>)context.Items[typeof(LocalizeTagHelper)];
+			var stack = (Stack<List<object>>)context.Items[typeof(AspLocalizeTagHelper)];
 			var parameters = stack.Peek();
 
 			await helper.ProcessAsync(context, output);
@@ -48,7 +48,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		{
 			var helper = CreateTagHelper();
 			var context = CreateTagContext();
-			context.Items.Remove(typeof(LocalizeTagHelper));
+			context.Items.Remove(typeof(AspLocalizeTagHelper));
 			var output = CreateTagOutput("parameter", "My Localized String");
 
 			var html = await CreateHtmlOutput(helper, context, output);
@@ -98,10 +98,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		private TagHelperContext CreateTagContext(params string[] localizedParameters)
 		{
 			var dictionary = new Dictionary<object, object>();
-			var stack = new Stack<List<string>>();
+			var stack = new Stack<List<object>>();
 
-			stack.Push(new List<string>(localizedParameters));
-			dictionary.Add(typeof(LocalizeTagHelper), stack);
+			stack.Push(new List<object>(localizedParameters));
+			dictionary.Add(typeof(AspLocalizeTagHelper), stack);
 
 			return new TagHelperContext(new TagHelperAttributeList(),
 				dictionary,
