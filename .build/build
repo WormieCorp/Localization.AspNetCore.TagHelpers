@@ -25,12 +25,12 @@ fi
 if [[ ("$NETCORE" == "true") ]]; then
 	$DOTNET $PARAMETERS $TEST_FRAME src/Localization.Demo/project.json
 	$NPM_EXEC="$(which npm 2>/dev/null)"
-	if [ "$NPM_EXEC" ]; then
+	if [ ! -z "$NPM_EXEC" ]; then
 		pushd src/Localization.Demo
-		$NPM_EXEC restore
-		$NPM_EXEC bower restore
-		$NPM_EXEC gulp build
+		$NPM_EXEC run gulp build
 		popd
+	else
+		warn "npm not found, skipping gulp script"
 	fi
 fi
 

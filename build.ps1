@@ -10,7 +10,7 @@ param(
 	[string]$Framework = "All",
 	[string]$VersionSuffix = ""
 )
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 if ($Help) {
 "USAGE: build.[cmd|ps1] [OPTIONS]

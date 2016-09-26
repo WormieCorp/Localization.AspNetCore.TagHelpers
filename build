@@ -139,7 +139,7 @@ if [[ ("$RESTORE" == "false") && ("$BUILD" == "false") && ("$TESTS" == "false") 
 	TESTS=true
 fi
 
-if [ "$(which mono)" == "" ]; then
+if [ -z "$(which mono)" ]; then
   warn "mono not found. Disabling..."
   MONO=false
 fi
@@ -153,7 +153,7 @@ echo "CONFIGURATION: ${CONFIGURATION}"
 
 if [ "${RESTORE}" == "true" ]; then
 	info "Restoring packages"
-	bash .build/restore
+	source .build/restore
 	ret_code=$?
 	if [ "$ret_code" != "0" ]; then
 		exit $ret_code
@@ -162,7 +162,7 @@ fi
 
 if [ "${BUILD}" == "true" ]; then
 	info "Building projects"
-	bash .build/build $CONFIGURATION $MONO $NETCORE
+	source .build/build $CONFIGURATION $MONO $NETCORE
 	ret_code=$?
 	if [ "$ret_code" != "0" ]; then
 		exit $ret_code
@@ -171,7 +171,7 @@ fi
 
 if [ "${TESTS}" == "true" ]; then
 	info "Running unit tests"
-	bash .build/tests $CONFIGURATION $MONO $NETCORE
+	source .build/tests $CONFIGURATION $MONO $NETCORE
 	ret_code=$?
 	exit $ret_code
 fi
