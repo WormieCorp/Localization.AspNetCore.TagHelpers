@@ -18,7 +18,9 @@ fi
 if [ "$MONO" == "true" ]; then
 	MONO_EXEC="$(which mono)"
 	EXECUTABLE=""
+	set +e
 	NUNIT="$(which nunit3-console 2>/dev/null)"
+	set -e
 	if [ "$NUNIT" == "" ]; then
 		NUNIT="$(find ./packages -name nunit3-console.exe 2>/dev/null)"
 		if [ "$NUNIT" == "" ]; then

@@ -1,13 +1,15 @@
 #!/bin/bash
 
 DOTNET="$(which dotnet)"
+set +e
 NPM="$(which npm 2>/dev/null)"
+set -e
 
 $DOTNET restore
 
 if [ ! -z "$NPM" ]; then
 	pushd src/Localization.Demo
-	$NPM install
+	$NPM --loglevel=error install
 	popd
 else
 	warn "npm not found, skipping restoring npm and bower packages"
