@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Builder
 @using Microsoft.AspNetCore.Http.Features
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
@@ -8,10 +8,10 @@
 @inject IOptions<RequestLocalizationOptions> LocOptions
 
 @{
-  var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-  var cultureItems = LocOptions.Value.SupportedUICultures
-	  .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
-	  .ToList();
+	var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+	var cultureItems = LocOptions.Value.SupportedUICultures
+		.Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+		.ToList();
 }
 
 <form class="navbar-form navbar-right" role="form" id="selectLanguage" asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@Context.Request.Path"

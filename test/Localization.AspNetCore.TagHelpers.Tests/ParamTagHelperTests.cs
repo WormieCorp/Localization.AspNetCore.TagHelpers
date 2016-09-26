@@ -1,17 +1,28 @@
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using NUnit.Framework;
 
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
-	[TestFixture]
+	[Category("Parameter")]
 	public class ParamTagHelperTests
 	{
+		[Test]
+		public void ParameterOrderIsHigherThanLocalizeTagHelperOrder()
+		{
+			var tagHelper1 = TestHelper.CreateTagHelper<AspLocalizeTagHelper>(null);
+			var tagHelper2 = TestHelper.CreateTagHelper<LocalizeTagHelper>(null);
+			var paramTagHelper = CreateTagHelper();
+
+			Assert.That(paramTagHelper.Order, Is.GreaterThan(tagHelper1.Order));
+			Assert.That(paramTagHelper.Order, Is.GreaterThan(tagHelper2.Order));
+		}
+
 		[Test]
 		public async Task ProcessAsync_AppendsLocalizedTextToExistingList()
 		{

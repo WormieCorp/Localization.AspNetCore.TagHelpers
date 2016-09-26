@@ -24,6 +24,14 @@ fi
 
 if [[ ("$NETCORE" == "true") ]]; then
 	$DOTNET $PARAMETERS $TEST_FRAME src/Localization.Demo/project.json
+	$NPM_EXEC="$(which npm 2>/dev/null)"
+	if [ "$NPM_EXEC" ]; then
+		pushd src/Localization.Demo
+		$NPM_EXEC restore
+		$NPM_EXEC bower restore
+		$NPM_EXEC gulp build
+		popd
+	fi
 fi
 
 $DOTNET $PARAMETERS $TEST_FRAME test/Localization.AspNetCore.TagHelpers.Tests/project.json

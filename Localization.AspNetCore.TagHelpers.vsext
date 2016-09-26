@@ -1,0 +1,20 @@
+﻿{
+	"extensions": {
+		"mandatory": [
+			{
+				"name": "EditorConfig",
+				"productId": "EditorConfig..5cd8e6a2-be43-4fcc-a345-40f6cc1e9c9f",
+				"link": "http://editorconfig.org/",
+				"description": "This makes sure that everyone uses correct spaces and indentation."
+			}
+		],
+		"optional": [
+			{
+				"name": "CodeMaid",
+				"productId": "4c82e17d-927e-42d2-8460-b473ac7df316",
+				"link": "http://www.codemaid.net/",
+				"description": "CodeMaid is an open source Visual Studio extension to cleanup and simplify our C#, C++, F#, VB, PHP, PowerShell, R, JSON, XAML, XML, ASP, HTML, CSS, LESS, SCSS, JavaScript and TypeScript coding."
+			}
+		]
+	}
+}

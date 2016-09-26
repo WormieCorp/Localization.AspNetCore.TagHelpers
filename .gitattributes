@@ -3,3 +3,7 @@
 *.cs  diff=csharp
 
 *.yml  whitespace=indent-with-tab,trailing-space
+CodeMaid.config whitespace=indent-with-tab
+
+*.sln eol=crlf
+*.csproj eol=crlf

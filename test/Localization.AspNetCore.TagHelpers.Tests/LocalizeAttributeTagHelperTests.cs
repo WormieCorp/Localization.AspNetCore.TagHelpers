@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Localization;
+﻿using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
@@ -22,7 +22,6 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		void Contextualize(ViewContext context);
 	}
 
-	[TestFixture]
 	public class LocalizeAttributeTagHelperTests
 	{
 		private Mock<IViewLocalizer> _locMock;

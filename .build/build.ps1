@@ -26,6 +26,12 @@ elseif ($NetCore -and !$NetFull) {
 dotnet $SrcParameters src/Localization.AspNetCore.TagHelpers/project.json
 if ($NetCore) {
 	dotnet $TestParameters src/Localization.Demo/project.json
+	$NPM_EXEC = Get-Command npm -ErrorAction SilentlyContinue
+	if ($NPM_EXEC) {
+		pushd src/Localization.Demo
+		. $NPM_EXEC run gulp
+		popd
+	}
 }
 
 dotnet $TestParameters test/Localization.AspNetCore.TagHelpers.Tests/project.json

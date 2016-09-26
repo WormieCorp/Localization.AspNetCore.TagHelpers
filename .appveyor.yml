@@ -1,10 +1,11 @@
-version: '0.1.0.{build}'
+version: '{build}'
 configuration: Release
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   OPENCOVER_VERSION: 4.6.519
   VERSION: 0.1.0
+  nodejs_version: "Stable"
 
 init:
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
