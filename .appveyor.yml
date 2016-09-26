@@ -16,14 +16,15 @@ install:
 - pip install codecov
 
 before_build:
-- ps: if ("$env:APPVEYOR_REPO_BRANCH" -eq "master") { .\.build\updateReleaseNotes.ps1 -Version $env:VERSION }
-- ps: .\build.ps1 -Restore -Configuration $env:Configuration
+- ps: |
+    .\.build\updateReleaseNotes.ps1 -Version $env:VERSION
+    .\build.ps1 -Restore -Configuration $env:Configuration
 
 build_script:
 - ps: .\build.ps1 -Build -Configuration $env:Configuration
 after_build:
 - dotnet pack src/Localization.AspNetCore.TagHelpers -c %CONFIGURATION% --no-build -o artifacts
-- .\.build\createArchives.ps1
+- ps: .\.build\createArchives.ps1
 
 test_script:
 - mkdir test-results

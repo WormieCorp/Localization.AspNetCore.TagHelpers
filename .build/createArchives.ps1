@@ -21,12 +21,9 @@ $paths = $files | select -ExpandProperty FullName
 if (!(Test-Path "$basePath/artifacts")) {
 	New-Item -Path "$basePath/artifacts" -ItemType Directory;
 } else {
-	Remove-Item "$artifactPath/$artifactName.*"
+	Remove-Item "$artifactPath/$artifactName*.zip","$artifactPath/$artifactName*.tar.xz"
 }
 
-#7z a "$basePath/artifacts/Localization.AspnetCore.TagHelpers" $files -r
-
-#$exString = '-x!".git" -x!".vs" -x!".vscode" -x!packages -xr!bin -xr!obj'
 $exclusions = @(
 	'-x!".git"'
 	'-x!".vs"'
