@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
@@ -8,23 +10,18 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
-	public interface IViewCombined : IViewLocalizer, IViewContextAware
-	{ }
-
-	public interface IViewNotContextAware : IViewLocalizer
-	{
-		void Contextualize(ViewContext context);
-	}
-
 	public class LocalizeAttributeTagHelperTests
 	{
-		private Mock<IViewLocalizer> _locMock;
+		private Mock<IHtmlLocalizer> _locMock;
+		private Mock<IHtmlLocalizerFactory> _locFactoryMock;
+		private Mock<IHostingEnvironment> _hostingMock;
 
 		#region Setup/Teardown
 
@@ -39,7 +36,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		[OneTimeSetUp]
 		public void Setup()
 		{
-			_locMock = new Mock<IViewLocalizer>();
+			_locMock = new Mock<IHtmlLocalizer>();
+			_hostingMock = new Mock<IHostingEnvironment>();
+			_hostingMock.Setup(x => x.ApplicationName).Returns("Localization.AspNetCore.TagHelpers.Tests");
+			_locFactoryMock = new Mock<IHtmlLocalizerFactory>();
+			_locFactoryMock.Setup(x => x.Create(It.IsAny<string>(), _hostingMock.Object.ApplicationName)).Returns(_locMock.Object);
 		}
 
 		#endregion Setup/Teardown
@@ -49,39 +50,41 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		[Test]
 		public void Constructor_ThrowsArgumentNullExceptionIfPassedIViewLocalizerIsNull()
 		{
-			Assert.That(() => new LocalizeAttributeTagHelper(null), Throws.ArgumentNullException.And.Message.Contains("localizer"));
+			Assert.That(() => new LocalizeAttributeTagHelper(null, new Mock<IHostingEnvironment>().Object), Throws.ArgumentNullException.And.Message.Contains("localizer"));
 		}
 
 		#endregion Constructor
 
 		#region Init
 
-		[Test]
-		public void Init_CallsContextualizeIfIViewLocalizeIsAlsoOfTypeIViewContextAware()
+		[TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
+		[TestCase("TestApplication", "/Views/Home/Index.cshtml", "/Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
+		[TestCase("TestApplication", "\\Views\\Home\\Index.cshtml", "\\Views\\Home\\Index.cshtml", "TestApplication.Views.Home.Index")]
+		[TestCase("TestApplication.Web", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Web.Views.Home.Index")]
+		[TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_Layout.cshtml", "TestApplication.Views.Shared._Layout")]
+		[TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_MyPartial.cshtml", "TestApplication.Views.Shared._MyPartial")]
+		[TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Home/_HomePartial.cshtml", "TestApplication.Views.Home._HomePartial")]
+		[TestCase("TestApplication", "Views/Home/Index.cshtml", null, "TestApplication.Views.Home.Index")]
+		[TestCase("TestApplication", "Views/Home/Index.txt", null, "TestApplication.Views.Home.Index")]
+		[TestCase("TestApplication", "Views/Home/Index.cshtml", "", "TestApplication.Views.Home.Index")]
+		[TestCase("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
+		public void Init_CreatesHtmlLocalizerFromViewContext(string appName, string viewPath, string executionPath, string expectedBaseName)
 		{
-			var mock = new Mock<IViewCombined>();
-			var tagHelper = new LocalizeAttributeTagHelper(mock.Object);
+			var hostingEnvironment = new Mock<IHostingEnvironment>();
+			hostingEnvironment.Setup(a => a.ApplicationName).Returns(appName);
+			var factoryMock = TestHelper.CreateFactoryMock(true);
+			var view = new Mock<IView>();
+			view.Setup(v => v.Path).Returns(viewPath);
 			var viewContext = new ViewContext();
+			viewContext.ExecutingFilePath = executionPath;
+			viewContext.View = view.Object;
+			var tagHelper = new LocalizeAttributeTagHelper(factoryMock.Object, hostingEnvironment.Object);
 			tagHelper.ViewContext = viewContext;
-			var context = CreateTagContext();
+			var context = TestHelper.CreateTagContext();
 
 			tagHelper.Init(context);
 
-			mock.Verify(x => x.Contextualize(viewContext), Times.Once());
-		}
-
-		[Test]
-		public void Init_NeverCallsContextualizeIfIViewLocalizeIsNotOfTypeIViewContextAware()
-		{
-			var mock = new Mock<IViewNotContextAware>();
-			var tagHelper = new LocalizeAttributeTagHelper(mock.Object);
-			var viewContext = new ViewContext();
-			tagHelper.ViewContext = viewContext;
-			var context = CreateTagContext();
-
-			tagHelper.Init(context);
-
-			mock.Verify(x => x.Contextualize(viewContext), Times.Never());
+			factoryMock.Verify(x => x.Create(expectedBaseName, appName), Times.Once());
 		}
 
 		#endregion Init
@@ -153,6 +156,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 		private string CreateHtmlOutput(LocalizeAttributeTagHelper tagHelper, TagHelperContext tagContext, TagHelperOutput tagOutput)
 		{
+			tagHelper.Init(tagContext);
 			var sb = new StringBuilder();
 
 			tagHelper.Process(tagContext, tagOutput);
@@ -188,7 +192,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 		private LocalizeAttributeTagHelper InitTagHelper()
 		{
-			return new LocalizeAttributeTagHelper(_locMock.Object);
+			return new LocalizeAttributeTagHelper(_locFactoryMock.Object, _hostingMock.Object)
+			{
+				ViewContext = new ViewContext()
+				{
+					ExecutingFilePath = "/Views/Home/Index.cshtml"
+				}
+			};
 		}
 	}
 }

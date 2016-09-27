@@ -22,7 +22,9 @@ if [ "$MONO" == "true" ]; then
 	NUNIT="$(which nunit3-console 2>/dev/null)"
 	set -e
 	if [ "$NUNIT" == "" ]; then
+		set +e
 		NUNIT="$(find ./packages -name nunit3-console.exe 2>/dev/null)"
+		set -e
 		if [ "$NUNIT" == "" ]; then
 			NUGET="$(which nuget)"
 			if [ "$NUGET" == "" ]; then

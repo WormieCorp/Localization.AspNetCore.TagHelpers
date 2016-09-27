@@ -8,6 +8,7 @@ environment:
   nodejs_version: "Stable"
 
 init:
+- git config --global core.autocrlf true
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
 - ps: Update-AppveyorBuild -Version "$env:Version.$env:APPVEYOR_BUILD_NUMBER"
 
@@ -34,7 +35,7 @@ test_script:
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path test-results/TestResult-net451.xml))
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path test-results/TestResult-netcore.xml))
 - codecov -f test-results/coverage.xml
-- if "%APPVEYOR_REPO_BRANCH%" -eq "master" ( git push )
+- if "%APPVEYOR_REPO_BRANCH%" == "master" ( git push )
 
 artifacts:
 - path: artifacts\*.*

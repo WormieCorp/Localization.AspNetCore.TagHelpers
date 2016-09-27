@@ -1,3 +1,5 @@
+using Localization.AspNetCore.TagHelpers.Internals;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -14,15 +16,18 @@ namespace Localization.AspNetCore.TagHelpers
 	{
 		private const string LOCALIZE_ATTRIBUTE_PREFIX = "asp-localize-";
 		private const string LOCALIZE_DICTIONARY_NAME = "asp-localize-all";
-		private readonly IViewLocalizer _localizer;
+		private readonly string _applicationName;
+		private readonly IHtmlLocalizerFactory _localizerFactory;
 		private IDictionary<string, string> _attributeValues;
+		private IHtmlLocalizer _localizer;
 
-		public LocalizeAttributeTagHelper(IViewLocalizer localizer)
+		public LocalizeAttributeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
 		{
-			if (localizer == null)
-				throw new ArgumentNullException(nameof(localizer));
+			Throws.NotNull(localizerFactory, nameof(localizerFactory));
+			Throws.NotNull(hostingEnvironment, nameof(hostingEnvironment));
 
-			this._localizer = localizer;
+			this._localizerFactory = localizerFactory;
+			this._applicationName = hostingEnvironment.ApplicationName;
 		}
 
 		[HtmlAttributeName(LOCALIZE_DICTIONARY_NAME, DictionaryAttributePrefix = LOCALIZE_ATTRIBUTE_PREFIX)]
@@ -48,12 +53,7 @@ namespace Localization.AspNetCore.TagHelpers
 
 		public override void Init(TagHelperContext context)
 		{
-			if (_localizer is IViewContextAware)
-			{
-				((IViewContextAware)_localizer).Contextualize(ViewContext);
-			}
-
-			base.Init(context);
+			_localizer = _localizerFactory.ResolveLocalizer(ViewContext, _applicationName);
 		}
 
 		public override void Process(TagHelperContext context, TagHelperOutput output)

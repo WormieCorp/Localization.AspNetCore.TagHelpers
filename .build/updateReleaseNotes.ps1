@@ -88,4 +88,7 @@ $content;
 
 if ($git) {
 	. $git add "$(Resolve-Path $changeLogFile)"
+	. $git commit -m "Updated Release notes
+
+	[skip ci]"
 }

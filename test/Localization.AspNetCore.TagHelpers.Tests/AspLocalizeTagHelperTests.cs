@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -205,7 +205,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		{
 			var textToLocalize = trim ? text.Trim() : text;
 			var localizer = TestHelper.CreateLocalizerMock(false);
-			SetupLocalizer(localizer, textToLocalize, expectedText, isHtml, parameters);
+			SetupLocalizerWithParameters(localizer, textToLocalize, expectedText, isHtml);
 			var factory = TestHelper.CreateFactoryMock(localizer.Object);
 			var helper = CreateTagHelper(factory.Object);
 			helper.TrimWhitespace = trim;
@@ -252,7 +252,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			}
 		}
 
-		private void SetupLocalizer(Mock<IHtmlLocalizer> localizer, string textToLocalize, string expectedText, bool isHtml, object[] parameters)
+		private void SetupLocalizerWithParameters(Mock<IHtmlLocalizer> localizer, string textToLocalize, string expectedText, bool isHtml)
 		{
 			if (isHtml)
 			{

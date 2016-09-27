@@ -18,6 +18,8 @@ namespace Localization.AspNetCore.TagHelpers
 		{
 		}
 
+#pragma warning disable S1185 // Overriding members should do more than simply call the same member in the super class
+
 		[HtmlAttributeName("html")]
 		public override bool IsHtml
 		{
@@ -73,6 +75,8 @@ namespace Localization.AspNetCore.TagHelpers
 				base.Type = value;
 			}
 		}
+
+#pragma warning restore S1185 // Overriding members should do more than simply call the same member in the super class
 
 		public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
 		{
