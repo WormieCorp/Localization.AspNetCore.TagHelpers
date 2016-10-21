@@ -1,0 +1,9 @@
+box: admiringworm/dotnet-mono
+
+build:
+  steps:
+    - script:
+      name: "Building and Testing"
+      code: |
+        chmod +x build.sh
+        ./build.sh --target Unix-CI

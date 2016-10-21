@@ -1,0 +1,12 @@
+* text=auto  whitespace=space-before-tab,indent-with-non-tab,trailing-space
+
+*.cs  diff=csharp
+
+*.yml  whitespace=indent-with-tab,trailing-space
+CodeMaid.config whitespace=indent-with-tab
+
+*.sln eol=crlf
+*.csproj eol=crlf
+
+*.sh eol=lf
+*.ps1 eol=crlf
