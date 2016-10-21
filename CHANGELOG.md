@@ -1,7 +1,3 @@
-## v0.1.0
+This file will be updated as part of the Faker.Net.Portable build process.
 
-
-First Working Release
-he Localization.AspNetCore.TagHelpers build process.
-
-If you want to see the current release notes, please check [here](https://github.com/AdmiringWorm/Localization.AspNetCore.TagHelpers/releases)
+If you want to see the current release notes, please check [here](https://github.com/AdmiringWorm/Faker.Net.Portable/releases)

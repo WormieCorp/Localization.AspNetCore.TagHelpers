@@ -258,7 +258,6 @@ Task("Publish-GitHub-Release")
 
 Task("Create-Release-Notes")
 	.WithCriteria(() => parameters.GitHub.HasCredentials)
-	.WithCriteria(() => parameters.ShouldCreateReleaseNotes)
 	.Does(() =>
 	{
 		GitReleaseManagerCreate(
@@ -278,7 +277,6 @@ Task("Create-Release-Notes")
 
 Task("Export-Release-Notes")
 	.WithCriteria(() => parameters.GitHub.HasCredentials)
-	.IsDependentOn("Create-Release-Notes")
 	.Does(() =>
 {
 	GitReleaseManagerExport(
