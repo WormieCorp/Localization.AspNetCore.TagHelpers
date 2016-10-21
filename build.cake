@@ -257,6 +257,7 @@ Task("Publish-GitHub-Release")
 });
 
 Task("Create-Release-Notes")
+	.WithCriteria(() => parameters.ShouldCreateReleaseNotes)
 	.WithCriteria(() => parameters.GitHub.HasCredentials)
 	.Does(() =>
 	{
@@ -276,6 +277,7 @@ Task("Create-Release-Notes")
 	});
 
 Task("Export-Release-Notes")
+	.IsDependentOn("Create-Release-Notes")
 	.WithCriteria(() => parameters.GitHub.HasCredentials)
 	.Does(() =>
 {
