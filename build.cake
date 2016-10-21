@@ -254,6 +254,13 @@ Task("Publish-GitHub-Release")
 		BuildParameters.MainRepoName,
 		parameters.Version.Milestone
 	);
+	GitReleaseManagerPublish(
+		parameters.GitHub.UserName,
+		parameters.GitHub.Password,
+		BuildParameters.MainRepoUser,
+		BuildParameters.MainRepoName,
+		parameters.Version.Milestone
+	);
 });
 
 Task("Create-Release-Notes")
