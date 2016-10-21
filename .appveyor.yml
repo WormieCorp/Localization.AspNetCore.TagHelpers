@@ -1,45 +1,34 @@
-version: '{build}'
-configuration: Release
+pull_requests:
+  do_not_increment_build_number: true
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  OPENCOVER_VERSION: 4.6.519
-  VERSION: 0.1.0
   nodejs_version: "Stable"
+branches:
+  except:
+  - ci/travis
+  - ci/wercker
 
 init:
-- git config --global core.autocrlf true
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-- ps: Update-AppveyorBuild -Version "$env:Version.$env:APPVEYOR_BUILD_NUMBER"
 
 install:
-- nuget install opencover -Version %OPENCOVER_VERSION% -OutputDirectory packages
 - pip install codecov
 
-before_build:
-- ps: |
-    .\.build\updateReleaseNotes.ps1 -Version $env:VERSION
-    .\build.ps1 -Restore -Configuration $env:Configuration
-
 build_script:
-- ps: .\build.ps1 -Build -Configuration $env:Configuration
-after_build:
-- dotnet pack src/Localization.AspNetCore.TagHelpers -c %CONFIGURATION% --no-build -o artifacts
-- ps: .\.build\createArchives.ps1
-
-test_script:
-- mkdir test-results
-- packages\OpenCover.%OPENCOVER_VERSION%\tools\OpenCover.Console.exe -register:user -target:build.cmd -targetargs:"-Tests -Configuration %CONFIGURATION%" -output:test-results/coverage.xml -oldstyle -skipautoprops -returntargetcode -mergebyhash -filter:"+[Localization.AspNetCore*]* -[*Tests*]*"
+- ps: .\build.ps1 -Configuration Release -Target AppVeyor
+- ps: codecov -f $(Get-ChildItem -Path "./" -Name "OpenCover.xml" -Recurse -File | select -First 1) -X gcov
 - ps: |
     $wc = New-Object 'System.Net.WebClient'
-    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path test-results/TestResult-net451.xml))
-    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path test-results/TestResult-netcore.xml))
-- codecov -f test-results/coverage.xml
-- if "%APPVEYOR_REPO_BRANCH%" == "master" ( git push )
+    Get-ChildItem -Path "./" -Name "TestResult*.xml" -Recurse -File | % {
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $_))
+    }
 
 artifacts:
-- path: artifacts\*.*
+- path: artifacts\**\*.zip
+- path: artifacts\**\*.nupkg
+
+test: off
 
 cache:
-- '%USERPROFILE%\.nuget\packages -> **\project.json'
-- 'packages -> appveyor.yml'
+- tools -> .build/tools.cake

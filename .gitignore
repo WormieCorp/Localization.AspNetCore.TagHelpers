@@ -627,3 +627,6 @@ __pycache__/
 
 ### VisualStudio Patch ###
 build/
+
+# Cake tools directory
+tools/

@@ -3,11 +3,7 @@ box: admiringworm/dotnet-mono
 build:
   steps:
     - script:
-      name: "Restoring all packages"
-      code: bash build -r -c $CONFIGURATION
-    - script:
-      name: "Building Projects"
-      code: bash build -b -c $CONFIGURATION
-    - script:
-      name: "Running unit tests"
-      code: bash build -t -c $CONFIGURATION
+      name: "Building and Testing"
+      code: |
+        chmod +x build.sh
+        ./build.sh --target Unix-CI

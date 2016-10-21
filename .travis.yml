@@ -24,13 +24,16 @@ branches:
   except:
     - ci/appveyor
     - ci/wercker
+    - /^v[0-9]/ # Skip tag builds, these should already have been tested before the tag was created
 
 before_install:
   -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
   -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
 
 script:
-  - bash build -r -b -c $CONFIGURATION
-#  - bash .build/prepareCoverage
-  - bash build -t -c $CONFIGURATION
-#  - bash <(curl -s https://codecov.io/bash) -f test-results/coverageResults.txt
+  - chmod +x build.sh
+  - ./build.sh --target Unix-CI
+
+cache:
+  directories:
+    - tools
