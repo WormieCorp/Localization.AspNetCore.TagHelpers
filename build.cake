@@ -34,8 +34,8 @@ Task("Clean")
 });
 
 Task("Patch-Project-Json")
-	.IsDependentOn("Export-Release-Notes")
 	.IsDependentOn("Clean")
+	.IsDependentOn("Export-Release-Notes")
 	.Does(() =>
 	{
 		var projects = GetFiles("./**/project.json");
@@ -46,7 +46,7 @@ Task("Patch-Project-Json")
 		}
 		else
 		{
-			releaseNotes = ParseReleaseNotes("./CHANGELOG.md").Notes.ToArray();
+			releaseNotes = ParseReleaseNotes("./artifacts/CHANGELOG.md").Notes.ToArray();
 		}
 
 		foreach(var project in projects)
@@ -284,7 +284,7 @@ Task("Export-Release-Notes")
 		parameters.GitHub.Password,
 		BuildParameters.MainRepoUser,
 		BuildParameters.MainRepoName,
-		File("./CHANGELOG.md")
+		File("./artifacts/CHANGELOG.md")
 	);
 });
 
