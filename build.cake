@@ -72,6 +72,8 @@ Task("Restore-NuGet-Packages")
 Task("Restore-NPM-Packages")
 	.IsDependentOn("Clean")
 	.WithCriteria(() => parameters.IsLocalBuild)
+	.WithCriteria(() => !HasEnvironmentVariable("CI"))
+	.WithCriteria(() => !HasEnvironmentVariable("WERCKER"))
 	.Does(() =>
 	{
 		Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
