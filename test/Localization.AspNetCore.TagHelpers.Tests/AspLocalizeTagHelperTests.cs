@@ -73,13 +73,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		[Test]
 		public void Constructor_ThrowsArgumentNullExceptionOnHostingEnvironmentIsNull()
 		{
-			Assert.That(() => new AspLocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null), Throws.ArgumentNullException);
+			Assert.That(() => new GenericLocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null), Throws.ArgumentNullException);
 		}
 
 		[Test]
 		public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
 		{
-			Assert.That(() => new AspLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object), Throws.ArgumentNullException);
+			Assert.That(() => new GenericLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object), Throws.ArgumentNullException);
 		}
 
 		[Test]
@@ -91,8 +91,8 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			tagHelper.Init(tagContext);
 			tagHelper.Init(tagContext);
 
-			Assert.That(tagContext.Items, Contains.Key(typeof(AspLocalizeTagHelper)));
-			var item = tagContext.Items[typeof(AspLocalizeTagHelper)];
+			Assert.That(tagContext.Items, Contains.Key(typeof(GenericLocalizeTagHelper)));
+			var item = tagContext.Items[typeof(GenericLocalizeTagHelper)];
 			Assert.That(item, Is.Not.Null.And.TypeOf<Stack<List<object>>>().And.Count.EqualTo(2));
 		}
 
@@ -104,8 +104,8 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 			tagHelper.Init(tagContext);
 
-			Assert.That(tagContext.Items, Contains.Key(typeof(AspLocalizeTagHelper)));
-			var item = tagContext.Items[typeof(AspLocalizeTagHelper)];
+			Assert.That(tagContext.Items, Contains.Key(typeof(GenericLocalizeTagHelper)));
+			var item = tagContext.Items[typeof(GenericLocalizeTagHelper)];
 			Assert.That(item, Is.Not.Null.And.TypeOf<Stack<List<object>>>().And.Count.EqualTo(1));
 		}
 
@@ -130,7 +130,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			var viewContext = new ViewContext();
 			viewContext.ExecutingFilePath = executionPath;
 			viewContext.View = view.Object;
-			var tagHelper = new AspLocalizeTagHelper(factoryMock.Object, hostingEnvironment.Object);
+			var tagHelper = new GenericLocalizeTagHelper(factoryMock.Object, hostingEnvironment.Object);
 			tagHelper.ViewContext = viewContext;
 			var context = TestHelper.CreateTagContext();
 
@@ -153,7 +153,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			factory.Verify(x => x.Create(name, TestHelper.ApplicationName), Times.Once());
 		}
 
-		[TestCase(typeof(AspLocalizeTagHelper))]
+		[TestCase(typeof(GenericLocalizeTagHelper))]
 		[TestCase(typeof(TestHelper))]
 		[TestCase(typeof(ParamTagHelperTests))]
 		public void Init_CreatesHtmlLocalizerWithUserSpecifiedType(Type type)
@@ -176,7 +176,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 			tagHelper.Init(tagContext);
 
-			Assert.That(tagContext.Items, !Contains.Key(typeof(AspLocalizeTagHelper)));
+			Assert.That(tagContext.Items, !Contains.Key(typeof(GenericLocalizeTagHelper)));
 		}
 
 		[TestCaseSource(nameof(LocalizeTestData))]
@@ -212,7 +212,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			helper.IsHtml = isHtml;
 			var context = TestHelper.CreateTagContext();
 			helper.Init(context);
-			var stack = (Stack<List<object>>)context.Items[typeof(AspLocalizeTagHelper)];
+			var stack = (Stack<List<object>>)context.Items[typeof(GenericLocalizeTagHelper)];
 			var list = stack.Peek();
 			foreach (var parameter in parameters)
 			{
@@ -230,14 +230,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			return htmlOutput;
 		}
 
-		protected AspLocalizeTagHelper CreateTagHelper()
+		protected GenericLocalizeTagHelper CreateTagHelper()
 		{
-			return TestHelper.CreateTagHelper<AspLocalizeTagHelper>(null);
+			return TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(null);
 		}
 
-		protected AspLocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
+		protected GenericLocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
 		{
-			return TestHelper.CreateTagHelper<AspLocalizeTagHelper>(factory);
+			return TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factory);
 		}
 
 		private void SetupLocalizer(Mock<IHtmlLocalizer> localizer, string textToLocalize, string expectedText, bool isHtml)
@@ -264,7 +264,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			}
 		}
 
-		private class NoParametersSupported : AspLocalizeTagHelper
+		private class NoParametersSupported : GenericLocalizeTagHelper
 		{
 #pragma warning disable S1144 // Unused private types or members should be removed
 

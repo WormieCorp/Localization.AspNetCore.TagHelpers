@@ -1,6 +1,5 @@
 assembly-versioning-scheme: None
 mode: ContinuousDeployment
-next-version: 0.1.0
 branches:
   master:
     mode: ContinuousDelivery

@@ -15,7 +15,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		[Test]
 		public void ParameterOrderIsHigherThanLocalizeTagHelperOrder()
 		{
-			var tagHelper1 = TestHelper.CreateTagHelper<AspLocalizeTagHelper>(null);
+			var tagHelper1 = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(null);
 			var tagHelper2 = TestHelper.CreateTagHelper<LocalizeTagHelper>(null);
 			var paramTagHelper = CreateTagHelper();
 
@@ -35,7 +35,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 				"Third Localized"
 			};
 			var output = CreateTagOutput("parameter", "Third Localized");
-			var stack = (Stack<List<object>>)context.Items[typeof(AspLocalizeTagHelper)];
+			var stack = (Stack<List<object>>)context.Items[typeof(GenericLocalizeTagHelper)];
 			var parameters = stack.Peek();
 
 			await helper.ProcessAsync(context, output);
@@ -48,7 +48,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		{
 			var helper = CreateTagHelper();
 			var context = CreateTagContext();
-			context.Items.Remove(typeof(AspLocalizeTagHelper));
+			context.Items.Remove(typeof(GenericLocalizeTagHelper));
 			var output = CreateTagOutput("parameter", "My Localized String");
 
 			var html = await CreateHtmlOutput(helper, context, output);
@@ -101,7 +101,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			var stack = new Stack<List<object>>();
 
 			stack.Push(new List<object>(localizedParameters));
-			dictionary.Add(typeof(AspLocalizeTagHelper), stack);
+			dictionary.Add(typeof(GenericLocalizeTagHelper), stack);
 
 			return new TagHelperContext(new TagHelperAttributeList(),
 				dictionary,

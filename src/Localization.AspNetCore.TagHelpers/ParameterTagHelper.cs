@@ -23,13 +23,13 @@ namespace Localization.AspNetCore.TagHelpers
 			if (output.IsContentModified)
 				content = output.Content;
 
-			if (!context.Items.ContainsKey(typeof(AspLocalizeTagHelper)))
+			if (!context.Items.ContainsKey(typeof(GenericLocalizeTagHelper)))
 			{
 				output.Content = content;
 				return;
 			}
 
-			var stack = (Stack<List<object>>)context.Items[typeof(AspLocalizeTagHelper)];
+			var stack = (Stack<List<object>>)context.Items[typeof(GenericLocalizeTagHelper)];
 
 			var existingItems = stack.Peek();
 			existingItems.Add(content.GetContent(NullHtmlEncoder.Default));

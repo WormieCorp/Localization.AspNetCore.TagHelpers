@@ -66,7 +66,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 		}
 
 		public static T CreateTagHelper<T>(IHtmlLocalizerFactory factory)
-			where T : AspLocalizeTagHelper
+			where T : GenericLocalizeTagHelper
 		{
 			var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
 			hostingEnvironmentMock.SetupGet(x => x.ApplicationName).Returns(ApplicationName);
@@ -126,7 +126,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 			helper.Init(tagContext);
 
-			var stack = (Stack<List<object>>)tagContext.Items[typeof(AspLocalizeTagHelper)];
+			var stack = (Stack<List<object>>)tagContext.Items[typeof(GenericLocalizeTagHelper)];
 			var list = stack.Peek();
 			list.AddRange(parameters);
 

@@ -62,7 +62,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 			factory.Verify(x => x.Create(name, TestHelper.ApplicationName), Times.Once());
 		}
 
-		[TestCase(typeof(AspLocalizeTagHelper))]
+		[TestCase(typeof(GenericLocalizeTagHelper))]
 		[TestCase(typeof(TestHelper))]
 		[TestCase(typeof(ParamTagHelperTests))]
 		public void Init_CreatesHtmlLocalizerWithUserSpecifiedType(Type type)
@@ -85,7 +85,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
 			tagHelper.Init(tagContext);
 
-			Assert.That(tagContext.Items, !Contains.Key(typeof(AspLocalizeTagHelper)));
+			Assert.That(tagContext.Items, !Contains.Key(typeof(GenericLocalizeTagHelper)));
 		}
 
 		[TestCaseSource(nameof(LocalizeTestData))]

@@ -9,7 +9,7 @@ namespace Localization.AspNetCore.TagHelpers
 	// You may need to install the Microsoft.AspNet.Razor.Runtime package into
 	// your project
 	[HtmlTargetElement(LOCALIZE_TAG_NAME)]
-	public class LocalizeTagHelper : AspLocalizeTagHelper
+	public class LocalizeTagHelper : GenericLocalizeTagHelper
 	{
 		private const string LOCALIZE_TAG_NAME = "localize";
 
