@@ -15,9 +15,9 @@ gulp.task("min", ["min:js", "min:css", "min:html"]);
 gulp.task("min:js", function () {
 	var tasks = getBundles(".js").map(function (bundle) {
 		return gulp.src(bundle.inputFiles, { base: "." })
-            .pipe(concat(bundle.outputFileName))
-            .pipe(uglify())
-            .pipe(gulp.dest("."));
+			.pipe(concat(bundle.outputFileName))
+			.pipe(uglify())
+			.pipe(gulp.dest("."));
 	});
 	return merge(tasks);
 });
@@ -25,9 +25,9 @@ gulp.task("min:js", function () {
 gulp.task("min:css", function () {
 	var tasks = getBundles(".css").map(function (bundle) {
 		return gulp.src(bundle.inputFiles, { base: "." })
-            .pipe(concat(bundle.outputFileName))
-            .pipe(cssmin())
-            .pipe(gulp.dest("."));
+			.pipe(concat(bundle.outputFileName))
+			.pipe(cssmin())
+			.pipe(gulp.dest("."));
 	});
 	return merge(tasks);
 });
@@ -35,9 +35,9 @@ gulp.task("min:css", function () {
 gulp.task("min:html", function () {
 	var tasks = getBundles(".html").map(function (bundle) {
 		return gulp.src(bundle.inputFiles, { base: "." })
-            .pipe(concat(bundle.outputFileName))
-            .pipe(htmlmin({ collapseWhitespace: true, minifyCSS: true, minifyJS: true }))
-            .pipe(gulp.dest("."));
+			.pipe(concat(bundle.outputFileName))
+			.pipe(htmlmin({ collapseWhitespace: true, minifyCSS: true, minifyJS: true }))
+			.pipe(gulp.dest("."));
 	});
 	return merge(tasks);
 });

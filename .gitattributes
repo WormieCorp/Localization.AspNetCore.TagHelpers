@@ -1,8 +1,8 @@
-* text=auto  whitespace=space-before-tab,indent-with-non-tab,trailing-space
+* text=auto  whitespace=space-before-tab,indent-with-non-tab,blank-at-eol,-blank-at-eof
 
 *.cs  diff=csharp
 
-*.yml  whitespace=indent-with-tab,trailing-space
+*.yml  whitespace=tab-in-indent,blank-at-eol,-blank-at-eof
 CodeMaid.config whitespace=indent-with-tab
 
 *.sln eol=crlf
@@ -10,3 +10,4 @@ CodeMaid.config whitespace=indent-with-tab
 
 *.sh eol=lf
 *.ps1 eol=crlf
+*.resx whitespace=-blank-at-eol

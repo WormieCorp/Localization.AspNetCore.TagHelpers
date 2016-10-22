@@ -59,7 +59,7 @@ public class BuildPaths
 			context.Directory("./src/" + BuildParameters.MainRepoName),
 			context.Directory("./test/" + BuildParameters.MainRepoName + ".Tests")
 		};
-		
+
 		if (context.BuildSystem().IsLocalBuild)
 		{
 			buildProjects.Add(context.Directory("./src/Localization.Demo"));

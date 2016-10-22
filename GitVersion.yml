@@ -1,5 +1,5 @@
 assembly-versioning-scheme: None
-mode: ContinuousDeployment
+mode: ContinuousDelivery
 branches:
   master:
     mode: ContinuousDelivery
@@ -9,3 +9,4 @@ branches:
     track-merge-target: true
 ignore:
   sha: []
+
