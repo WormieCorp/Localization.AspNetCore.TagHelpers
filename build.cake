@@ -69,9 +69,18 @@ Task("Restore-NuGet-Packages")
 		});
 	});
 
+Task("Restore-NPM-Packages")
+	.IsDependentOn("Clean")
+	.WithCriteria(() => parameters.IsLocalBuild)
+	.Does(() =>
+	{
+		Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
+	});
+
 Task("Build")
 	.IsDependentOn("Patch-Project-Json")
 	.IsDependentOn("Restore-NuGet-Packages")
+	.IsDependentOn("Restore-NPM-Packages")
 	.Does(() =>
 {
 	foreach(var project in parameters.Paths.Directories.Projects)

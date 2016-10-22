@@ -16,6 +16,6 @@
 	"scripts": {
 		"bower": "bower",
 		"gulp": "gulp",
-		"postinstall": "bower install"
+		"postinstall": "bower install && gulp"
 	}
 }
