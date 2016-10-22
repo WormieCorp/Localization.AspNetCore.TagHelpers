@@ -32,7 +32,7 @@ public class BuildParameters
 		get
 		{
 			return !IsLocalBuild && !IsPullRequest && IsMainRepo
-				&& IsMainBranch && IsTagged;
+				&& IsTagged;
 		}
 	}
 
