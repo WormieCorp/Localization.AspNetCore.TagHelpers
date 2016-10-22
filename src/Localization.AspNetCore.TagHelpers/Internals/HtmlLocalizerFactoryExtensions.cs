@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Localization.AspNetCore.TagHelpers.Internals
 {

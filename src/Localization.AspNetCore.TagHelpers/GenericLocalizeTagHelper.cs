@@ -126,6 +126,13 @@ namespace Localization.AspNetCore.TagHelpers
 		[ViewContext]
 		public ViewContext ViewContext { get; set; }
 
+		/// <summary>
+		///   Gets a value indicating whether this localizer tag helper supports parameters.
+		/// </summary>
+		/// <value><c>true</c> if this tag helper supports parameters; otherwise, <c>false</c>.</value>
+		/// <remarks>
+		///   Defaults to <see langword="true" />, but may be overridden in inherited <c>class</c>.
+		/// </remarks>
 		protected virtual bool SupportsParameters => true;
 
 		/// <summary>

@@ -62,7 +62,7 @@ public class BuildPaths
 		
 		if (context.BuildSystem().IsLocalBuild)
 		{
-			buildProjects.Add(context.Directory("./src/Localization.Demo");
+			buildProjects.Add(context.Directory("./src/Localization.Demo"));
 		}
 
 		var artifactSourcePaths = locAssemblyPaths.Concat(testingAssemblyPaths.Concat(repoFilPaths)).ToArray();
@@ -77,7 +77,7 @@ public class BuildPaths
 			nugetRoot,
 			artifactsBinDir,
 			artifactsBinNet451,
-			buildProjects
+			buildProjects.ToArray()
 		);
 
 		var buildFiles = new BuildFiles(

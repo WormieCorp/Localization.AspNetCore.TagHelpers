@@ -1,29 +1,29 @@
-﻿{
-  "version": "0.1.0-*",
-  "testRunner": "nunit",
-  "dependencies": {
-    "dotnet-test-nunit": "3.4.0-beta-2",
-    "Moq": "4.6.38-alpha",
-    "NUnit": "3.4.1",
-    "Localization.AspNetCore.TagHelpers": {
-      "target": "project"
-    }
-  },
-  "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [
-        "portable-net45+win8"
-      ],
-      "dependencies": {
-        "Microsoft.NETCore.App": {
-          "version": "1.0.1",
-          "type": "platform"
-        }
-      }
-    },
-    "net451": {}
-  },
-  "tooling": {
-    "defaultNamespace": "Localization.AspNetCore.TagHelpers.Tests"
-  }
+{
+	"version": "0.1.0-*",
+	"testRunner": "nunit",
+	"dependencies": {
+		"dotnet-test-nunit": "3.4.0-beta-2",
+		"Moq": "4.6.38-alpha",
+		"NUnit": "3.5.0",
+		"Localization.AspNetCore.TagHelpers": {
+			"target": "project"
+		}
+	},
+	"frameworks": {
+		"netcoreapp1.0": {
+			"imports": [
+				"portable-net45+win8"
+			],
+			"dependencies": {
+				"Microsoft.NETCore.App": {
+					"version": "1.0.1",
+					"type": "platform"
+				}
+			}
+		},
+		"net451": {}
+	},
+	"tooling": {
+		"defaultNamespace": "Localization.AspNetCore.TagHelpers.Tests"
+	}
 }
