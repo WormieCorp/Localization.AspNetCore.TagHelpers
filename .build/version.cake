@@ -1,3 +1,7 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+
 public class BuildVersion
 {
 	public string Version { get; private set; }
@@ -71,7 +75,7 @@ public class BuildVersion
 		foreach(var project in projects)
 		{
 			var content = System.IO.File.ReadAllText(project.FullPath, Encoding.UTF8);
-			var node = Newtonsoft.Json.Linq.JObject.Parse(content);
+			var node = JObject.Parse(content);
 			if(node["version"] != null)
 			{
 				var version = node["version"].ToString();
@@ -84,7 +88,7 @@ public class BuildVersion
 	public bool PatchProjectJson(FilePath project, string[] releaseNotesArray)
 	{
 		var content = System.IO.File.ReadAllText(project.FullPath, Encoding.UTF8);
-		var node = Newtonsoft.Json.Linq.JObject.Parse(content);
+		var node = JObject.Parse(content);
 
 		var packOptions = node["packOptions"];
 		bool releaseNotesChanged = false;
@@ -110,7 +114,16 @@ public class BuildVersion
 			if (oldVersion != newVersion || releaseNotesChanged)
 			{
 				node["version"].Replace(string.Concat(Version, "-*"));
-				System.IO.File.WriteAllText(project.FullPath, node.ToString(), Encoding.UTF8);
+				using (var fs = System.IO.File.OpenWrite(project.FullPath))
+				using (var sw = new StreamWriter(fs))
+				using (var jw = new JsonTextWriter(sw))
+				{
+					jw.IndentChar = '\t';
+					jw.Indentation = 1;
+					JsonSerializer serializer = new JsonSerializer();
+					serializer.Formatting = Formatting.Indented;
+					serializer.Serialize(jw, node);
+				}
 			}
 
 			return true;
