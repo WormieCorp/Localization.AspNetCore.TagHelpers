@@ -54,12 +54,16 @@ public class BuildPaths
 			"CHANGELOG.md"
 		};
 
-		var buildProjects = new DirectoryPath[]
+		var buildProjects = new List<DirectoryPath>
 		{
 			context.Directory("./src/" + BuildParameters.MainRepoName),
-			context.Directory("./src/Localization.Demo"),
 			context.Directory("./test/" + BuildParameters.MainRepoName + ".Tests")
 		};
+		
+		if (context.BuildSystem().IsLocalBuild)
+		{
+			buildProjects.Add(context.Directory("./src/Localization.Demo");
+		}
 
 		var artifactSourcePaths = locAssemblyPaths.Concat(testingAssemblyPaths.Concat(repoFilPaths)).ToArray();
 
