@@ -15,6 +15,7 @@ issue-labels-include:
 - Feature
 - Bug
 - Improvement
+- Documentation
 issue-labels-exclude:
 - Build
 - Refactor
