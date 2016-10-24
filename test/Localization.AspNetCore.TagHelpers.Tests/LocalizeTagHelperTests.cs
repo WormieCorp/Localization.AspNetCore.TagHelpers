@@ -1,155 +1,167 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.Extensions.Localization;
-using Moq;
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+//-----------------------------------------------------------------------
+// <copyright file="LocalizeTagHelperTests.cs">
+//   Copyright (c) Kim Nordmo. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Kim Nordmo</author>
+//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
-	public class LocalizeTagHelperTests
-	{
-		public static IEnumerable LocalizeTestData
-		{
-			get
-			{
-				var encoder = HtmlEncoder.Default;
+  using System;
+  using System.Collections;
+  using System.Text.Encodings.Web;
+  using System.Threading.Tasks;
+  using Microsoft.AspNetCore.Hosting;
+  using Microsoft.AspNetCore.Mvc.Localization;
+  using Microsoft.Extensions.Localization;
+  using Moq;
+  using NUnit.Framework;
 
-				yield return new TestCaseData("localize", "This will be localized", "This is the localized text", true, false)
-					.Returns("This is the localized text");
-				var text = "This the the <small>localized</small> text with <strong>html</strong>";
-				yield return new TestCaseData("p", "This wi be localized", text, true, false)
-					.Returns(encoder.Encode(text));
-				yield return new TestCaseData("span", "This", text, true, true)
-					.Returns(text);
-				yield return new TestCaseData("div", "Localize", $"    {text}    ", false, false)
-					.Returns($"    {encoder.Encode(text)}    ");
-				yield return new TestCaseData("div", "Localize", $"    {text}    ", false, true)
-					.Returns($"    {text}    ");
-				yield return new TestCaseData("div", "     Localize    ", $"{text}", true, false)
-					.Returns(encoder.Encode(text));
-				yield return new TestCaseData("div", "    Localize    ", $"{text}", true, true)
-					.Returns(text);
-			}
-		}
+  public class LocalizeTagHelperTests
+  {
+    public static IEnumerable LocalizeTestData
+    {
+      get
+      {
+        var encoder = HtmlEncoder.Default;
 
-		[Test]
-		public void Constructor_ThrowsArgumentNullExceptionOnHostingEnvironmentIsNull()
-		{
-			Assert.That(() => new LocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null), Throws.ArgumentNullException);
-		}
+        yield return new TestCaseData("localize", "This will be localized", "This is the localized text", true, false)
+          .Returns("This is the localized text");
+        var text = "This the the <small>localized</small> text with <strong>html</strong>";
+        yield return new TestCaseData("p", "This wi be localized", text, true, false)
+          .Returns(encoder.Encode(text));
+        yield return new TestCaseData("span", "This", text, true, true)
+          .Returns(text);
+        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, false)
+          .Returns($"    {encoder.Encode(text)}    ");
+        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, true)
+          .Returns($"    {text}    ");
+        yield return new TestCaseData("div", "     Localize    ", $"{text}", true, false)
+          .Returns(encoder.Encode(text));
+        yield return new TestCaseData("div", "    Localize    ", $"{text}", true, true)
+          .Returns(text);
+      }
+    }
 
-		[Test]
-		public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
-		{
-			Assert.That(() => new LocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object), Throws.ArgumentNullException);
-		}
+    [Test]
+    public void Constructor_ThrowsArgumentNullExceptionOnHostingEnvironmentIsNull()
+    {
+      Assert.That(() => new LocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null), Throws.ArgumentNullException);
+    }
 
-		[TestCase("MyCustomName")]
-		[TestCase("MyBase.Name")]
-		public void Init_CreatesHtmlLocalizerWithUserSpecifiedName(string name)
-		{
-			var factory = TestHelper.CreateFactoryMock(true);
-			var helper = CreateTagHelper(factory.Object);
-			var context = TestHelper.CreateTagContext();
-			helper.Name = name;
+    [Test]
+    public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
+    {
+      Assert.That(() => new LocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object), Throws.ArgumentNullException);
+    }
 
-			helper.Init(context);
+    [TestCase("MyCustomName")]
+    [TestCase("MyBase.Name")]
+    public void Init_CreatesHtmlLocalizerWithUserSpecifiedName(string name)
+    {
+      var factory = TestHelper.CreateFactoryMock(true);
+      var helper = CreateTagHelper(factory.Object);
+      var context = TestHelper.CreateTagContext();
+      helper.Name = name;
 
-			factory.Verify(x => x.Create(name, TestHelper.ApplicationName), Times.Once());
-		}
+      helper.Init(context);
 
-		[TestCase(typeof(GenericLocalizeTagHelper))]
-		[TestCase(typeof(TestHelper))]
-		[TestCase(typeof(ParamTagHelperTests))]
-		public void Init_CreatesHtmlLocalizerWithUserSpecifiedType(Type type)
-		{
-			var factory = TestHelper.CreateFactoryMock(true);
-			var helper = CreateTagHelper(factory.Object);
-			var context = TestHelper.CreateTagContext();
-			helper.Type = type;
+      factory.Verify(x => x.Create(name, TestHelper.ApplicationName), Times.Once());
+    }
 
-			helper.Init(context);
+    [TestCase(typeof(GenericLocalizeTagHelper))]
+    [TestCase(typeof(TestHelper))]
+    [TestCase(typeof(ParamTagHelperTests))]
+    public void Init_CreatesHtmlLocalizerWithUserSpecifiedType(Type type)
+    {
+      var factory = TestHelper.CreateFactoryMock(true);
+      var helper = CreateTagHelper(factory.Object);
+      var context = TestHelper.CreateTagContext();
+      helper.Type = type;
 
-			factory.Verify(x => x.Create(type), Times.Once());
-		}
+      helper.Init(context);
 
-		[Test]
-		public void Init_SkipsCreatingParameterStackIfInheritedClassSetsSupportsParametersToFalse()
-		{
-			var tagHelper = TestHelper.CreateTagHelper<LocalizeNoParametersTagHelper>(null);
-			var tagContext = TestHelper.CreateTagContext();
+      factory.Verify(x => x.Create(type), Times.Once());
+    }
 
-			tagHelper.Init(tagContext);
+    [Test]
+    public void Init_SkipsCreatingParameterStackIfInheritedClassSetsSupportsParametersToFalse()
+    {
+      var tagHelper = TestHelper.CreateTagHelper<LocalizeNoParametersTagHelper>(null);
+      var tagContext = TestHelper.CreateTagContext();
 
-			Assert.That(tagContext.Items, !Contains.Key(typeof(GenericLocalizeTagHelper)));
-		}
+      tagHelper.Init(tagContext);
 
-		[TestCaseSource(nameof(LocalizeTestData))]
-		public async Task<string> ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml)
-		{
-			var textToLocalize = trim ? text.Trim() : text;
-			var localizer = TestHelper.CreateLocalizerMock(false);
-			SetupLocalizer(localizer, textToLocalize, expectedText, isHtml);
-			var factory = TestHelper.CreateFactoryMock(localizer.Object);
-			var helper = CreateTagHelper(factory.Object);
-			helper.TrimWhitespace = trim;
-			helper.IsHtml = isHtml;
+      Assert.That(tagContext.Items, !Contains.Key(typeof(GenericLocalizeTagHelper)));
+    }
 
-			var output = await TestHelper.GenerateHtmlAsync(helper, tagName, text);
+    [TestCaseSource(nameof(LocalizeTestData))]
+    public async Task<string> ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml)
+    {
+      var textToLocalize = trim ? text.Trim() : text;
+      var localizer = TestHelper.CreateLocalizerMock(false);
+      SetupLocalizer(localizer, textToLocalize, expectedText, isHtml);
+      var factory = TestHelper.CreateFactoryMock(localizer.Object);
+      var helper = CreateTagHelper(factory.Object);
+      helper.TrimWhitespace = trim;
+      helper.IsHtml = isHtml;
 
-			if (isHtml)
-				localizer.Verify(x => x[textToLocalize], Times.Once);
-			else
-				localizer.Verify(x => x.GetString(textToLocalize), Times.Once);
+      var output = await TestHelper.GenerateHtmlAsync(helper, tagName, text);
 
-			return output;
-		}
+      if (isHtml)
+      {
+        localizer.Verify(x => x[textToLocalize], Times.Once);
+      }
+      else
+      {
+        localizer.Verify(x => x.GetString(textToLocalize), Times.Once);
+      }
 
-		[Test]
-		public async Task ProcessAsync_RemovesTagName()
-		{
-			var tagHelper = CreateTagHelper();
-			var expected = "This should be the only content";
+      return output;
+    }
 
-			var output = await TestHelper.GenerateHtmlAsync(tagHelper, "localize", expected);
+    [Test]
+    public async Task ProcessAsync_RemovesTagName()
+    {
+      var tagHelper = CreateTagHelper();
+      var expected = "This should be the only content";
 
-			Assert.That(output, Is.EqualTo(expected));
-		}
+      var output = await TestHelper.GenerateHtmlAsync(tagHelper, "localize", expected);
 
-		protected LocalizeTagHelper CreateTagHelper()
-		{
-			return TestHelper.CreateTagHelper<LocalizeTagHelper>(null);
-		}
+      Assert.That(output, Is.EqualTo(expected));
+    }
 
-		protected LocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
-		{
-			return TestHelper.CreateTagHelper<LocalizeTagHelper>(factory);
-		}
+    protected LocalizeTagHelper CreateTagHelper()
+    {
+      return TestHelper.CreateTagHelper<LocalizeTagHelper>(null);
+    }
 
-		private void SetupLocalizer(Mock<IHtmlLocalizer> localizer, string textToLocalize, string expectedText, bool isHtml)
-		{
-			if (isHtml)
-			{
-				localizer.Setup(x => x[textToLocalize]).Returns<string>(s => new LocalizedHtmlString(s, expectedText, s == expectedText));
-			}
-			else
-			{
-				localizer.Setup(x => x.GetString(textToLocalize)).Returns<string>(s => new LocalizedString(s, expectedText, s == expectedText));
-			}
-		}
+    protected LocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
+    {
+      return TestHelper.CreateTagHelper<LocalizeTagHelper>(factory);
+    }
 
-		private class LocalizeNoParametersTagHelper : LocalizeTagHelper
-		{
-			public LocalizeNoParametersTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
-				: base(localizerFactory, hostingEnvironment)
-			{
-			}
+    private void SetupLocalizer(Mock<IHtmlLocalizer> localizer, string textToLocalize, string expectedText, bool isHtml)
+    {
+      if (isHtml)
+      {
+        localizer.Setup(x => x[textToLocalize]).Returns<string>(s => new LocalizedHtmlString(s, expectedText, s == expectedText));
+      }
+      else
+      {
+        localizer.Setup(x => x.GetString(textToLocalize)).Returns<string>(s => new LocalizedString(s, expectedText, s == expectedText));
+      }
+    }
 
-			protected override bool SupportsParameters => false;
-		}
-	}
+    private class LocalizeNoParametersTagHelper : LocalizeTagHelper
+    {
+      public LocalizeNoParametersTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
+        : base(localizerFactory, hostingEnvironment)
+      {
+      }
+
+      protected override bool SupportsParameters => false;
+    }
+  }
 }

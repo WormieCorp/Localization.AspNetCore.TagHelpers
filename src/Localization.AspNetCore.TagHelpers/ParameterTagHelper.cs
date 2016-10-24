@@ -1,50 +1,60 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Razor.TagHelpers;
+//-----------------------------------------------------------------------
+// <copyright file="ParameterTagHelper.cs">
+//   Copyright (c) Kim Nordmo. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Kim Nordmo</author>
+//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers
 {
-	/// <summary>
-	///   Adds parameters to <see cref="GenericLocalizeTagHelper" /> and
-	///   <see cref="LocalizeTagHelper" />. Used through a <c>parameter</c> html tag.
-	/// </summary>
-	/// <seealso cref="Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
-	[HtmlTargetElement("parameter", TagStructure = TagStructure.NormalOrSelfClosing)]
-	public class ParameterTagHelper : TagHelper
-	{
-		/// <inheritdoc />
-		public override int Order
-		{
-			get
-			{
-				return 2;
-			}
-		}
+  using System.Collections.Generic;
+  using System.Threading.Tasks;
+  using Microsoft.AspNetCore.Razor.TagHelpers;
 
-		/// <summary>
-		///   This method adds parameters to the parent tag helper if they are a
-		///   <see cref="GenericLocalizeTagHelper" /> or a <see cref="LocalizeTagHelper" />.
-		/// </summary>
-		/// <inheritdoc />
-		public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
-		{
-			var content = await output.GetChildContentAsync(NullHtmlEncoder.Default);
-			if (output.IsContentModified)
-				content = output.Content;
+  /// <summary>
+  ///   Adds parameters to <see cref="GenericLocalizeTagHelper" /> and
+  ///   <see cref="LocalizeTagHelper" />. Used through a <c>parameter</c> html tag.
+  /// </summary>
+  /// <seealso cref="Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
+  [HtmlTargetElement("parameter", TagStructure = TagStructure.NormalOrSelfClosing)]
+  public class ParameterTagHelper : TagHelper
+  {
+    /// <inheritdoc />
+    public override int Order
+    {
+      get
+      {
+        return 2;
+      }
+    }
 
-			if (!context.Items.ContainsKey(typeof(GenericLocalizeTagHelper)))
-			{
-				output.Content = content;
-				return;
-			}
+    /// <summary>
+    ///   This method adds parameters to the parent tag helper if they are a
+    ///   <see cref="GenericLocalizeTagHelper" /> or a <see cref="LocalizeTagHelper" />.
+    /// </summary>
+    /// <inheritdoc />
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+      var content = await output.GetChildContentAsync(NullHtmlEncoder.Default);
+      if (output.IsContentModified)
+      {
+        content = output.Content;
+      }
 
-			var stack = (Stack<List<object>>)context.Items[typeof(GenericLocalizeTagHelper)];
+      if (!context.Items.ContainsKey(typeof(GenericLocalizeTagHelper)))
+      {
+        output.Content = content;
+        return;
+      }
 
-			var existingItems = stack.Peek();
-			existingItems.Add(content.GetContent(NullHtmlEncoder.Default));
+      var stack = (Stack<List<object>>)context.Items[typeof(GenericLocalizeTagHelper)];
 
-			output.SuppressOutput();
-			output.TagName = null;
-		}
-	}
+      var existingItems = stack.Peek();
+      existingItems.Add(content.GetContent(NullHtmlEncoder.Default));
+
+      output.SuppressOutput();
+      output.TagName = null;
+    }
+  }
 }

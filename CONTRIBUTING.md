@@ -41,11 +41,21 @@ What is generally not considered trivial:
 
 ## Code
 ### Code style
-Normal .NET coding guidelines apply.
-See the [Framework Design Guidelines](https://msdn.microsoft.com/en-us/library/ms229042%28v=vs.110%29.aspx) for more information.
-There are a few exceptions to these guidelines:
-* Private fields should be prefixed with a `_`
-* Indentation should be using tabs not spaces
+StyleCop .NET coding guidelines apply.
+With a few exceptions:
+* Constant Field Names may contain underscore
+* Do not use prefixes when calling instance fields/methods/properties/etc.
+  * That means no `this.` and `base.` unless absolutely necessary.
+* All new files must have the following File Header
+  ```
+  //-----------------------------------------------------------------------
+  // <copyright file="FILENAME.cs">
+  //   Copyright (c) Kim Nordmo. All rights reserved.
+  //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  // </copyright>
+  // <author>YOUR NAME</author>
+  //-----------------------------------------------------------------------
+  ```
 
 ### Dependencies
 The assembly `Localization.AspNetCore.TagHelpers` should have just the minimum of dependencies required

@@ -8,15 +8,15 @@
 @inject IOptions<RequestLocalizationOptions> LocOptions
 
 @{
-	var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-	var cultureItems = LocOptions.Value.SupportedUICultures
-		.Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
-		.ToList();
+  var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+  var cultureItems = LocOptions.Value.SupportedUICultures
+    .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+    .ToList();
 }
 
 <form class="navbar-form navbar-right" role="form" id="selectLanguage" asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@Context.Request.Path"
-	  method="post">
-	<div class="form-group">
-		<select name="culture" id="culture" class="form-control" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="@cultureItems"></select>
-	</div>
+      method="post">
+  <div class="form-group">
+    <select name="culture" id="culture" class="form-control" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="@cultureItems"></select>
+  </div>
 </form>
