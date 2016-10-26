@@ -214,13 +214,14 @@ namespace Localization.AspNetCore.TagHelpers
 
       var content = await GetContentAsync(context, output);
 
+      if (TrimWhitespace || TrimEachLine)
+      {
+        content = content?.Trim();
+      }
+
       if (NewLineHandling != NewLineHandling.None || TrimEachLine)
       {
         content = HandleNormalization(content, NewLineHandling, TrimEachLine);
-      }
-      else if (TrimWhitespace)
-      {
-        content = content.Trim();
       }
 
       var parameters = GetParameters(context);
@@ -368,6 +369,10 @@ namespace Localization.AspNetCore.TagHelpers
       if (string.IsNullOrEmpty(content))
       {
         return content;
+      }
+      if (trimEachLine)
+      {
+        content = content.Trim();
       }
 
       StringBuilder newContent = new StringBuilder();

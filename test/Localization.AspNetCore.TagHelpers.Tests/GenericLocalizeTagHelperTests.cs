@@ -29,25 +29,31 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       get
       {
         var text = "This is\r\nThe\nUnormalized Text\r\n";
-        yield return new TestCaseData(text, text, NewLineHandling.None, true);
+        yield return new TestCaseData(text, text.Trim(), NewLineHandling.None, true, false);
         var expectedText = text.Replace("\r\n", "\n").Replace("\n", Environment.NewLine);
-        yield return new TestCaseData(text, expectedText, NewLineHandling.Auto, true);
+        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Auto, true, false);
         expectedText = text.Replace("\n", "\r\n").Replace("\r\r", "\r");
-        yield return new TestCaseData(text, expectedText, NewLineHandling.Windows, true);
+        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Windows, true, false);
         expectedText = text.Replace("\r", "");
-        yield return new TestCaseData(text, expectedText, NewLineHandling.Unix, true);
+        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Unix, true, false);
 
         text = "  This\r\n   Will\r\nAlways\r\n    Trimmed \r\nDown   ";
         expectedText = "This\r\nWill\r\nAlways\r\nTrimmed\r\nDown";
-        yield return new TestCaseData(text, expectedText, NewLineHandling.Windows, true)
+        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Windows, true, false)
         {
           TestName = "ProcessAsync_CanTrimWhitespaceOnEachLine"
         };
 
         yield return new TestCaseData("This will transform\nNew Lines   \r\n   But not trim\n  whitespace   ",
-          "This will transform\nNew Lines   \n   But not trim\n  whitespace   ", NewLineHandling.Unix, false)
+          "This will transform\nNew Lines   \n   But not trim\n  whitespace   ", NewLineHandling.Unix, false, false)
         {
           TestName = "ProcessAsync_CanReplaceNewLinesWithoutTrimming"
+        };
+
+        yield return new TestCaseData("\r\n   \r\n   This should trim everything before and after \r\n \n \r\n",
+          "This should trim everything before and after", NewLineHandling.Auto, false, true)
+        {
+          TestName = "ProcessAsync_TrimsBeforeAndAfterWhenTrimWhitespaceIsTrueAndTrimEachLineIsFalse"
         };
       }
     }
@@ -211,13 +217,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     }
 
     [TestCaseSource(nameof(LocalizeNewLinesTestData))]
-    public async Task ProcessAsync_CanHandleNewLineNormalization(string text, string expectedText, NewLineHandling handling, bool trimEachLine)
+    public async Task ProcessAsync_CanHandleNewLineNormalization(string text, string expectedText, NewLineHandling handling, bool trimEachLine, bool trimWhitespace)
     {
       var localizer = TestHelper.CreateLocalizerMock(false);
-      SetupLocalizer(localizer, text, expectedText, false);
+      SetupLocalizer(localizer, expectedText, expectedText, false);
       var factory = TestHelper.CreateFactoryMock(localizer.Object);
       var helper = CreateTagHelper(factory.Object);
-      helper.TrimWhitespace = false;
+      helper.TrimWhitespace = trimWhitespace;
       helper.IsHtml = false;
       helper.NewLineHandling = handling;
       helper.TrimEachLine = trimEachLine;
