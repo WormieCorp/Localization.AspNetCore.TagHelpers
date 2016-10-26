@@ -15,6 +15,7 @@ public class BuildParameters
   public bool IsRunningOnUnix { get; private set; }
   public bool IsRunningOnWindows { get; private set; }
   public bool IsRunningOnAppVeyor { get; private set; }
+  public bool IsRunningOnTravis { get; private set; }
   public bool IsPullRequest { get; private set; }
   public bool IsMainRepo { get; private set; }
   public bool IsMainBranch { get; private set; }
@@ -80,6 +81,7 @@ public class BuildParameters
       IsRunningOnUnix = context.IsRunningOnUnix(),
       IsRunningOnWindows = context.IsRunningOnWindows(),
       IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor,
+      IsRunningOnTravis = buildSystem.TravisCI.IsRunningOnTravisCI,
       IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest,
       IsMainRepo = StringComparer.OrdinalIgnoreCase.Equals(MainRepo, buildSystem.AppVeyor.Environment.Repository.Name),
       IsMainBranch = StringComparer.OrdinalIgnoreCase.Equals(MainBranch, buildSystem.AppVeyor.Environment.Repository.Branch),
