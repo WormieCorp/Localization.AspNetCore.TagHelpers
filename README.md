@@ -20,7 +20,7 @@ To use these tag helpers add the following to your `_ViewImports.cshtml` file
 #### The package currently supports three tag helpers with the following usage cases:
 Usage with the tag name `<localize>Text to localize</localize>`  
 Usage with a html attribute `<span localize>Text to localize</localize>`  
-Ability to localize html attribute using the following: `<span attr-localize-title="I'm the title to localize">This won't</span>`
+Ability to localize html attribute using the following: `<span localize-title="I'm the title to localize">This won't</span>`
 
 See the full demo project based on the default asp.net core template for possible usages.
 
