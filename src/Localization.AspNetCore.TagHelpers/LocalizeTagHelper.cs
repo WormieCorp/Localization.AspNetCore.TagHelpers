@@ -106,6 +106,21 @@ namespace Localization.AspNetCore.TagHelpers
     }
 
     /// <inheritdoc />
+    [HtmlAttributeName("newline")]
+    public override NewLineHandling NewLineHandling
+    {
+      get
+      {
+        return base.NewLineHandling;
+      }
+
+      set
+      {
+        base.NewLineHandling = value;
+      }
+    }
+
+    /// <inheritdoc />
     [HtmlAttributeName("trim")]
     public override bool TrimWhitespace
     {

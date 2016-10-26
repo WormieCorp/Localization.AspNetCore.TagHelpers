@@ -23,6 +23,21 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
   public class GenericLocalizeTagHelperTests
   {
+    public static IEnumerable LocalizeNewLinesTestData
+    {
+      get
+      {
+        var text = "This is\r\nThe\nUnormalized Text\r\n";
+        yield return new TestCaseData(text, text, NewLineHandling.None);
+        var expectedText = text.Replace("\n", Environment.NewLine).Replace("\r\r", "\r");
+        yield return new TestCaseData(text, expectedText, NewLineHandling.Auto);
+        expectedText = text.Replace("\n", "\r\n").Replace("\r\r", "\r");
+        yield return new TestCaseData(text, expectedText, NewLineHandling.Windows);
+        expectedText = text.Replace("\r", "");
+        yield return new TestCaseData(text, expectedText, NewLineHandling.Unix);
+      }
+    }
+
     public static IEnumerable LocalizeTestData
     {
       get
@@ -179,6 +194,22 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       tagHelper.Init(tagContext);
 
       Assert.That(tagContext.Items, !Contains.Key(typeof(GenericLocalizeTagHelper)));
+    }
+
+    [TestCaseSource(nameof(LocalizeNewLinesTestData))]
+    public async Task ProcessAsync_CanHandleNewLineNormalization(string text, string expectedText, NewLineHandling handling)
+    {
+      var localizer = TestHelper.CreateLocalizerMock(false);
+      SetupLocalizer(localizer, text, expectedText, false);
+      var factory = TestHelper.CreateFactoryMock(localizer.Object);
+      var helper = CreateTagHelper(factory.Object);
+      helper.TrimWhitespace = false;
+      helper.IsHtml = false;
+      helper.NewLineHandling = handling;
+
+      await TestHelper.GenerateHtmlAsync(helper, "span", text);
+
+      localizer.Verify(x => x.GetString(expectedText), Times.Once);
     }
 
     [TestCaseSource(nameof(LocalizeTestData))]

@@ -42,9 +42,9 @@ namespace Localization.AspNetCore.TagHelpers
   {
     private const string ASP_LOCALIZE_HTML = "localize-html";
     private const string ASP_LOCALIZE_NAME = "localize";
+    private const string ASP_LOCALIZE_NEWLINE = "localize-newline";
     private const string ASP_LOCALIZE_TRIM = "localize-trim";
     private const string ASP_LOCALIZE_TYPE = "localize-type";
-
     private readonly string applicationName;
     private readonly IHtmlLocalizerFactory localizerFactory;
     private IHtmlLocalizer localizer;
@@ -102,6 +102,13 @@ namespace Localization.AspNetCore.TagHelpers
     /// </example>
     [HtmlAttributeName(ASP_LOCALIZE_NAME)]
     public virtual string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    ///   Gets or sets the new line handing method.
+    /// </summary>
+    /// <remarks>Defaults to <see cref="NewLineHandling.Auto" /></remarks>
+    [HtmlAttributeName(ASP_LOCALIZE_NEWLINE)]
+    public virtual NewLineHandling NewLineHandling { get; set; } = NewLineHandling.Auto;
 
     /// <summary>
     ///   Gets or sets a value indicating whether beginning and ending whitespace.
@@ -180,6 +187,12 @@ namespace Localization.AspNetCore.TagHelpers
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
       var content = await GetContentAsync(context, output);
+
+      if (NewLineHandling != NewLineHandling.None)
+      {
+        content = HandleNewLine(content, NewLineHandling);
+      }
+
       if (TrimWhitespace)
       {
         content = content.Trim();
@@ -270,6 +283,42 @@ namespace Localization.AspNetCore.TagHelpers
     protected virtual void SetHtmlContent(TagHelperContext context, TagHelperContent outputContent, IHtmlContent htmlContent)
     {
       outputContent.SetHtmlContent(htmlContent);
+    }
+
+    private string HandleNewLine(string content, NewLineHandling newLineHandling)
+    {
+      if (string.IsNullOrWhiteSpace(content))
+        return content;
+
+      int index;
+      while ((index = content.IndexOf('\r')) >= 0)
+      {
+        content = content.Remove(index, 1);
+      }
+
+      var contentArray = content.Split('\n');
+      string separator;
+
+      switch (newLineHandling)
+      {
+        case NewLineHandling.Auto:
+          separator = Environment.NewLine;
+          break;
+
+        case NewLineHandling.Windows:
+          separator = "\r\n";
+          break;
+
+        case NewLineHandling.Unix:
+          separator = "\n";
+          break;
+
+        default:
+          // This should never be true
+          throw new InvalidOperationException($"The new line handling with value: '{newLineHandling}' is not supported.");
+      }
+
+      return string.Join(separator, contentArray);
     }
   }
 }

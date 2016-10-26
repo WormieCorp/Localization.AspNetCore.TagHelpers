@@ -11,4 +11,4 @@
   "S1144:Unused private types or members should be removed",
   Justification = "This is necessary since base class needs these parameters",
   Scope = "member",
-  Target = "~M:Localization.AspNetCore.TagHelpers.Tests.LocalizeTagHelperTests.LocalizeNoParametersTagHelper.#ctor(Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizerFactory,Microsoft.AspNetCore.Hosting.IHostingEnvironment)")]
+  Target = "~M:Localization.AspNetCore.TagHelpers.Tests.GenericLocalizeTagHelperTests.NoParametersSupported.#ctor(Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizerFactory,Microsoft.AspNetCore.Hosting.IHostingEnvironment)")]
