@@ -34,7 +34,7 @@ public class BuildVersion
 
         version = context.EnvironmentVariable("GitVersion_MajorMinorPatch");
         semVersion = context.EnvironmentVariable("GitVersion_LegacySemVerPadded");
-        milestone = string.Concat("v", version);
+        milestone = version;
       }
 
       GitVersion assertedVersions = context.GitVersion(new GitVersionSettings
@@ -44,7 +44,7 @@ public class BuildVersion
 
       version = assertedVersions.MajorMinorPatch;
       semVersion = assertedVersions.LegacySemVerPadded;
-      milestone = string.Concat("v", version);
+      milestone = version;
 
       context.Information("Calculated Semantic Version: {0}", semVersion);
     }
@@ -71,9 +71,10 @@ public class BuildVersion
 
   public static string ReadProjectJsonVersion(ICakeContext context)
   {
-    var projects = context.GetFiles("./**/project.json");
+    var projects = context.GetFiles("./src/*/project.json");
     foreach(var project in projects)
     {
+      context.Information("Patching project at path: '" + project + "'");
       var content = System.IO.File.ReadAllText(project.FullPath, Encoding.UTF8);
       var node = JObject.Parse(content);
       if(node["version"] != null)
@@ -98,7 +99,7 @@ public class BuildVersion
       if (releaseNotes != null)
       {
         var oldReleaseNotes = releaseNotes.ToString();
-        var newReleaseNotes = string.Join("\r\n", releaseNotesArray);
+        var newReleaseNotes = string.Join("\r\n", RemoveMarkdown(releaseNotesArray));
         if (newReleaseNotes != oldReleaseNotes)
         {
           releaseNotes.Replace(newReleaseNotes);
@@ -129,5 +130,51 @@ public class BuildVersion
       return true;
     };
     return false;
+  }
+
+  private static string[] RemoveMarkdown(string[] releaseNotes)
+  {
+    var newNotes = new List<string>();
+
+    try
+    {
+      for (int i = 0; i < releaseNotes.Length; i++)
+      {
+        var note = releaseNotes[i];
+        if (note.StartsWith("__") && note.EndsWith("__"))
+        {
+          if (i > 1)
+          {
+            newNotes.Add("");
+          }
+          newNotes.Add("");
+          newNotes.Add(note.Trim('_').Trim());
+          newNotes.Add("");
+        }
+        else if (note.StartsWith("-"))
+        {
+          int index = note.IndexOf(')');
+          if (index > 0)
+          {
+            string issue = note.Substring(index + 1).Trim();
+            newNotes.Add(note.Substring(0, 2) + issue);
+          }
+          else
+          {
+            newNotes.Add(note);
+          }
+        }
+        else if (note.IndexOf("part of this release") > 0)
+        {
+          continue;
+        }
+        else
+        {
+          newNotes.Add(note);
+        }
+      }
+    } catch {}
+
+    return newNotes.ToArray();
   }
 }

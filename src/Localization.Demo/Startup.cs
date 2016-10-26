@@ -9,6 +9,7 @@
 namespace Localization.Demo
 {
   using System.Globalization;
+  using AspNetCore.TagHelpers;
   using Microsoft.AspNetCore.Builder;
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Localization;
@@ -83,6 +84,13 @@ namespace Localization.Demo
 
         options.SupportedCultures = supportedCultures;
         options.SupportedUICultures = supportedCultures;
+      });
+
+      // The following configuration is optional, this just sets the default values
+      services.Configure<LocalizeTagHelperOptions>(options =>
+      {
+        options.NewLineHandling = NewLineHandling.Auto;
+        options.TrimWhitespace = true;
       });
     }
   }

@@ -21,6 +21,7 @@ namespace Localization.AspNetCore.TagHelpers
   using Microsoft.AspNetCore.Mvc.ViewFeatures;
   using Microsoft.AspNetCore.Razor.TagHelpers;
   using Microsoft.Extensions.Localization;
+  using Microsoft.Extensions.Options;
 
   /// <summary>
   ///   Adds support to localize the inner text for a tag, when one of the following attributes have
@@ -36,7 +37,7 @@ namespace Localization.AspNetCore.TagHelpers
   /// ]]>
   ///   </code>
   /// </example>
-  [HtmlTargetElement("localize")]
+  [HtmlTargetElement(Attributes = "localize")]
   public class GenericLocalizeTagHelper : TagHelper
   {
     private const string LOCALIZE_HTML = "html";
@@ -56,13 +57,25 @@ namespace Localization.AspNetCore.TagHelpers
     ///   The localizer factory to create a <see cref="IHtmlLocalizer" /> from.
     /// </param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
-    public GenericLocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
+    /// <param name="options">The default options unless overridden when calling the tag helper.</param>
+    public GenericLocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
     {
       Throws.NotNull(localizerFactory, nameof(localizerFactory));
       Throws.NotNull(hostingEnvironment, nameof(hostingEnvironment));
 
       this.localizerFactory = localizerFactory;
       this.applicationName = hostingEnvironment.ApplicationName;
+
+      if (options != null)
+      {
+        NewLineHandling = options.Value.NewLineHandling;
+        TrimWhitespace = options.Value.TrimWhitespace;
+      }
+      else
+      {
+        NewLineHandling = NewLineHandling.Auto;
+        TrimWhitespace = true;
+      }
     }
 
     /// <summary>
@@ -106,9 +119,8 @@ namespace Localization.AspNetCore.TagHelpers
     /// <summary>
     ///   Gets or sets the new line handing method.
     /// </summary>
-    /// <remarks>Defaults to <see cref="NewLineHandling.Auto" /></remarks>
     [HtmlAttributeName(LOCALIZE_NEWLINE)]
-    public virtual NewLineHandling NewLineHandling { get; set; } = NewLineHandling.Auto;
+    public virtual NewLineHandling NewLineHandling { get; set; }
 
     /// <summary>
     ///   Gets or sets a value indicating whether to trim whitespace on each line. <note type="note">
@@ -123,7 +135,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// </summary>
     /// <value><c>true</c> to trim beginning and ending whitespace; otherwise, <c>false</c>.</value>
     [HtmlAttributeName(LOCALIZE_TRIM)]
-    public virtual bool TrimWhitespace { get; set; } = true;
+    public virtual bool TrimWhitespace { get; set; }
 
     /// <summary>
     ///   Gets or sets the type to use when looking up the resource file.

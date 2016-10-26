@@ -7,3 +7,6 @@ indent_size = 2
 
 [*.{sln,xproj}]
 end_of_line = crlf
+
+[*.md]
+trim_trailing_whitespace = false

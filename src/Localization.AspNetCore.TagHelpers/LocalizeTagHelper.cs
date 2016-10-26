@@ -12,6 +12,7 @@ namespace Localization.AspNetCore.TagHelpers
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Mvc.Localization;
   using Microsoft.AspNetCore.Razor.TagHelpers;
+  using Microsoft.Extensions.Options;
 
   /// <summary>
   ///   Adds support to localize the everything with the <c>localize</c> tag.
@@ -39,8 +40,9 @@ namespace Localization.AspNetCore.TagHelpers
     ///   The localizer factory to create a <see cref="IHtmlLocalizer" /> from.
     /// </param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
-    public LocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
-      : base(localizerFactory, hostingEnvironment)
+    /// <param name="options">The default options unless overridden when calling the tag helper.</param>
+    public LocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+      : base(localizerFactory, hostingEnvironment, options)
     {
     }
 

@@ -103,13 +103,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Test]
     public void Constructor_ThrowsArgumentNullExceptionOnHostingEnvironmentIsNull()
     {
-      Assert.That(() => new GenericLocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null), Throws.ArgumentNullException);
+      Assert.That(() => new GenericLocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null, null), Throws.ArgumentNullException);
     }
 
     [Test]
     public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
     {
-      Assert.That(() => new GenericLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object), Throws.ArgumentNullException);
+      Assert.That(() => new GenericLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null), Throws.ArgumentNullException);
     }
 
     [Test]
@@ -160,7 +160,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var viewContext = new ViewContext();
       viewContext.ExecutingFilePath = executionPath;
       viewContext.View = view.Object;
-      var tagHelper = new GenericLocalizeTagHelper(factoryMock.Object, hostingEnvironment.Object);
+      var tagHelper = new GenericLocalizeTagHelper(factoryMock.Object, hostingEnvironment.Object, null);
       tagHelper.ViewContext = viewContext;
       var context = TestHelper.CreateTagContext();
 
@@ -319,7 +319,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     private class NoParametersSupported : GenericLocalizeTagHelper
     {
       public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
-        : base(localizerFactory, hostingEnvironment)
+        : base(localizerFactory, hostingEnvironment, null)
       {
       }
 

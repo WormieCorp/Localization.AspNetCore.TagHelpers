@@ -46,6 +46,7 @@ Param(
   [string]$Configuration = "Release",
   [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
   [string]$Verbosity = "Verbose",
+  [string]$NugetPath = $null,
   [switch]$Experimental,
   [Alias("DryRun","Noop")]
   [switch]$WhatIf,
@@ -124,8 +125,12 @@ if (!(Test-Path $PACKAGES_CONFIG)) {
   }
 }
 
+if ($NugetPath -and (Test-Path $NugetPath)) {
+  Write-Verbose -Message "Using specified NuGet"
+  $NUGET_EXE = $NugetPath
+}
 # Try find NuGet.exe in path if not exists
-if (!(Test-Path $NUGET_EXE)) {
+elseif (!(Test-Path $NUGET_EXE)) {
   Write-Verbose -Message "Trying to find nuget.exe in PATH..."
   $existingPaths = $Env:Path -Split ';' | Where-Object { (![string]::IsNullOrEmpty($_)) -and (Test-Path $_) }
   $NUGET_EXE_IN_PATH = Get-ChildItem -Path $existingPaths -Filter "nuget.exe" | Select -First 1

@@ -75,8 +75,12 @@ Task("Restore-NPM-Packages")
   .WithCriteria(() => !HasEnvironmentVariable("WERCKER"))
   .Does(() =>
   {
-    Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
-  });
+    //Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
+  })
+  .OnError(exception =>
+{
+  Warning("Unable to restore NPM packages, but continuing with the rest of the tasks");
+});
 
 Task("Build")
   .IsDependentOn("Patch-Project-Json")
@@ -126,7 +130,11 @@ Task("Copy-Files")
     NoBuild = true,
     Verbose = false
   });
-  CopyFileToDirectory("./artifacts/CHANGELOG.md", parameters.Paths.Directories.ArtifactsBinNet451);
+
+  if (FileExists("./artifacts/CHANGELOG.md"))
+  {
+    CopyFileToDirectory("./artifacts/CHANGELOG.md", parameters.Paths.Directories.ArtifactsBinNet451);
+  }
 });
 
 Task("Zip-Files")
@@ -313,7 +321,7 @@ Task("Package")
   .IsDependentOn("Create-NuGet-Packages");
 
 Task("Default")
-  .IsDependentOn("Package");
+  .IsDependentOn("Patch-Project-Json");
 
 Task("AppVeyor")
   .IsDependentOn("Publish-MyGet")
