@@ -118,8 +118,8 @@ public class BuildVersion
         using (var sw = new StreamWriter(fs))
         using (var jw = new JsonTextWriter(sw))
         {
-          jw.IndentChar = '\t';
-          jw.Indentation = 1;
+          jw.IndentChar = ' ';
+          jw.Indentation = 2;
           JsonSerializer serializer = new JsonSerializer();
           serializer.Formatting = Formatting.Indented;
           serializer.Serialize(jw, node);
