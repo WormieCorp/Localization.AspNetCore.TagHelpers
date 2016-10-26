@@ -71,7 +71,7 @@ Task("Restore-NuGet-Packages")
 
 Task("Restore-NPM-Packages")
   .IsDependentOn("Clean")
-  .WithCriteria(() => parameters.IsLocalBuild || parameters.IsRunningOnAppVeyor || parameters.IsRunningOnTravis)
+  .WithCriteria(() => parameters.IsLocalBuild || parameters.IsRunningOnTravis)
   .Does(() =>
   {
     Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
