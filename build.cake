@@ -38,7 +38,7 @@ Task("Patch-Project-Json")
   .IsDependentOn("Export-Release-Notes")
   .Does(() =>
   {
-    var projects = GetFiles("./**/project.json");
+    var projects = GetFiles("./*/*/project.json");
     string[] releaseNotes;
     if (!parameters.ShouldPublish)
     {
@@ -75,7 +75,7 @@ Task("Restore-NPM-Packages")
   .WithCriteria(() => !HasEnvironmentVariable("WERCKER"))
   .Does(() =>
   {
-    //Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
+    Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
   })
   .OnError(exception =>
 {
@@ -321,7 +321,7 @@ Task("Package")
   .IsDependentOn("Create-NuGet-Packages");
 
 Task("Default")
-  .IsDependentOn("Patch-Project-Json");
+  .IsDependentOn("Package");
 
 Task("AppVeyor")
   .IsDependentOn("Publish-MyGet")

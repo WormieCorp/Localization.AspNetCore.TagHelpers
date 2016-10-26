@@ -84,7 +84,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
         factory = CreateFactoryMock(true).Object;
       }
 
-      var instance = (T)Activator.CreateInstance(typeof(T), factory, hostingEnvironmentMock.Object);
+      var instance = (T)Activator.CreateInstance(typeof(T), factory, hostingEnvironmentMock.Object, null);
       instance.ViewContext = DefaultViewContext;
       instance.NewLineHandling = NewLineHandling.None;
 

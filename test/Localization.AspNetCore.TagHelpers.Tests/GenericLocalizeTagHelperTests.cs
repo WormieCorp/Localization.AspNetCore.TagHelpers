@@ -18,6 +18,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
   using Microsoft.AspNetCore.Mvc.Rendering;
   using Microsoft.AspNetCore.Mvc.ViewEngines;
   using Microsoft.Extensions.Localization;
+  using Microsoft.Extensions.Options;
   using Moq;
   using NUnit.Framework;
 
@@ -318,8 +319,8 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     private class NoParametersSupported : GenericLocalizeTagHelper
     {
-      public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
-        : base(localizerFactory, hostingEnvironment, null)
+      public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+        : base(localizerFactory, hostingEnvironment, options)
       {
       }
 

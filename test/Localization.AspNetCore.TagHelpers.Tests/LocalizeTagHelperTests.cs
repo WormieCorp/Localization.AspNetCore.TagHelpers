@@ -15,6 +15,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Mvc.Localization;
   using Microsoft.Extensions.Localization;
+  using Microsoft.Extensions.Options;
   using Moq;
   using NUnit.Framework;
 
@@ -156,8 +157,8 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     private class LocalizeNoParametersTagHelper : LocalizeTagHelper
     {
-      public LocalizeNoParametersTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
-        : base(localizerFactory, hostingEnvironment, null)
+      public LocalizeNoParametersTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+        : base(localizerFactory, hostingEnvironment, options)
       {
       }
 
