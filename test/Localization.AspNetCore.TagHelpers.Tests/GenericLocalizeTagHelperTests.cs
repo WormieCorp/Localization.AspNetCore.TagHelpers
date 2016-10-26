@@ -29,7 +29,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       {
         var text = "This is\r\nThe\nUnormalized Text\r\n";
         yield return new TestCaseData(text, text, NewLineHandling.None, true);
-        var expectedText = text.Replace("\n", Environment.NewLine).Replace("\r\r", "\r");
+        var expectedText = text.Replace("\r\n", "\n").Replace("\n", Environment.NewLine);
         yield return new TestCaseData(text, expectedText, NewLineHandling.Auto, true);
         expectedText = text.Replace("\n", "\r\n").Replace("\r\r", "\r");
         yield return new TestCaseData(text, expectedText, NewLineHandling.Windows, true);
