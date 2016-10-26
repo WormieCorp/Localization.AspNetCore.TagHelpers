@@ -126,6 +126,7 @@ Task("Copy-Files")
     NoBuild = true,
     Verbose = false
   });
+  CopyFileToDirectory("./artifacts/CHANGELOG.md", parameters.Paths.Directories.ArtifactsBinNet451);
 });
 
 Task("Zip-Files")
