@@ -54,7 +54,8 @@ public static class UnitTesting
         {
           ReturnTargetCodeOffset = 0,
           MergeOutput = true,
-          OldStyle = true
+          OldStyle = true,
+          SkipAutoProps = true
         }
         .WithFilter("+[*]* -[*Tests]*")
       );
