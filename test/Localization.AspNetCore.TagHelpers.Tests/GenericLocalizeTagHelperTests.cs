@@ -28,13 +28,26 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       get
       {
         var text = "This is\r\nThe\nUnormalized Text\r\n";
-        yield return new TestCaseData(text, text, NewLineHandling.None);
+        yield return new TestCaseData(text, text, NewLineHandling.None, true);
         var expectedText = text.Replace("\n", Environment.NewLine).Replace("\r\r", "\r");
-        yield return new TestCaseData(text, expectedText, NewLineHandling.Auto);
+        yield return new TestCaseData(text, expectedText, NewLineHandling.Auto, true);
         expectedText = text.Replace("\n", "\r\n").Replace("\r\r", "\r");
-        yield return new TestCaseData(text, expectedText, NewLineHandling.Windows);
+        yield return new TestCaseData(text, expectedText, NewLineHandling.Windows, true);
         expectedText = text.Replace("\r", "");
-        yield return new TestCaseData(text, expectedText, NewLineHandling.Unix);
+        yield return new TestCaseData(text, expectedText, NewLineHandling.Unix, true);
+
+        text = "  This\r\n   Will\r\nAlways\r\n    Trimmed \r\nDown   ";
+        expectedText = "This\r\nWill\r\nAlways\r\nTrimmed\r\nDown";
+        yield return new TestCaseData(text, expectedText, NewLineHandling.Windows, true)
+        {
+          TestName = "ProcessAsync_CanTrimWhitespaceOnEachLine"
+        };
+
+        yield return new TestCaseData("This will transform\nNew Lines   \r\n   But not trim\n  whitespace   ",
+          "This will transform\nNew Lines   \n   But not trim\n  whitespace   ", NewLineHandling.Unix, false)
+        {
+          TestName = "ProcessAsync_CanReplaceNewLinesWithoutTrimming"
+        };
       }
     }
 
@@ -197,7 +210,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     }
 
     [TestCaseSource(nameof(LocalizeNewLinesTestData))]
-    public async Task ProcessAsync_CanHandleNewLineNormalization(string text, string expectedText, NewLineHandling handling)
+    public async Task ProcessAsync_CanHandleNewLineNormalization(string text, string expectedText, NewLineHandling handling, bool trimEachLine)
     {
       var localizer = TestHelper.CreateLocalizerMock(false);
       SetupLocalizer(localizer, text, expectedText, false);
@@ -206,6 +219,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       helper.TrimWhitespace = false;
       helper.IsHtml = false;
       helper.NewLineHandling = handling;
+      helper.TrimEachLine = trimEachLine;
 
       await TestHelper.GenerateHtmlAsync(helper, "span", text);
 

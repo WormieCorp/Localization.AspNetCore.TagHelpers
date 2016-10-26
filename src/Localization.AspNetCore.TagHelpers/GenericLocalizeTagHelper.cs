@@ -11,6 +11,7 @@ namespace Localization.AspNetCore.TagHelpers
   using System;
   using System.Collections.Generic;
   using System.Linq;
+  using System.Text;
   using System.Threading.Tasks;
   using Internals;
   using Microsoft.AspNetCore.Hosting;
@@ -111,6 +112,13 @@ namespace Localization.AspNetCore.TagHelpers
     public virtual NewLineHandling NewLineHandling { get; set; } = NewLineHandling.Auto;
 
     /// <summary>
+    ///   Gets or sets a value indicating whether to trim whitespace on each line. <note type="note">
+    ///   If enabled, this will override the <see cref="TrimWhitespace" />.</note>
+    /// </summary>
+    /// <value><see langword="true" /> to trim whitespace on each line; otherwise, <see langword="false" />.</value>
+    public virtual bool TrimEachLine { get; set; }
+
+    /// <summary>
     ///   Gets or sets a value indicating whether beginning and ending whitespace.
     /// </summary>
     /// <value><c>true</c> to trim beginning and ending whitespace; otherwise, <c>false</c>.</value>
@@ -188,12 +196,11 @@ namespace Localization.AspNetCore.TagHelpers
     {
       var content = await GetContentAsync(context, output);
 
-      if (NewLineHandling != NewLineHandling.None)
+      if (NewLineHandling != NewLineHandling.None || TrimEachLine)
       {
-        content = HandleNewLine(content, NewLineHandling);
+        content = HandleNormalization(content, NewLineHandling, TrimEachLine);
       }
-
-      if (TrimWhitespace)
+      else if (TrimWhitespace)
       {
         content = content.Trim();
       }
@@ -285,40 +292,82 @@ namespace Localization.AspNetCore.TagHelpers
       outputContent.SetHtmlContent(htmlContent);
     }
 
-    private string HandleNewLine(string content, NewLineHandling newLineHandling)
+    private static void AppendContent(string content, bool trimEachLine, StringBuilder newContent, int lastIndex, int index)
     {
-      if (string.IsNullOrWhiteSpace(content))
-        return content;
-
-      int index;
-      while ((index = content.IndexOf('\r')) >= 0)
+      var substring = content.Substring(lastIndex, index - lastIndex);
+      if (trimEachLine)
       {
-        content = content.Remove(index, 1);
+        newContent.Append(substring.Trim());
       }
+      else
+      {
+        newContent.Append(substring.TrimEnd('\r'));
+      }
+    }
 
-      var contentArray = content.Split('\n');
-      string separator;
+    private static void AppendNewLine(string content, bool trimEachLine, StringBuilder newContent, int index, string newLine)
+    {
+      if (newLine == null)
+      {
+        if (trimEachLine && index > 0 && content[index - 1] == '\r')
+        {
+          newContent.Append("\r\n");
+        }
+        else
+        {
+          newContent.Append('\n');
+        }
+      }
+      else
+      {
+        newContent.Append(newLine);
+      }
+    }
 
+    private static string GetDefaultNewLine(NewLineHandling newLineHandling)
+    {
+      string newLine = null;
       switch (newLineHandling)
       {
         case NewLineHandling.Auto:
-          separator = Environment.NewLine;
+          newLine = Environment.NewLine;
           break;
 
         case NewLineHandling.Windows:
-          separator = "\r\n";
+          newLine = "\r\n";
           break;
 
         case NewLineHandling.Unix:
-          separator = "\n";
+          newLine = "\n";
           break;
-
-        default:
-          // This should never be true
-          throw new InvalidOperationException($"The new line handling with value: '{newLineHandling}' is not supported.");
       }
 
-      return string.Join(separator, contentArray);
+      return newLine;
+    }
+
+    private static string HandleNormalization(string content, NewLineHandling newLineHandling, bool trimEachLine)
+    {
+      if (string.IsNullOrEmpty(content))
+      {
+        return content;
+      }
+
+      StringBuilder newContent = new StringBuilder();
+      int lastIndex = 0;
+      int index;
+      string newLine = GetDefaultNewLine(newLineHandling);
+
+      while ((index = content.IndexOf('\n', lastIndex)) >= 0)
+      {
+        AppendContent(content, trimEachLine, newContent, lastIndex, index);
+        AppendNewLine(content, trimEachLine, newContent, index, newLine);
+
+        lastIndex = index + 1;
+      }
+
+      AppendContent(content, trimEachLine, newContent, lastIndex, content.Length);
+
+      return newContent.ToString();
     }
   }
 }
