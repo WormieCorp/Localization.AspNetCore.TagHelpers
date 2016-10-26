@@ -40,6 +40,7 @@ for i in "$@"; do
 		-v|--verbosity) VERBOSITY="$2"; shift ;;
 		-d|--dryrun) DRYRUN="-dryrun" ;;
 		--version) SHOW_VERSION=true ;;
+    --nuget|--nuget-path) NUGET_PATH="$2"; shift ;;
 		--) shift; SCRIPT_ARGUMENTS+=("$@"); break ;;
 		*) SCRIPT_ARGUMENTS+=("$1") ;;
 	esac
@@ -61,8 +62,10 @@ if [ ! -f "$TOOLS_DIR/packages.config" ]; then
 	fi
 fi
 
+if [ -f "$NUGET_PATH" ]; then
+  NUGET_EXE="$NUGET_PATH"
+elif [ ! -f "$NUGET_EXE" ]; then
 # Download NuGet if it does not exist.
-if [ ! -f "$NUGET_EXE" ]; then
 	echo "Downloading NuGet..."
 	curl -Lsfo "$NUGET_EXE" https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
 	if [ $? -ne 0 ]; then

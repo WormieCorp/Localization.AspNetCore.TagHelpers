@@ -1,136 +1,150 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Localization;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+//-----------------------------------------------------------------------
+// <copyright file="TestHelper.cs">
+//   Copyright (c) Kim Nordmo. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Kim Nordmo</author>
+//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
-	public static class TestHelper
-	{
-		public static readonly string ApplicationName = typeof(TestHelper).GetTypeInfo().Assembly.GetName().Name;
+  using System;
+  using System.Collections.Generic;
+  using System.IO;
+  using System.Reflection;
+  using System.Text;
+  using System.Text.Encodings.Web;
+  using System.Threading.Tasks;
+  using Microsoft.AspNetCore.Hosting;
+  using Microsoft.AspNetCore.Mvc.Localization;
+  using Microsoft.AspNetCore.Mvc.Rendering;
+  using Microsoft.AspNetCore.Mvc.ViewEngines;
+  using Microsoft.AspNetCore.Razor.TagHelpers;
+  using Microsoft.Extensions.Localization;
+  using Moq;
 
-		public static readonly ViewContext DefaultViewContext = new ViewContext();
+  public static class TestHelper
+  {
+    public static readonly string ApplicationName = typeof(TestHelper).GetTypeInfo().Assembly.GetName().Name;
 
-		static TestHelper()
-		{
-			var view = new Mock<IView>();
-			view.SetupGet(x => x.Path).Returns("some/value.cshtml");
-			DefaultViewContext.View = view.Object;
-		}
+    public static readonly ViewContext DefaultViewContext = new ViewContext();
 
-		public static Mock<IHtmlLocalizerFactory> CreateFactoryMock(bool setup)
-		{
-			return CreateFactoryMock(CreateLocalizerMock(setup).Object);
-		}
+    static TestHelper()
+    {
+      var view = new Mock<IView>();
+      view.SetupGet(x => x.Path).Returns("some/value.cshtml");
+      DefaultViewContext.View = view.Object;
+    }
 
-		public static Mock<IHtmlLocalizerFactory> CreateFactoryMock(IHtmlLocalizer localizer)
-		{
-			var mock = new Mock<IHtmlLocalizerFactory>();
-			mock.Setup(x => x.Create(It.IsAny<Type>())).Returns(localizer);
-			mock.Setup(x => x.Create(It.IsAny<string>(), ApplicationName)).Returns(localizer);
-			return mock;
-		}
+    public static Mock<IHtmlLocalizerFactory> CreateFactoryMock(bool setup)
+    {
+      return CreateFactoryMock(CreateLocalizerMock(setup).Object);
+    }
 
-		public static Mock<IHtmlLocalizer> CreateLocalizerMock(bool setup)
-		{
-			var mock = new Mock<IHtmlLocalizer>();
+    public static Mock<IHtmlLocalizerFactory> CreateFactoryMock(IHtmlLocalizer localizer)
+    {
+      var mock = new Mock<IHtmlLocalizerFactory>();
+      mock.Setup(x => x.Create(It.IsAny<Type>())).Returns(localizer);
+      mock.Setup(x => x.Create(It.IsAny<string>(), ApplicationName)).Returns(localizer);
+      return mock;
+    }
 
-			if (setup)
-			{
-				mock.Setup(x => x.GetString(It.IsAny<string>())).Returns<string>(s => new LocalizedString(s, s, true));
-				mock.Setup(x => x[It.IsAny<string>()]).Returns<string>(s => new LocalizedHtmlString(s, s, true));
-				mock.Setup(x => x.GetString(It.IsAny<string>(), It.IsAny<object[]>()))
-					.Returns<string, object[]>((s, o) => new LocalizedString(s, string.Format(s, o), true));
-				mock.Setup(x => x[It.IsAny<string>(), It.IsAny<object[]>()])
-					.Returns<string, object[]>((s, o) => new LocalizedHtmlString(s, string.Format(s, o), true));
-			}
+    public static Mock<IHtmlLocalizer> CreateLocalizerMock(bool setup)
+    {
+      var mock = new Mock<IHtmlLocalizer>();
 
-			return mock;
-		}
+      if (setup)
+      {
+        mock.Setup(x => x.GetString(It.IsAny<string>())).Returns<string>(s => new LocalizedString(s, s, true));
+        mock.Setup(x => x[It.IsAny<string>()]).Returns<string>(s => new LocalizedHtmlString(s, s, true));
+        mock.Setup(x => x.GetString(It.IsAny<string>(), It.IsAny<object[]>()))
+          .Returns<string, object[]>((s, o) => new LocalizedString(s, string.Format(s, o), true));
+        mock.Setup(x => x[It.IsAny<string>(), It.IsAny<object[]>()])
+          .Returns<string, object[]>((s, o) => new LocalizedHtmlString(s, string.Format(s, o), true));
+      }
 
-		public static TagHelperContext CreateTagContext(params TagHelperAttribute[] attributes)
-		{
-			return new TagHelperContext(new TagHelperAttributeList(attributes),
-				new Dictionary<object, object>(),
-				Guid.NewGuid().ToString());
-		}
+      return mock;
+    }
 
-		public static T CreateTagHelper<T>(IHtmlLocalizerFactory factory)
-			where T : GenericLocalizeTagHelper
-		{
-			var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-			hostingEnvironmentMock.SetupGet(x => x.ApplicationName).Returns(ApplicationName);
-			if (factory == null)
-				factory = CreateFactoryMock(true).Object;
+    public static TagHelperContext CreateTagContext(params TagHelperAttribute[] attributes)
+    {
+      return new TagHelperContext(
+        new TagHelperAttributeList(attributes),
+        new Dictionary<object, object>(),
+        Guid.NewGuid().ToString());
+    }
 
-			var instance = (T)Activator.CreateInstance(typeof(T), factory, hostingEnvironmentMock.Object);
-			instance.ViewContext = DefaultViewContext;
+    public static T CreateTagHelper<T>(IHtmlLocalizerFactory factory)
+      where T : GenericLocalizeTagHelper
+    {
+      var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
+      hostingEnvironmentMock.SetupGet(x => x.ApplicationName).Returns(ApplicationName);
+      if (factory == null)
+      {
+        factory = CreateFactoryMock(true).Object;
+      }
 
-			return instance;
-		}
+      var instance = (T)Activator.CreateInstance(typeof(T), factory, hostingEnvironmentMock.Object, null);
+      instance.ViewContext = DefaultViewContext;
+      instance.NewLineHandling = NewLineHandling.None;
 
-		public static TagHelperOutput CreateTagOutput(string tagName, string content, params TagHelperAttribute[] attributes)
-		{
-			return new TagHelperOutput(tagName, new TagHelperAttributeList(attributes),
-				(useCachedResult, encoder) =>
-				{
-					var tagHelperContent = new DefaultTagHelperContent();
-					tagHelperContent.SetContent(content);
-					return Task.FromResult<TagHelperContent>(tagHelperContent);
-				});
-		}
+      return instance;
+    }
 
-		public static async Task<string> GenerateHtmlAsync(TagHelper helper, TagHelperContext context, TagHelperOutput output)
-		{
-			var sb = new StringBuilder();
+    public static TagHelperOutput CreateTagOutput(string tagName, string content, params TagHelperAttribute[] attributes)
+    {
+      return new TagHelperOutput(
+        tagName,
+        new TagHelperAttributeList(attributes),
+        (useCachedResult, encoder) =>
+        {
+          var tagHelperContent = new DefaultTagHelperContent();
+          tagHelperContent.SetContent(content);
+          return Task.FromResult<TagHelperContent>(tagHelperContent);
+        });
+    }
 
-			await helper.ProcessAsync(context, output);
+    public static async Task<string> GenerateHtmlAsync(TagHelper helper, TagHelperContext context, TagHelperOutput output)
+    {
+      var sb = new StringBuilder();
 
-			using (var writer = new StringWriter(sb))
-			{
-				output.WriteTo(writer, HtmlEncoder.Default);
-			}
+      await helper.ProcessAsync(context, output);
 
-			return sb.ToString();
-		}
+      using (var writer = new StringWriter(sb))
+      {
+        output.WriteTo(writer, HtmlEncoder.Default);
+      }
 
-		public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content)
-		{
-			return GenerateHtmlAsync(helper, tagName, content, new TagHelperAttribute[0]);
-		}
+      return sb.ToString();
+    }
 
-		public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content, params TagHelperAttribute[] attributes)
-		{
-			var tagContext = CreateTagContext();
-			var tagOutput = CreateTagOutput(tagName, content, attributes);
+    public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content)
+    {
+      return GenerateHtmlAsync(helper, tagName, content, new TagHelperAttribute[0]);
+    }
 
-			helper.Init(tagContext);
+    public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content, params TagHelperAttribute[] attributes)
+    {
+      var tagContext = CreateTagContext();
+      var tagOutput = CreateTagOutput(tagName, content, attributes);
 
-			return GenerateHtmlAsync(helper, tagContext, tagOutput);
-		}
+      helper.Init(tagContext);
 
-		public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content, params object[] parameters)
-		{
-			var tagContext = CreateTagContext();
-			var tagOutput = CreateTagOutput(tagName, content);
+      return GenerateHtmlAsync(helper, tagContext, tagOutput);
+    }
 
-			helper.Init(tagContext);
+    public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content, params object[] parameters)
+    {
+      var tagContext = CreateTagContext();
+      var tagOutput = CreateTagOutput(tagName, content);
 
-			var stack = (Stack<List<object>>)tagContext.Items[typeof(GenericLocalizeTagHelper)];
-			var list = stack.Peek();
-			list.AddRange(parameters);
+      helper.Init(tagContext);
 
-			return GenerateHtmlAsync(helper, tagContext, tagOutput);
-		}
-	}
+      var stack = (Stack<List<object>>)tagContext.Items[typeof(GenericLocalizeTagHelper)];
+      var list = stack.Peek();
+      list.AddRange(parameters);
+
+      return GenerateHtmlAsync(helper, tagContext, tagOutput);
+    }
+  }
 }

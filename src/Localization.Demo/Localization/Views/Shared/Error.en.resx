@@ -117,8 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&lt;strong&gt;Development environment should not be enabled in deployed applications&lt;/strong&gt;, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;, and restarting the application." xml:space="preserve">
-    <value>&lt;strong&gt;Development environment should not be enabled in deployed applications&lt;/strong&gt;, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;, and restarting the application.</value>
+  <data name="&lt;p&gt;&#xD;&#xA;    &lt;strong&gt;Development environment should not be enabled in deployed applications&lt;/strong&gt;, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;, and restarting the application.&#xD;&#xA;  &lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;
+    &lt;strong&gt;Development environment should not be enabled in deployed applications&lt;/strong&gt;, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;, and restarting the application.
+  &lt;/p&gt;</value>
   </data>
   <data name="An error occurred while processing your request." xml:space="preserve">
     <value>An error occurred while processing your request.</value>

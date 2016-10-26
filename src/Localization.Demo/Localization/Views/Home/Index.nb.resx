@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&lt;a href=&quot;{0}&quot;&gt;Gulp&lt;/a&gt;&#xD;&#xA;                and&#xD;&#xA;                &lt;a href=&quot;{1}&quot;&gt;Bower&lt;/a&gt; for&#xD;&#xA;                managing client-side libraries" xml:space="preserve">
+  <data name="&lt;a href=&quot;{0}&quot;&gt;Gulp&lt;/a&gt;&#xD;&#xA;and&#xD;&#xA;&lt;a href=&quot;{1}&quot;&gt;Bower&lt;/a&gt; for&#xD;&#xA;managing client-side libraries" xml:space="preserve">
     <value>&lt;a href="{0}"&gt;Gulp&lt;/a&gt;
 og
 &lt;a href="{1}"&gt;Bower&lt;/a&gt; for

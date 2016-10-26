@@ -12,5 +12,17 @@ Asp.Net Core Tag Helpers to use when localizing Asp.Net Core application instead
 Official published version are available on [NuGet](https://www.nuget.org/packages/Localization.AspNetCore.TagHelpers/)
 or on the [GitHub Release](https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/releases) page.
 
+## Usage
+To use these tag helpers add the following to your `_ViewImports.cshtml` file
+```
+@addTagHelper *, Localization.AspNetCore.TagHelpers
+```
+#### The package currently supports three tag helpers with the following usage cases:
+Usage with the tag name `<localize>Text to localize</localize>`  
+Usage with a html attribute `<span localize>Text to localize</localize>`  
+Ability to localize html attribute using the following: `<span localize-title="I'm the title to localize">This won't</span>`
+
+See the full demo project based on the default asp.net core template for possible usages.
+
 
 ***WIP***
