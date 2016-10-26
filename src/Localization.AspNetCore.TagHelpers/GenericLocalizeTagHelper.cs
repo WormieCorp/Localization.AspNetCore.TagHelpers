@@ -36,16 +36,15 @@ namespace Localization.AspNetCore.TagHelpers
   /// ]]>
   ///   </code>
   /// </example>
-  [HtmlTargetElement(Attributes = ASP_LOCALIZE_NAME)]
-  [HtmlTargetElement(Attributes = ASP_LOCALIZE_TYPE)]
-  [HtmlTargetElement(Attributes = ASP_LOCALIZE_HTML)]
+  [HtmlTargetElement("localize")]
   public class GenericLocalizeTagHelper : TagHelper
   {
-    private const string ASP_LOCALIZE_HTML = "localize-html";
-    private const string ASP_LOCALIZE_NAME = "localize";
-    private const string ASP_LOCALIZE_NEWLINE = "localize-newline";
-    private const string ASP_LOCALIZE_TRIM = "localize-trim";
-    private const string ASP_LOCALIZE_TYPE = "localize-type";
+    private const string LOCALIZE_HTML = "html";
+    private const string LOCALIZE_NAME = "resource-name";
+    private const string LOCALIZE_NEWLINE = "newline";
+    private const string LOCALIZE_TRIM = "trim";
+    private const string LOCALIZE_TRIM_LINES = "trimlines";
+    private const string LOCALIZE_TYPE = "resource-type";
     private readonly string applicationName;
     private readonly IHtmlLocalizerFactory localizerFactory;
     private IHtmlLocalizer localizer;
@@ -82,7 +81,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// ]]>
     ///   </code>
     /// </example>
-    [HtmlAttributeName(ASP_LOCALIZE_HTML)]
+    [HtmlAttributeName(LOCALIZE_HTML)]
     public virtual bool IsHtml { get; set; }
 
     /// <summary>
@@ -101,14 +100,14 @@ namespace Localization.AspNetCore.TagHelpers
     ///   </code>
     ///   Passes the path as <c>~/MyCustomResource</c>
     /// </example>
-    [HtmlAttributeName(ASP_LOCALIZE_NAME)]
+    [HtmlAttributeName(LOCALIZE_NAME)]
     public virtual string Name { get; set; } = string.Empty;
 
     /// <summary>
     ///   Gets or sets the new line handing method.
     /// </summary>
     /// <remarks>Defaults to <see cref="NewLineHandling.Auto" /></remarks>
-    [HtmlAttributeName(ASP_LOCALIZE_NEWLINE)]
+    [HtmlAttributeName(LOCALIZE_NEWLINE)]
     public virtual NewLineHandling NewLineHandling { get; set; } = NewLineHandling.Auto;
 
     /// <summary>
@@ -116,13 +115,14 @@ namespace Localization.AspNetCore.TagHelpers
     ///   If enabled, this will override the <see cref="TrimWhitespace" />.</note>
     /// </summary>
     /// <value><see langword="true" /> to trim whitespace on each line; otherwise, <see langword="false" />.</value>
+    [HtmlAttributeName(LOCALIZE_TRIM_LINES)]
     public virtual bool TrimEachLine { get; set; }
 
     /// <summary>
     ///   Gets or sets a value indicating whether beginning and ending whitespace.
     /// </summary>
     /// <value><c>true</c> to trim beginning and ending whitespace; otherwise, <c>false</c>.</value>
-    [HtmlAttributeName(ASP_LOCALIZE_TRIM)]
+    [HtmlAttributeName(LOCALIZE_TRIM)]
     public virtual bool TrimWhitespace { get; set; } = true;
 
     /// <summary>
@@ -139,7 +139,7 @@ namespace Localization.AspNetCore.TagHelpers
     ///   </code>
     ///   Creates a new html localizer passing the specified type.
     /// </example>
-    [HtmlAttributeName(ASP_LOCALIZE_TYPE)]
+    [HtmlAttributeName(LOCALIZE_TYPE)]
     public virtual Type Type { get; set; }
 
     /// <summary>
@@ -194,6 +194,12 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc />
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+      if (output.Attributes.ContainsName("localize"))
+      {
+        int index = output.Attributes.IndexOfName("localize");
+        output.Attributes.RemoveAt(index);
+      }
+
       var content = await GetContentAsync(context, output);
 
       if (NewLineHandling != NewLineHandling.None || TrimEachLine)

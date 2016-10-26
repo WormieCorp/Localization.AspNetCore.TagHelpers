@@ -31,8 +31,8 @@ namespace Localization.AspNetCore.TagHelpers
   [HtmlTargetElement(Attributes = LOCALIZE_ATTRIBUTE_PREFIX + "*")]
   public class LocalizeAttributeTagHelper : TagHelper
   {
-    private const string LOCALIZE_ATTRIBUTE_PREFIX = "localize-attr-";
-    private const string LOCALIZE_DICTIONARY_NAME = "localize-attr-all";
+    private const string LOCALIZE_ATTRIBUTE_PREFIX = "localize-";
+    private const string LOCALIZE_DICTIONARY_NAME = "localize-all";
     private readonly string applicationName;
     private readonly IHtmlLocalizerFactory localizerFactory;
     private IDictionary<string, string> attributeValues;
