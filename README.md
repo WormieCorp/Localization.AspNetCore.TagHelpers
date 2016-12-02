@@ -24,7 +24,5 @@ Usage with the tag name `<localize>Text to localize</localize>`
 Usage with a html attribute `<span localize>Text to localize</localize>`  
 Ability to localize html attribute using the following: `<span localize-title="I'm the title to localize">This won't</span>`
 
-See the full demo project based on the default asp.net core template for possible usages.
-
-
-***WIP***
+You can read more about this on the [Wiki](https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki)
+Please also see the Localization.Demo project for a working template with the use of these localization helpers (based on default asp.net core template)
