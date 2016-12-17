@@ -47,15 +47,15 @@ With a few exceptions:
 * Do not use prefixes when calling instance fields/methods/properties/etc.
   * That means no `this.` and `base.` unless absolutely necessary.
 * All new files must have the following File Header
-  ```
-  //-----------------------------------------------------------------------
-  // <copyright file="FILENAME.cs">
-  //   Copyright (c) Kim Nordmo. All rights reserved.
-  //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
-  // </copyright>
-  // <author>YOUR NAME</author>
-  //-----------------------------------------------------------------------
-  ```
+```cs
+//-----------------------------------------------------------------------
+// <copyright file="FILENAME.cs">
+//   Copyright (c) Kim Nordmo. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>YOUR NAME</author>
+//-----------------------------------------------------------------------
+```
 
 ### Dependencies
 The assembly `Localization.AspNetCore.TagHelpers` should have just the minimum of dependencies required
