@@ -1,7 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26114.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30C2E2EE-11A2-46DE-A410-AFFD4B1116C6}"
 	ProjectSection(SolutionItems) = preProject
@@ -9,18 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 		build.cake = build.cake
 		cake.config = cake.config
-		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E4EFD1F1-4672-4CE1-8634-5B12B6FF6BA3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localization.AspNetCore.TagHelpers", "src\Localization.AspNetCore.TagHelpers\Localization.AspNetCore.TagHelpers.xproj", "{73047166-1480-4303-9B2D-1ACCF3317C84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization.AspNetCore.TagHelpers", "src\Localization.AspNetCore.TagHelpers\Localization.AspNetCore.TagHelpers.csproj", "{73047166-1480-4303-9B2D-1ACCF3317C84}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localization.Demo", "src\Localization.Demo\Localization.Demo.xproj", "{4EE6892E-D2DC-4A7C-93B6-4DF090F4C3BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization.Demo", "src\Localization.Demo\Localization.Demo.csproj", "{4EE6892E-D2DC-4A7C-93B6-4DF090F4C3BB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2D4CC67C-4BBC-4800-B051-761E3E5386D2}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Localization.AspNetCore.TagHelpers.Tests", "test\Localization.AspNetCore.TagHelpers.Tests\Localization.AspNetCore.TagHelpers.Tests.xproj", "{FC098BDD-090F-4716-B6F7-E730CF9CC93C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization.AspNetCore.TagHelpers.Tests", "test\Localization.AspNetCore.TagHelpers.Tests\Localization.AspNetCore.TagHelpers.Tests.csproj", "{FC098BDD-090F-4716-B6F7-E730CF9CC93C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
