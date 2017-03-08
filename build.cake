@@ -1,6 +1,5 @@
 #load "./.build/tools.cake"
 #load "./.build/parameters.cake"
-#load "./.build/testing.cake"
 
 var parameters = BuildParameters.GetParameters(Context);
 bool publishingError = false;
@@ -82,11 +81,42 @@ Task("Run-Unit-Tests")
   .IsDependentOn("Build")
   .Does(() =>
 {
-  var projects = GetFiles("./test/**/*.Tests.xproj");
+  var projects = GetFiles("./test/**/*.Tests.csproj");
+  if (FileExists(parameters.Paths.Files.TestCoverageOutputFilePath))
+  {
+    DeleteFile(parameters.Paths.Files.TestCoverageOutputFilePath);
+  }
+
   foreach(var project in projects)
   {
-    UnitTesting.RunUnitTest(Context, project, true, parameters);
-    UnitTesting.RunUnitTest(Context, project, false, parameters);
+    Action<ICakeContext> testAction = tool =>
+    {
+      tool.DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+      {
+        Configuration = parameters.Configuration,
+        NoBuild = true,
+        Verbose = false,
+      });
+    };
+
+    if (parameters.IsRunningOnUnix || parameters.SkipOpenCover)
+    {
+      testAction(Context);
+    }
+    else
+    {
+      OpenCover(testAction,
+        parameters.Paths.Files.TestCoverageOutputFilePath,
+        new OpenCoverSettings
+        {
+          MergeOutput = FileExists(parameters.Paths.Files.TestCoverageOutputFilePath),
+          SkipAutoProps = true,
+          Register = "user",
+          OldStyle = true
+        }
+        .WithFilter("+[*]* -[*Tests]*")
+      );
+    }
   }
 
   if (FileExists(parameters.Paths.Files.TestCoverageOutputFilePath))
