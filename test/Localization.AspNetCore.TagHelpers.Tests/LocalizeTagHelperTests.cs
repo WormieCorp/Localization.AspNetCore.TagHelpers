@@ -89,7 +89,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       tagHelper.Init(tagContext);
 
-      Assert.DoesNotContain(tagContext.Items, (item) => item.Key == typeof(GenericLocalizeTagHelper));
+      Assert.DoesNotContain(tagContext.Items, (item) => (Type)item.Key == typeof(GenericLocalizeTagHelper));
     }
 
     [Theory]

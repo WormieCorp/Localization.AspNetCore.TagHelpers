@@ -1,39 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework Condition="'$(NetCoreOnly)'=='true'">netcoreapp1.0</TargetFramework>
-    <TargetFrameworks Condition="'$(NetCoreOnly)'!='true'">netcoreapp1.0;net451</TargetFrameworks>
+  <PropertyGroup Condition="'$(NetCoreOnly)'=='true'">
+    <TargetFrameworks>netcoreapp1.1;netcoreapp1.0</TargetFrameworks>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(NetCoreOnly)'!='true'">
+    <TargetFrameworks>netcoreapp1.1;netcoreapp1.0;net451</TargetFrameworks>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="Moq" Version="4.7.1" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\Localization.AspNetCore.TagHelpers\Localization.AspNetCore.TagHelpers.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-
 </Project>

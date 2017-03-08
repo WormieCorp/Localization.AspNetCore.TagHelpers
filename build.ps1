@@ -1,4 +1,4 @@
-##########################################################################
+﻿##########################################################################
 # This is the Cake bootstrapper script for PowerShell.
 # This file was downloaded from https://github.com/cake-build/resources
 # Feel free to change this file to fit your needs.
@@ -52,6 +52,7 @@ Param(
   [switch]$WhatIf,
   [switch]$Mono,
   [switch]$SkipToolPackageRestore,
+  [switch]$NetCoreOnly,
   [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
   [string[]]$ScriptArgs
 )
@@ -177,6 +178,10 @@ if(-Not $SkipToolPackageRestore.IsPresent) {
   Write-Verbose -Message ($NuGetOutput | out-string)
   Pop-Location
 }
+$COMPILE_NET_CORE_ONLY='false'
+if ($NetCoreOnly.IsPresent) {
+  $COMPILE_NET_CORE_ONLY='true'
+}
 
 # Make sure that Cake has been installed.
 if (!(Test-Path $CAKE_EXE)) {
@@ -185,5 +190,5 @@ if (!(Test-Path $CAKE_EXE)) {
 
 # Start Cake
 Write-Host "Running build script..."
-Invoke-Expression "& `"$CAKE_EXE`" `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental $ScriptArgs"
+Invoke-Expression "& `"$CAKE_EXE`" `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`" -netcoreonly=`"$COMPILE_NET_CORE_ONLY`" $UseMono $UseDryRun $UseExperimental $ScriptArgs"
 exit $LASTEXITCODE

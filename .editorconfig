@@ -5,7 +5,11 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
 
-[*.{sln,xproj}]
+[*.sh]
+end_of_line = lf
+
+[*.{sln,xproj,ps}]
+charset = utf-8-bom
 end_of_line = crlf
 
 [*.md]

@@ -2,9 +2,10 @@
 
 *.cs  diff=csharp
 
-*.sln eol=crlf
-*.csproj eol=crlf
+*.sln eol=crlf whitespace=-tab-in-indent
+*.csproj eol=crlf whitespace=-tab-in-indent
 
 *.sh eol=lf
 *.ps1 eol=crlf
 *.resx whitespace=-blank-at-eol
+*.md whitespace=-trailing-space

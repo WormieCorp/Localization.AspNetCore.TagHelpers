@@ -12,11 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E4EFD1F1-4672-4CE1-8634-5B12B6FF6BA3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2D4CC67C-4BBC-4800-B051-761E3E5386D2}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localization.AspNetCore.TagHelpers", "src\Localization.AspNetCore.TagHelpers\Localization.AspNetCore.TagHelpers.csproj", "{73047166-1480-4303-9B2D-1ACCF3317C84}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localization.Demo", "src\Localization.Demo\Localization.Demo.csproj", "{4EE6892E-D2DC-4A7C-93B6-4DF090F4C3BB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2D4CC67C-4BBC-4800-B051-761E3E5386D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization.AspNetCore.TagHelpers.Tests", "test\Localization.AspNetCore.TagHelpers.Tests\Localization.AspNetCore.TagHelpers.Tests.csproj", "{10E38FB3-4EC8-4A59-94D9-70656BA8E0ED}"
 EndProject

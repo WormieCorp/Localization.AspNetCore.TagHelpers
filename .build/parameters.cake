@@ -29,6 +29,7 @@ public class BuildParameters
   public BuildVersion Version { get; private set; }
   public BuildPaths Paths { get; private set; }
   public string ReleaseNotes { get; private set; }
+  public bool CompileNetCoreOnly { get; private set; }
 
   public bool ShouldPublish
   {
@@ -88,7 +89,7 @@ public class BuildParameters
             Version.Version,
             ReleaseNotes,
             Paths.Directories.NugetRoot.MakeAbsolute(context.Environment),
-            IsRunningOnUnix ? ";NetCoreOnly=true" : ""
+            CompileNetCoreOnly ? ";NetCoreOnly=true" : ""
           );
     };
   }
@@ -120,7 +121,8 @@ public class BuildParameters
       IsPublishBuild = IsPublishing(target),
       IsReleaseBuild = IsReleasing(target),
       SkipGitVersion = StringComparer.OrdinalIgnoreCase.Equals("True", context.EnvironmentVariable("_SKIP_GITVERSION")),
-      SkipOpenCover  = StringComparer.OrdinalIgnoreCase.Equals("True", context.EnvironmentVariable("_SKIP_OPENCOVER"))
+      SkipOpenCover  = StringComparer.OrdinalIgnoreCase.Equals("True", context.EnvironmentVariable("_SKIP_OPENCOVER")),
+      CompileNetCoreOnly = context.Argument("netcoreonly", false)
     };
   }
 
