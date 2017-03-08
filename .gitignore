@@ -629,4 +629,5 @@ __pycache__/
 build/
 
 # Cake tools directory
-tools/
+tools/**/*
+!tools/packages.config

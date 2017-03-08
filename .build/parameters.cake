@@ -27,6 +27,7 @@ public class BuildParameters
   public BuildCredentials GitHub { get; private set; }
   public BuildVersion Version { get; private set; }
   public BuildPaths Paths { get; private set; }
+  public string ReleaseNotes { get; private set; }
 
   public bool ShouldPublish
   {
@@ -61,6 +62,18 @@ public class BuildParameters
     Version = BuildVersion.Calculate(context, this);
 
     Paths = BuildPaths.GetPaths(context, Configuration, Version.SemVersion);
+  }
+
+  public void SetReleaseNotes(ICakeContext context, string[] releaseNotesArray)
+  {
+    if (ShouldPublish)
+    {
+      ReleaseNotes = string.Join("\r\n", RemoveMarkdown(releaseNotesArray));
+    }
+    else
+    {
+      ReleaseNotes = string.Join("\r\n", releaseNotesArray);
+    }
   }
 
   public static BuildParameters GetParameters(ICakeContext context)
@@ -110,5 +123,44 @@ public class BuildParameters
   {
     var targets = new[] { "ReleaseNotes", "Create-Release-Notes" };
     return targets.Any(t => StringComparer.OrdinalIgnoreCase.Equals(t, target));
+  }
+
+  private static IEnumerable<string> RemoveMarkdown(string[] releaseNotes)
+  {
+    for (int i = 0; i < releaseNotes.Length; i++)
+    {
+      var note = releaseNotes[i];
+      if (note.StartsWith("__") && note.EndsWith("__"))
+      {
+        if (i > 1)
+        {
+          yield return "";
+        }
+        yield return "";
+        yield return note.Trim('_').Trim();
+        yield return note;
+      }
+      else if (note.StartsWith("-"))
+      {
+        int index = note.IndexOf(')');
+        if (index > 0)
+        {
+          string issue = note.Substring(index + 1).Trim();
+          yield return note.Substring(0, 2) + issue;
+        }
+        else
+        {
+          yield return note;
+        }
+      }
+      else if (note.IndexOf("part of this release") > 0)
+      {
+        continue;
+      }
+      else
+      {
+        yield return note;
+      }
+    }
   }
 }

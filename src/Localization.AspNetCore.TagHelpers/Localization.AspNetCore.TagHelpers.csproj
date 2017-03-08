@@ -11,21 +11,24 @@ To use these tag helpers add the following to your `_ViewImports.cshtml` file
 The package currently supports three tag helpers with the following usage cases:
 Usage with the tag name `&lt;localize&gt;Text to localize&lt;/localize&gt;`
 Usage with a html attribute `&lt;span localize&gt;Text to localize&lt;/localize&gt;`
-Ability to localize html attribute using the following: `&lt;span localize-title='I'm the title to localize'&gt;This won't&lt;/span&gt;`</Description>
-    <Copyright>Copyright 2016 - Kim Nordmo</Copyright>
-    <VersionPrefix>0.2.0</VersionPrefix>
+Ability to localize html attribute using the following: `&lt;span localize-title='I'm the title to localize'&gt;This won't&lt;/span&gt;`
+
+Please see the documentation for all available attributes and their usage:
+https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki</Description>
+    <Copyright>Copyright 2016-2017 - Kim Nordmo</Copyright>
     <Authors>AdmiringWorm</Authors>
     <TargetFrameworks>netstandard1.6;net451</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Localization.AspNetCore.TagHelpers</AssemblyName>
     <PackageId>Localization.AspNetCore.TagHelpers</PackageId>
     <PackageTags>localization;AspNetCore;TagHelper;NetCore</PackageTags>
-    <PackageReleaseNotes>No release notes available for this release</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers</RepositoryUrl>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <IncludeSymbols>True</IncludeSymbols>
   </PropertyGroup>
 
   <ItemGroup>

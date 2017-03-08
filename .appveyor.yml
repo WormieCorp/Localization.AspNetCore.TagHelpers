@@ -31,4 +31,4 @@ artifacts:
 test: off
 
 cache:
-- tools -> .build/tools.cake
+- tools -> .build/tools.cake,tools/packages.config

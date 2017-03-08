@@ -33,39 +33,13 @@ Task("Clean")
   CleanDirectories(parameters.Paths.Directories.ToClean);
 });
 
-Task("Patch-Project-Json")
-  .IsDependentOn("Clean")
-  .IsDependentOn("Export-Release-Notes")
-  .Does(() =>
-  {
-    var projects = GetFiles("./*/*/project.json");
-    string[] releaseNotes;
-    if (!parameters.ShouldPublish)
-    {
-      releaseNotes = new[] { "No release notes available for this release" };
-    }
-    else
-    {
-      releaseNotes = ParseReleaseNotes("./artifacts/CHANGELOG.md").Notes.ToArray();
-    }
-
-    foreach(var project in projects)
-    {
-      if (!parameters.Version.PatchProjectJson(project, releaseNotes))
-      {
-        Warning("No version specified in {0}.", project.FullPath);
-      }
-    }
-  });
-
 Task("Restore-NuGet-Packages")
   .IsDependentOn("Clean")
   .Does(() =>
   {
     DotNetCoreRestore("./", new DotNetCoreRestoreSettings
     {
-      Verbose = false,
-      Verbosity = DotNetCoreRestoreVerbosity.Warning
+      Verbose = false
     });
   });
 
@@ -83,20 +57,25 @@ Task("Restore-NPM-Packages")
 });
 
 Task("Build")
-  .IsDependentOn("Patch-Project-Json")
+  .IsDependentOn("Export-Release-Notes")
   .IsDependentOn("Restore-NuGet-Packages")
   .IsDependentOn("Restore-NPM-Packages")
   .Does(() =>
 {
-  foreach(var project in parameters.Paths.Directories.Projects)
+  DotNetCoreBuild("./Localization.AspNetCore.TagHelpers.sln", new DotNetCoreBuildSettings
   {
-    DotNetCoreBuild(project.FullPath, new DotNetCoreBuildSettings
+    VersionSuffix = parameters.Version.DotNetAsterix,
+    Configuration = parameters.Configuration,
+    NoDependencies = true,
+    ArgumentCustomization = (args) =>
     {
-      VersionSuffix = parameters.Version.DotNetAsterix,
-      Configuration = parameters.Configuration,
-      NoDependencies = true
-    });
-  }
+      args.AppendQuoted("/property:VersionPrefix={0};PackageReleaseNotes={1};PackageOutputPath={2}",
+        parameters.Version.Version,
+        parameters.ReleaseNotes,
+        parameters.Paths.Directories.NugetRoot.MakeAbsolute(Context.Environment));
+      return args;
+    }
+  });
 });
 
 Task("Run-Unit-Tests")
@@ -127,7 +106,6 @@ Task("Copy-Files")
     VersionSuffix = parameters.Version.DotNetAsterix,
     Configuration = parameters.Configuration,
     OutputDirectory = parameters.Paths.Directories.ArtifactsBinNet451,
-    NoBuild = true,
     Verbose = false
   });
 
@@ -145,32 +123,8 @@ Task("Zip-Files")
   Zip(parameters.Paths.Directories.ArtifactsBinNet451, parameters.Paths.Files.ZipArtifactsPathDesktop, netFiles);
 });
 
-Task("Create-NuGet-Packages")
-  .IsDependentOn("Copy-Files")
-  .Does(() =>
-{
-  var projects = GetFiles("./src/**/*.xproj");
-  foreach (var project in projects)
-  {
-    var name = project.GetDirectory().FullPath;
-    if (name.EndsWith("Demo"))
-    {
-      continue;
-    }
-
-    DotNetCorePack(project.GetDirectory().FullPath, new DotNetCorePackSettings
-    {
-      VersionSuffix = parameters.Version.DotNetAsterix,
-      Configuration = parameters.Configuration,
-      OutputDirectory = parameters.Paths.Directories.NugetRoot,
-      NoBuild = true,
-      Verbose = false
-    });
-  }
-});
-
 Task("Publish-MyGet")
-  .IsDependentOn("Create-NuGet-Packages")
+  .IsDependentOn("Build")
   .WithCriteria(() => parameters.ShouldPublishToMyGet)
   .Does(() =>
 {
@@ -217,7 +171,7 @@ Task("Publish-MyGet")
 });
 
 Task("Publish-NuGet")
-  .IsDependentOn("Create-NuGet-Packages")
+  .IsDependentOn("Build")
   .WithCriteria(() => parameters.ShouldPublish)
   .Does(() =>
 {
@@ -304,26 +258,42 @@ Task("Create-Release-Notes")
 
 Task("Export-Release-Notes")
   .IsDependentOn("Create-Release-Notes")
-  .WithCriteria(() => parameters.GitHub.HasCredentials)
+  .IsDependentOn("Clean")
   .Does(() =>
 {
-  GitReleaseManagerExport(
-    parameters.GitHub.UserName,
-    parameters.GitHub.Password,
-    BuildParameters.MainRepoUser,
-    BuildParameters.MainRepoName,
-    File("./artifacts/CHANGELOG.md")
-  );
+  if (parameters.GitHub.HasCredentials)
+  {
+    GitReleaseManagerExport(
+      parameters.GitHub.UserName,
+      parameters.GitHub.Password,
+      BuildParameters.MainRepoUser,
+      BuildParameters.MainRepoName,
+      File("./artifacts/CHANGELOG.md")
+    );
+  }
+
+  string[] releaseNotes;
+  if (!FileExists("./artifacts/CHANGELOG.md") && !parameters.ShouldPublish)
+  {
+    releaseNotes = new[] { "No release notes available for this release" };
+  }
+  else
+  {
+    releaseNotes = ParseReleaseNotes("./artifacts/CHANGELOG.md").Notes.ToArray();
+  }
+
+  parameters.SetReleaseNotes(Context, releaseNotes);
 });
 
 Task("Package")
-  .IsDependentOn("Zip-Files")
-  .IsDependentOn("Create-NuGet-Packages");
+  .IsDependentOn("Zip-Files");
 
 Task("Default")
+  .IsDependentOn("Run-Unit-Tests")
   .IsDependentOn("Package");
 
 Task("AppVeyor")
+  .IsDependentOn("Run-Unit-Tests")
   .IsDependentOn("Publish-MyGet")
   .IsDependentOn("Publish-NuGet")
   .IsDependentOn("Publish-GitHub-Release")
