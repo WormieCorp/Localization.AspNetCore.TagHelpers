@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="ParamTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -15,23 +15,22 @@ namespace Localization.AspNetCore.TagHelpers.Tests
   using System.Text.Encodings.Web;
   using System.Threading.Tasks;
   using Microsoft.AspNetCore.Razor.TagHelpers;
-  using NUnit.Framework;
+  using Xunit;
 
-  [Category("Parameter")]
   public class ParamTagHelperTests
   {
-    [Test]
+    [Fact]
     public void ParameterOrderIsHigherThanLocalizeTagHelperOrder()
     {
       var tagHelper1 = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(null);
       var tagHelper2 = TestHelper.CreateTagHelper<LocalizeTagHelper>(null);
       var paramTagHelper = CreateTagHelper();
 
-      Assert.That(paramTagHelper.Order, Is.GreaterThan(tagHelper1.Order));
-      Assert.That(paramTagHelper.Order, Is.GreaterThan(tagHelper2.Order));
+      Assert.True(paramTagHelper.Order > tagHelper1.Order);
+      Assert.True(paramTagHelper.Order > tagHelper2.Order);
     }
 
-    [Test]
+    [Fact]
     public async Task ProcessAsync_AppendsLocalizedTextToExistingList()
     {
       var helper = CreateTagHelper();
@@ -48,10 +47,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       await helper.ProcessAsync(context, output);
 
-      Assert.That(parameters, Is.EqualTo(expected));
+      Assert.Equal(expected, parameters);
     }
 
-    [Test]
+    [Fact]
     public async Task ProcessAsync_DoesNothingIfNoStackIsAvailable()
     {
       var helper = CreateTagHelper();
@@ -61,11 +60,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       var html = await CreateHtmlOutput(helper, context, output);
 
-      Assert.That(context.Items, Is.Empty);
-      Assert.That(html, Is.EqualTo("<parameter>My Localized String</parameter>"));
+      Assert.Empty(context.Items);
+      Assert.Equal("<parameter>My Localized String</parameter>", html);
     }
 
-    [Test]
+    [Fact]
     public async Task ProcessAsync_RemovesAllContent()
     {
       var helper = CreateTagHelper();
@@ -74,10 +73,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       await helper.ProcessAsync(context, output);
 
-      Assert.That(output.Content.IsEmptyOrWhiteSpace, Is.True);
+      Assert.True(output.Content.IsEmptyOrWhiteSpace);
     }
 
-    [Test]
+    [Fact]
     public async Task ProcessAsync_RemovesTagName()
     {
       var helper = CreateTagHelper();
@@ -86,7 +85,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       await helper.ProcessAsync(context, output);
 
-      Assert.That(output.TagName, Is.Null);
+      Assert.Null(output.TagName);
     }
 
     private async Task<string> CreateHtmlOutput(TagHelper tagHelper, TagHelperContext tagContext, TagHelperOutput tagOutput)

@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="GenericLocalizeTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -20,41 +20,32 @@ namespace Localization.AspNetCore.TagHelpers.Tests
   using Microsoft.Extensions.Localization;
   using Microsoft.Extensions.Options;
   using Moq;
-  using NUnit.Framework;
+  using Xunit;
 
   public class GenericLocalizeTagHelperTests
   {
-    public static IEnumerable LocalizeNewLinesTestData
+    public static IEnumerable<object[]> LocalizeNewLinesTestData
     {
       get
       {
         var text = "This is\r\nThe\nUnormalized Text\r\n";
-        yield return new TestCaseData(text, text.Trim(), NewLineHandling.None, true, false);
+        yield return new object[] { text, text.Trim(), NewLineHandling.None, true, false };
         var expectedText = text.Replace("\r\n", "\n").Replace("\n", Environment.NewLine);
-        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Auto, true, false);
+        yield return new object[] { text, expectedText.Trim(), NewLineHandling.Auto, true, false };
         expectedText = text.Replace("\n", "\r\n").Replace("\r\r", "\r");
-        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Windows, true, false);
+        yield return new object[] { text, expectedText.Trim(), NewLineHandling.Windows, true, false };
         expectedText = text.Replace("\r", "");
-        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Unix, true, false);
+        yield return new object[] { text, expectedText.Trim(), NewLineHandling.Unix, true, false };
 
         text = "  This\r\n   Will\r\nAlways\r\n    Trimmed \r\nDown   ";
         expectedText = "This\r\nWill\r\nAlways\r\nTrimmed\r\nDown";
-        yield return new TestCaseData(text, expectedText.Trim(), NewLineHandling.Windows, true, false)
-        {
-          TestName = "ProcessAsync_CanTrimWhitespaceOnEachLine"
-        };
+        yield return new object[] { text, expectedText.Trim(), NewLineHandling.Windows, true, false };
 
-        yield return new TestCaseData("This will transform\nNew Lines   \r\n   But not trim\n  whitespace   ",
-          "This will transform\nNew Lines   \n   But not trim\n  whitespace   ", NewLineHandling.Unix, false, false)
-        {
-          TestName = "ProcessAsync_CanReplaceNewLinesWithoutTrimming"
-        };
+        yield return new object[]{"This will transform\nNew Lines   \r\n   But not trim\n  whitespace   ",
+          "This will transform\nNew Lines   \n   But not trim\n  whitespace   ", NewLineHandling.Unix, false, false };
 
-        yield return new TestCaseData("\r\n   \r\n   This should trim everything before and after \r\n \n \r\n",
-          "This should trim everything before and after", NewLineHandling.Auto, false, true)
-        {
-          TestName = "ProcessAsync_TrimsBeforeAndAfterWhenTrimWhitespaceIsTrueAndTrimEachLineIsFalse"
-        };
+        yield return new object[]{"\r\n   \r\n   This should trim everything before and after \r\n \n \r\n",
+          "This should trim everything before and after", NewLineHandling.Auto, false, true };
       }
     }
 
@@ -64,21 +55,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       {
         var encoder = HtmlEncoder.Default;
 
-        yield return new TestCaseData("p", "This will be localized", "This is the localized text", true, false)
-          .Returns("<p>This is the localized text</p>");
+        yield return new object[] { "p", "This will be localized", "This is the localized text", true, false, "<p>This is the localized text</p>" };
         var text = "This the the <small>localized</small> text with <strong>html</strong>";
-        yield return new TestCaseData("p", "This wi be localized", text, true, false)
-          .Returns($"<p>{encoder.Encode(text)}</p>");
-        yield return new TestCaseData("span", "This", text, true, true)
-          .Returns($"<span>{text}</span>");
-        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, false)
-          .Returns($"<div>    {encoder.Encode(text)}    </div>");
-        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, true)
-          .Returns($"<div>    {text}    </div>");
-        yield return new TestCaseData("div", "     Localize    ", $"{text}", true, false)
-          .Returns($"<div>{encoder.Encode(text)}</div>");
-        yield return new TestCaseData("div", "    Localize    ", $"{text}", true, true)
-          .Returns($"<div>{text}</div>");
+        yield return new object[] { "p", "This wi be localized", text, true, false, $"<p>{encoder.Encode(text)}</p>" };
+        yield return new object[] { "span", "This", text, true, true, $"<span>{text}</span>" };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, false, $"<div>    {encoder.Encode(text)}    </div>" };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, true, $"<div>    {text}    </div>" };
+        yield return new object[] { "div", "     Localize    ", $"{text}", true, false, $"<div>{encoder.Encode(text)}</div>" };
+        yield return new object[] { "div", "    Localize    ", $"{text}", true, true, $"<div>{text}</div>" };
       }
     }
 
@@ -88,38 +72,31 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       {
         var encoder = HtmlEncoder.Default;
 
-        yield return new TestCaseData("p", "This will be {0}", "This is the {0} text", true, false, new[] { "Localized" })
-          .Returns("<p>This is the Localized text</p>");
+        yield return new object[] { "p", "This will be {0}", "This is the {0} text", true, false, new[] { "Localized" }, "<p>This is the Localized text</p>" };
         var text = "This the the <small>{0}</small> {1} with <strong>html</strong>";
         var parameters = new[] { "Localized", "text" };
-        yield return new TestCaseData("p", "This wi be localized", text, true, false, parameters)
-          .Returns($"<p>{encoder.Encode(string.Format(text, parameters))}</p>");
-        yield return new TestCaseData("span", "This", text, true, true, parameters)
-          .Returns($"<span>{string.Format(text, parameters)}</span>");
-        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, false, parameters)
-          .Returns($"<div>    {encoder.Encode(string.Format(text, parameters))}    </div>");
-        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, true, parameters)
-          .Returns($"<div>    {string.Format(text, parameters)}    </div>");
-        yield return new TestCaseData("div", "     Localize    ", $"{text}", true, false, parameters)
-          .Returns($"<div>{encoder.Encode(string.Format(text, parameters))}</div>");
-        yield return new TestCaseData("div", "    Localize    ", $"{text}", true, true, parameters)
-          .Returns($"<div>{string.Format(text, parameters)}</div>");
+        yield return new object[] { "p", "This wi be localized", text, true, false, parameters, $"<p>{encoder.Encode(string.Format(text, parameters))}</p>" };
+        yield return new object[] { "span", "This", text, true, true, parameters, $"<span>{string.Format(text, parameters)}</span>" };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, false, parameters, $"<div>    {encoder.Encode(string.Format(text, parameters))}    </div>" };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, true, parameters, $"<div>    {string.Format(text, parameters)}    </div>" };
+        yield return new object[] { "div", "     Localize    ", $"{text}", true, false, parameters, $"<div>{encoder.Encode(string.Format(text, parameters))}</div>" };
+        yield return new object[] { "div", "    Localize    ", $"{text}", true, true, parameters, $"<div>{string.Format(text, parameters)}</div>" };
       }
     }
 
-    [Test]
+    [Fact]
     public void Constructor_ThrowsArgumentNullExceptionOnHostingEnvironmentIsNull()
     {
-      Assert.That(() => new GenericLocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null, null), Throws.ArgumentNullException);
+      Assert.Throws<ArgumentNullException>(() => new GenericLocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null, null));
     }
 
-    [Test]
+    [Fact]
     public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
     {
-      Assert.That(() => new GenericLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null), Throws.ArgumentNullException);
+      Assert.Throws<ArgumentNullException>(() => new GenericLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null));
     }
 
-    [Test]
+    [Fact]
     public void Init_AddsNewParameterListToExistingStack()
     {
       var tagHelper = CreateTagHelper();
@@ -128,12 +105,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       tagHelper.Init(tagContext);
       tagHelper.Init(tagContext);
 
-      Assert.That(tagContext.Items, Contains.Key(typeof(GenericLocalizeTagHelper)));
+      Assert.Contains(tagContext.Items, (contextItems) => contextItems.Key == typeof(GenericLocalizeTagHelper));
       var item = tagContext.Items[typeof(GenericLocalizeTagHelper)];
-      Assert.That(item, Is.Not.Null.And.TypeOf<Stack<List<object>>>().And.Count.EqualTo(2));
+      Assert.NotNull(item);
+      Assert.IsType<Stack<List<object>>>(item);
+      Assert.Equal(2, ((Stack<List<object>>)item).Count);
     }
 
-    [Test]
+    [Fact]
     public void Init_CreatesANewParameterStack()
     {
       var tagHelper = CreateTagHelper();
@@ -141,22 +120,25 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       tagHelper.Init(tagContext);
 
-      Assert.That(tagContext.Items, Contains.Key(typeof(GenericLocalizeTagHelper)));
+      Assert.Contains(tagContext.Items, (contextItem) => contextItem.Key == typeof(GenericLocalizeTagHelper));
       var item = tagContext.Items[typeof(GenericLocalizeTagHelper)];
-      Assert.That(item, Is.Not.Null.And.TypeOf<Stack<List<object>>>().And.Count.EqualTo(1));
+      Assert.NotNull(item);
+      Assert.IsType<Stack<List<object>>>(item);
+      Assert.Equal(1, ((Stack<List<object>>)item).Count);
     }
 
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "/Views/Home/Index.cshtml", "/Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "\\Views\\Home\\Index.cshtml", "\\Views\\Home\\Index.cshtml", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication.Web", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Web.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_Layout.cshtml", "TestApplication.Views.Shared._Layout")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_MyPartial.cshtml", "TestApplication.Views.Shared._MyPartial")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Home/_HomePartial.cshtml", "TestApplication.Views.Home._HomePartial")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", null, "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.txt", null, "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
+    [Theory]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "/Views/Home/Index.cshtml", "/Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "\\Views\\Home\\Index.cshtml", "\\Views\\Home\\Index.cshtml", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication.Web", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Web.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_Layout.cshtml", "TestApplication.Views.Shared._Layout")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_MyPartial.cshtml", "TestApplication.Views.Shared._MyPartial")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Home/_HomePartial.cshtml", "TestApplication.Views.Home._HomePartial")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", null, "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.txt", null, "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
     public void Init_CreatesHtmlLocalizerFromViewContext(string appName, string viewPath, string executionPath, string expectedBaseName)
     {
       var hostingEnvironment = new Mock<IHostingEnvironment>();
@@ -176,8 +158,9 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       factoryMock.Verify(x => x.Create(expectedBaseName, appName), Times.Once());
     }
 
-    [TestCase("MyCustomName")]
-    [TestCase("MyBase.Name")]
+    [Theory]
+    [InlineData("MyCustomName")]
+    [InlineData("MyBase.Name")]
     public void Init_CreatesHtmlLocalizerWithUserSpecifiedName(string name)
     {
       var factory = TestHelper.CreateFactoryMock(true);
@@ -190,9 +173,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       factory.Verify(x => x.Create(name, TestHelper.ApplicationName), Times.Once());
     }
 
-    [TestCase(typeof(GenericLocalizeTagHelper))]
-    [TestCase(typeof(TestHelper))]
-    [TestCase(typeof(ParamTagHelperTests))]
+    [Theory]
+    [InlineData(typeof(GenericLocalizeTagHelper))]
+    [InlineData(typeof(TestHelper))]
+    [InlineData(typeof(ParamTagHelperTests))]
     public void Init_CreatesHtmlLocalizerWithUserSpecifiedType(Type type)
     {
       var factory = TestHelper.CreateFactoryMock(true);
@@ -205,7 +189,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       factory.Verify(x => x.Create(type), Times.Once());
     }
 
-    [Test]
+    [Fact]
     public void Init_SkipsCreatingParameterStackIfInheritedClassSetsSupportsParametersToFalse()
     {
       var tagHelper = TestHelper.CreateTagHelper<NoParametersSupported>(null);
@@ -213,10 +197,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       tagHelper.Init(tagContext);
 
-      Assert.That(tagContext.Items, !Contains.Key(typeof(GenericLocalizeTagHelper)));
+      Assert.DoesNotContain(tagContext.Items, (item) => item.Key == typeof(GenericLocalizeTagHelper));
     }
 
-    [TestCaseSource(nameof(LocalizeNewLinesTestData))]
+    [Theory]
+    [MemberData(nameof(LocalizeNewLinesTestData))]
     public async Task ProcessAsync_CanHandleNewLineNormalization(string text, string expectedText, NewLineHandling handling, bool trimEachLine, bool trimWhitespace)
     {
       var localizer = TestHelper.CreateLocalizerMock(false);
@@ -233,8 +218,9 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       localizer.Verify(x => x.GetString(expectedText), Times.Once);
     }
 
-    [TestCaseSource(nameof(LocalizeTestData))]
-    public async Task<string> ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml)
+    [Theory]
+    [MemberData(nameof(LocalizeTestData))]
+    public async Task ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml, string expected)
     {
       var textToLocalize = trim ? text.Trim() : text;
       var localizer = TestHelper.CreateLocalizerMock(false);
@@ -255,11 +241,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
         localizer.Verify(x => x.GetString(textToLocalize), Times.Once);
       }
 
-      return output;
+      Assert.Equal(expected, output);
     }
 
-    [TestCaseSource(nameof(LocalizeTestDataWithParameters))]
-    public async Task<string> ProcessAsync_CanLocalizeTextWithParameters(string tagName, string text, string expectedText, bool trim, bool isHtml, object[] parameters)
+    [Theory]
+    [MemberData(nameof(LocalizeTestDataWithParameters))]
+    public async Task ProcessAsync_CanLocalizeTextWithParameters(string tagName, string text, string expectedText, bool trim, bool isHtml, object[] parameters, string expected)
     {
       var textToLocalize = trim ? text.Trim() : text;
       var localizer = TestHelper.CreateLocalizerMock(false);
@@ -290,7 +277,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
         localizer.Verify(x => x.GetString(textToLocalize, parameters), Times.Once);
       }
 
-      return htmlOutput;
+      Assert.Equal(expected, htmlOutput);
     }
 
     protected GenericLocalizeTagHelper CreateTagHelper()

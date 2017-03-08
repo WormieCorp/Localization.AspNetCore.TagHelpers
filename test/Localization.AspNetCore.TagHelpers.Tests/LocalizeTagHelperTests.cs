@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="LocalizeTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -9,7 +9,7 @@
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
   using System;
-  using System.Collections;
+  using System.Collections.Generic;
   using System.Text.Encodings.Web;
   using System.Threading.Tasks;
   using Microsoft.AspNetCore.Hosting;
@@ -17,48 +17,42 @@ namespace Localization.AspNetCore.TagHelpers.Tests
   using Microsoft.Extensions.Localization;
   using Microsoft.Extensions.Options;
   using Moq;
-  using NUnit.Framework;
+  using Xunit;
 
   public class LocalizeTagHelperTests
   {
-    public static IEnumerable LocalizeTestData
+    public static IEnumerable<object> LocalizeTestData
     {
       get
       {
         var encoder = HtmlEncoder.Default;
 
-        yield return new TestCaseData("localize", "This will be localized", "This is the localized text", true, false)
-          .Returns("This is the localized text");
+        yield return new object[] { "localize", "This will be localized", "This is the localized text", true, false, "This is the localized text" };
         var text = "This the the <small>localized</small> text with <strong>html</strong>";
-        yield return new TestCaseData("p", "This wi be localized", text, true, false)
-          .Returns(encoder.Encode(text));
-        yield return new TestCaseData("span", "This", text, true, true)
-          .Returns(text);
-        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, false)
-          .Returns($"    {encoder.Encode(text)}    ");
-        yield return new TestCaseData("div", "Localize", $"    {text}    ", false, true)
-          .Returns($"    {text}    ");
-        yield return new TestCaseData("div", "     Localize    ", $"{text}", true, false)
-          .Returns(encoder.Encode(text));
-        yield return new TestCaseData("div", "    Localize    ", $"{text}", true, true)
-          .Returns(text);
+        yield return new object[] { "p", "This wi be localized", text, true, false, encoder.Encode(text) };
+        yield return new object[] { "span", "This", text, true, true, text };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, false, $"    {encoder.Encode(text)}    " };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, true, $"    {text}    " };
+        yield return new object[] { "div", "     Localize    ", $"{text}", true, false, encoder.Encode(text) };
+        yield return new object[] { "div", "    Localize    ", $"{text}", true, true, text };
       }
     }
 
-    [Test]
+    [Fact]
     public void Constructor_ThrowsArgumentNullExceptionOnHostingEnvironmentIsNull()
     {
-      Assert.That(() => new LocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null, null), Throws.ArgumentNullException);
+      Assert.Throws<ArgumentNullException>(() => new LocalizeTagHelper(TestHelper.CreateFactoryMock(false).Object, null, null));
     }
 
-    [Test]
+    [Fact]
     public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
     {
-      Assert.That(() => new LocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null), Throws.ArgumentNullException);
+      Assert.Throws<ArgumentNullException>(() => new LocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null));
     }
 
-    [TestCase("MyCustomName")]
-    [TestCase("MyBase.Name")]
+    [Theory]
+    [InlineData("MyCustomName")]
+    [InlineData("MyBase.Name")]
     public void Init_CreatesHtmlLocalizerWithUserSpecifiedName(string name)
     {
       var factory = TestHelper.CreateFactoryMock(true);
@@ -71,9 +65,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       factory.Verify(x => x.Create(name, TestHelper.ApplicationName), Times.Once());
     }
 
-    [TestCase(typeof(GenericLocalizeTagHelper))]
-    [TestCase(typeof(TestHelper))]
-    [TestCase(typeof(ParamTagHelperTests))]
+    [Theory]
+    [InlineData(typeof(GenericLocalizeTagHelper))]
+    [InlineData(typeof(TestHelper))]
+    [InlineData(typeof(ParamTagHelperTests))]
     public void Init_CreatesHtmlLocalizerWithUserSpecifiedType(Type type)
     {
       var factory = TestHelper.CreateFactoryMock(true);
@@ -86,7 +81,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       factory.Verify(x => x.Create(type), Times.Once());
     }
 
-    [Test]
+    [Fact]
     public void Init_SkipsCreatingParameterStackIfInheritedClassSetsSupportsParametersToFalse()
     {
       var tagHelper = TestHelper.CreateTagHelper<LocalizeNoParametersTagHelper>(null);
@@ -94,11 +89,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       tagHelper.Init(tagContext);
 
-      Assert.That(tagContext.Items, !Contains.Key(typeof(GenericLocalizeTagHelper)));
+      Assert.DoesNotContain(tagContext.Items, (item) => item.Key == typeof(GenericLocalizeTagHelper));
     }
 
-    [TestCaseSource(nameof(LocalizeTestData))]
-    public async Task<string> ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml)
+    [Theory]
+    [MemberData(nameof(LocalizeTestData))]
+    public async Task ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml, string expected)
     {
       var textToLocalize = trim ? text.Trim() : text;
       var localizer = TestHelper.CreateLocalizerMock(false);
@@ -119,10 +115,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
         localizer.Verify(x => x.GetString(textToLocalize), Times.Once);
       }
 
-      return output;
+      Assert.Equal(expected, output);
     }
 
-    [Test]
+    [Fact]
     public async Task ProcessAsync_RemovesTagName()
     {
       var tagHelper = CreateTagHelper();
@@ -130,7 +126,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       var output = await TestHelper.GenerateHtmlAsync(tagHelper, "localize", expected);
 
-      Assert.That(output, Is.EqualTo(expected));
+      Assert.Equal(expected, output);
     }
 
     protected LocalizeTagHelper CreateTagHelper()

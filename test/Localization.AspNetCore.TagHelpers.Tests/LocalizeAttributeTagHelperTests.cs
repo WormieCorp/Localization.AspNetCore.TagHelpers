@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="LocalizeAttributeTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -21,7 +21,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
   using Microsoft.AspNetCore.Razor.TagHelpers;
   using Microsoft.Extensions.Localization;
   using Moq;
-  using NUnit.Framework;
+  using Xunit;
 
   public class LocalizeAttributeTagHelperTests
   {
@@ -29,51 +29,42 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     private Mock<IHtmlLocalizerFactory> locFactoryMock;
     private Mock<IHtmlLocalizer> locMock;
 
-    #region Setup/Teardown
-
-    [SetUp]
-    public void Reset()
-    {
-      locMock.Reset();
-      locMock.Setup(x => x.GetString(It.IsAny<string>())).Returns<string>(s => new LocalizedString(s, s, true));
-      locMock.Setup(x => x[It.IsAny<string>()]).Returns<string>(s => new LocalizedHtmlString(s, s, true));
-    }
-
-    [OneTimeSetUp]
-    public void Setup()
+    public LocalizeAttributeTagHelperTests()
     {
       locMock = new Mock<IHtmlLocalizer>();
       hostingMock = new Mock<IHostingEnvironment>();
       hostingMock.Setup(x => x.ApplicationName).Returns("Localization.AspNetCore.TagHelpers.Tests");
       locFactoryMock = new Mock<IHtmlLocalizerFactory>();
       locFactoryMock.Setup(x => x.Create(It.IsAny<string>(), hostingMock.Object.ApplicationName)).Returns(locMock.Object);
+      locMock.Reset();
+      locMock.Setup(x => x.GetString(It.IsAny<string>())).Returns<string>(s => new LocalizedString(s, s, true));
+      locMock.Setup(x => x[It.IsAny<string>()]).Returns<string>(s => new LocalizedHtmlString(s, s, true));
     }
-
-    #endregion Setup/Teardown
 
     #region Constructor
 
-    [Test]
+    [Fact]
     public void Constructor_ThrowsArgumentNullExceptionIfPassedIViewLocalizerIsNull()
     {
-      Assert.That(() => new LocalizeAttributeTagHelper(null, new Mock<IHostingEnvironment>().Object), Throws.ArgumentNullException.And.Message.Contains("localizer"));
+      Assert.Throws<ArgumentNullException>(() => new LocalizeAttributeTagHelper(null, new Mock<IHostingEnvironment>().Object));
     }
 
     #endregion Constructor
 
     #region Init
 
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "/Views/Home/Index.cshtml", "/Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "\\Views\\Home\\Index.cshtml", "\\Views\\Home\\Index.cshtml", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication.Web", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Web.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_Layout.cshtml", "TestApplication.Views.Shared._Layout")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_MyPartial.cshtml", "TestApplication.Views.Shared._MyPartial")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "Views/Home/_HomePartial.cshtml", "TestApplication.Views.Home._HomePartial")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", null, "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.txt", null, "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.cshtml", "", "TestApplication.Views.Home.Index")]
-    [TestCase("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
+    [Theory]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "/Views/Home/Index.cshtml", "/Views/Home/Index.cshtml", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "\\Views\\Home\\Index.cshtml", "\\Views\\Home\\Index.cshtml", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication.Web", "Views/Home/Index.cshtml", "Views/Home/Index.cshtml", "TestApplication.Web.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_Layout.cshtml", "TestApplication.Views.Shared._Layout")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Shared/_MyPartial.cshtml", "TestApplication.Views.Shared._MyPartial")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "Views/Home/_HomePartial.cshtml", "TestApplication.Views.Home._HomePartial")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", null, "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.txt", null, "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.cshtml", "", "TestApplication.Views.Home.Index")]
+    [InlineData("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
     public void Init_CreatesHtmlLocalizerFromViewContext(string appName, string viewPath, string executionPath, string expectedBaseName)
     {
       var hostingEnvironment = new Mock<IHostingEnvironment>();
@@ -97,7 +88,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     #region Process
 
-    [Test]
+    [Fact]
     public void Process_CanLocalizeMultipleAttributes()
     {
       var tagHelper = InitTagHelper();
@@ -114,14 +105,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       var actual = CreateHtmlOutput(tagHelper, context, output);
 
-      Assert.That(output.Attributes.ContainsName("title"), Is.True, "Title attribute has not been set");
-      Assert.That(output.Attributes.ContainsName("alt"), Is.True, "Alt attribute has not been set");
-      Assert.That(actual, Is.EqualTo(expected));
+      Assert.Contains(output.Attributes, (attr) => attr.Name == "title");
+      Assert.Contains(output.Attributes, (attr) => attr.Name == "alt");
+      Assert.Equal(expected, actual);
 
       locMock.Verify(x => x.GetString(It.IsAny<string>()), Times.Exactly(2));
     }
 
-    [Test]
+    [Fact]
     public void Process_CanLocalizeSingleAttributeValue()
     {
       var tagHelper = InitTagHelper();
@@ -133,15 +124,16 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       var actual = CreateHtmlOutput(tagHelper, context, output);
 
-      Assert.That(output.Attributes.ContainsName("title"), Is.True, "Title attribute is not set");
-      Assert.That(actual, Is.EqualTo(expected));
+      Assert.Contains(output.Attributes, (attr) => attr.Name == "title");
+      Assert.Equal(expected, actual);
 
       locMock.Verify(x => x.GetString("Localize-me"), Times.Once());
     }
 
-    [TestCase(null)]
-    [TestCase("")]
-    [TestCase("           ")]
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("           ")]
     public void Process_EmptyAttributesIsIgnored(string value)
     {
       var tagHelper = InitTagHelper();
@@ -152,8 +144,8 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       var actual = CreateHtmlOutput(tagHelper, context, output);
 
-      Assert.That(output.Attributes.ContainsName("title"), Is.False, "Title attribute has been set");
-      Assert.That(actual, Is.EqualTo(expected));
+      Assert.DoesNotContain(output.Attributes, (attr) => attr.Name == "title");
+      Assert.Equal(expected, actual);
 
       locMock.Verify(x => x.GetString(value), Times.Never());
     }
