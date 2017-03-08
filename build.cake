@@ -38,7 +38,8 @@ Task("Restore-NuGet-Packages")
   {
     DotNetCoreRestore("./", new DotNetCoreRestoreSettings
     {
-      Verbose = false
+      Verbose = false,
+      ArgumentCustomization = parameters.GetMsBuildArgs(Context)
     });
   });
 
@@ -66,14 +67,7 @@ Task("Build")
     VersionSuffix = parameters.Version.DotNetAsterix,
     Configuration = parameters.Configuration,
     NoDependencies = true,
-    ArgumentCustomization = (args) =>
-    {
-      args.AppendQuoted("/property:VersionPrefix={0};PackageReleaseNotes={1};PackageOutputPath={2}",
-        parameters.Version.Version,
-        parameters.ReleaseNotes,
-        parameters.Paths.Directories.NugetRoot.MakeAbsolute(Context.Environment));
-      return args;
-    }
+    ArgumentCustomization = parameters.GetMsBuildArgs(Context)
   });
 });
 
@@ -96,6 +90,7 @@ Task("Run-Unit-Tests")
         Configuration = parameters.Configuration,
         NoBuild = true,
         Verbose = false,
+        ArgumentCustomization = parameters.GetMsBuildArgs(Context)
       });
     };
 
@@ -136,7 +131,8 @@ Task("Copy-Files")
     VersionSuffix = parameters.Version.DotNetAsterix,
     Configuration = parameters.Configuration,
     OutputDirectory = parameters.Paths.Directories.ArtifactsBinNet451,
-    Verbose = false
+    Verbose = false,
+    ArgumentCustomization = parameters.GetMsBuildArgs(Context)
   });
 
   if (FileExists("./artifacts/CHANGELOG.md"))

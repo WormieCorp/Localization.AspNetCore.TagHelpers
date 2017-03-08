@@ -32,3 +32,4 @@ test: off
 
 cache:
 - tools -> .build/tools.cake,tools/packages.config
+- src/Localization.Demo/node_modules -> src/Localization.Demo/package.json

@@ -8,6 +8,7 @@ public class BuildParameters
   public const string MainRepoName = "Localization.AspNetCore.TagHelpers";
   public const string MainRepo = MainRepoUser + "/" + MainRepoName;
   public const string MainBranch = "master";
+  private const string ArgumentCustomizationFormat = "/property:VersionPrefix={0};PackageReleaseNotes={1};PackageOutputPath={2}{3}";
 
   public string Target { get; private set; }
   public string Configuration { get; private set; }
@@ -74,6 +75,22 @@ public class BuildParameters
     {
       ReleaseNotes = string.Join("\r\n", releaseNotesArray);
     }
+  }
+
+  public Func<ProcessArgumentBuilder, ProcessArgumentBuilder> GetMsBuildArgs(ICakeContext context)
+  {
+    return (args) =>
+    {
+      return
+        args
+          .AppendQuoted(
+            ArgumentCustomizationFormat,
+            Version.Version,
+            ReleaseNotes,
+            Paths.Directories.NugetRoot.MakeAbsolute(context.Environment),
+            IsRunningOnUnix ? ";NetCoreOnly=true" : ""
+          );
+    };
   }
 
   public static BuildParameters GetParameters(ICakeContext context)

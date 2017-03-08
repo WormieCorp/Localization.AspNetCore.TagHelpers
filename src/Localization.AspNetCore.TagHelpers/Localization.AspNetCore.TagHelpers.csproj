@@ -17,7 +17,8 @@ Please see the documentation for all available attributes and their usage:
 https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki</Description>
     <Copyright>Copyright 2016-2017 - Kim Nordmo</Copyright>
     <Authors>AdmiringWorm</Authors>
-    <TargetFrameworks>netstandard1.6;net451</TargetFrameworks>
+    <TargetFramework Condition="'$(NetCoreOnly)'=='true'">netstandard1.6</TargetFramework>
+    <TargetFrameworks Condition="'$(NetCoreOnly)'!='true'">netstandard1.6;net451</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Localization.AspNetCore.TagHelpers</AssemblyName>
     <PackageId>Localization.AspNetCore.TagHelpers</PackageId>
