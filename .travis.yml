@@ -26,7 +26,8 @@ branches:
     - ci/wercker
     - /^v[0-9]/ # Skip tag builds, these should already have been tested before the tag was created
 
-#before_install:
+before_install:
+  - git fetch --unshallow
 #  -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
 #  -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
 
@@ -37,3 +38,6 @@ script:
 cache:
   directories:
     - tools
+
+before_cache:
+  - rm -f tools/packages.config
