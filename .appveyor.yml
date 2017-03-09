@@ -15,7 +15,7 @@ init:
 
 install:
 - pip install codecov
-- cinst kb3035131 kb3033929 kb2919442 kb219355 kb2999226 -n # These fail or are not needed
+- cinst kb3035131 kb3033929 kb2919442 kb2919355 kb2999226 -n # These fail or are not needed
 - cinst dotnetcore dotnetcore-sdk
 
 build_script:
