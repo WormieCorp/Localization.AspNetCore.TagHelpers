@@ -15,6 +15,7 @@ init:
 
 install:
 - pip install codecov
+- cinst dotnetcore dotnetcore-sdk
 
 build_script:
 - ps: .\build.ps1 -Configuration Release -Target AppVeyor
