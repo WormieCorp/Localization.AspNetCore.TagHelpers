@@ -36,7 +36,7 @@ Task("Restore-NuGet-Packages")
   .IsDependentOn("Clean")
   .Does(() =>
   {
-    DotNetCoreRestore("./", new DotNetCoreRestoreSettings
+    DotNetCoreRestore("./Localization.AspNetCore.TagHelpers.sln", new DotNetCoreRestoreSettings
     {
       Verbose = false,
       ArgumentCustomization = parameters.GetMsBuildArgs(Context)
