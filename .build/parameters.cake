@@ -82,8 +82,8 @@ public class BuildParameters
   {
     return (args) =>
     {
-      return
-        args
+      args.Append("/m");
+      args
           .AppendQuoted(
             ArgumentCustomizationFormat,
             Version.Version,
@@ -91,6 +91,11 @@ public class BuildParameters
             Paths.Directories.NugetRoot.MakeAbsolute(context.Environment),
             CompileNetCoreOnly ? ";NetCoreOnly=true" : ""
           );
+      if (IsRunningOnAppVeyor)
+      {
+        args.AppendQuoted("/logger:C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll");
+      }
+      return args;
     };
   }
 
