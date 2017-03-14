@@ -190,6 +190,20 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     }
 
     [Fact]
+    public void Init_NeverCallsHtmlLocalizerFactoryIfHtmlLocalizerIsNotNull()
+    {
+      var factoryMock = new Mock<IHtmlLocalizerFactory>();
+      var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
+      tagHelper.Localizer = new Mock<IHtmlLocalizer>().Object;
+      var tagContext = TestHelper.CreateTagContext();
+
+      tagHelper.Init(tagContext);
+
+      factoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Never);
+      factoryMock.Verify(f => f.Create(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
     public void Init_SkipsCreatingParameterStackIfInheritedClassSetsSupportsParametersToFalse()
     {
       var tagHelper = TestHelper.CreateTagHelper<NoParametersSupported>(null);
