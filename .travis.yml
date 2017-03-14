@@ -28,11 +28,11 @@ branches:
 
 before_install:
   - git fetch --unshallow
-  - if [ "$TRAVIS_OS_NAME" == "osx"]; then ulimit -n 1024; fi
 #  -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
 #  -  if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
 
 script:
+  - if [ "$TRAVIS_OS_NAME" == "osx"]; then ulimit -n 1024; fi
   - chmod +x build.sh
   - ./build.sh --target Unix-CI
 
