@@ -17,8 +17,6 @@ init:
 install:
 - ps: Install-Product node $env:nodejs_version
 - pip install codecov
-- cinst kb3035131 kb3033929 kb2919442 kb2919355 kb2999226 -n # These fail or are not needed
-- cinst dotnetcore dotnetcore-sdk
 
 build_script:
 - ps: .\build.ps1 -Configuration Release -Target AppVeyor
