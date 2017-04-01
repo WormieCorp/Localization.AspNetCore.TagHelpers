@@ -78,7 +78,7 @@ public class BuildParameters
     }
   }
 
-  public Func<ProcessArgumentBuilder, ProcessArgumentBuilder> GetMsBuildArgs(ICakeContext context)
+  public Func<ProcessArgumentBuilder, ProcessArgumentBuilder> GetMsBuildArgs(ICakeContext context, bool netCoreOnly = false)
   {
     return (args) =>
     {
@@ -89,7 +89,7 @@ public class BuildParameters
             Version.Version,
             ReleaseNotes,
             Paths.Directories.NugetRoot.MakeAbsolute(context.Environment),
-            CompileNetCoreOnly ? ";NetCoreOnly=true" : ""
+            (CompileNetCoreOnly || netCoreOnly) ? ";NetCoreOnly=true" : ""
           );
       return args;
     };

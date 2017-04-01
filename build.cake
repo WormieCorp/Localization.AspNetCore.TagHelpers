@@ -18,7 +18,7 @@ Setup(context =>
     context.Log.Verbosity = Verbosity.Diagnostic;
   }
 
-  Information("Building version {0} of Cake ({1}, {2}) using version {3} of Cake. (IsTagged: {4})",
+  context.Information("Building version {0} of Cake ({1}, {2}) using version {3} of Cake. (IsTagged: {4})",
     parameters.Version.SemVersion,
     parameters.Configuration,
     parameters.Target,
@@ -89,7 +89,7 @@ Task("Run-Unit-Tests")
         Configuration = parameters.Configuration,
         NoBuild = true,
         Verbose = false,
-        ArgumentCustomization = parameters.GetMsBuildArgs(Context)
+        ArgumentCustomization = parameters.GetMsBuildArgs(Context, netCoreOnly: true)
       });
     };
 

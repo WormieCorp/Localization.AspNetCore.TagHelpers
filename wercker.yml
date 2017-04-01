@@ -6,4 +6,4 @@ build:
       name: "Building and Testing"
       code: |
         chmod +x build.sh
-        ./build.sh --target Unix-CI
+        ./build.sh --target Unix-CI --with-net451
