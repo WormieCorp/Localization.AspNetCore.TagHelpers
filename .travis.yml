@@ -43,3 +43,8 @@ cache:
 
 before_cache:
   - rm -f tools/packages.config
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/c330b5bf936d03eec002
