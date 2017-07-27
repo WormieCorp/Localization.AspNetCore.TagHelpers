@@ -16,11 +16,9 @@ init:
 
 install:
 - ps: Install-Product node $env:nodejs_version
-- pip install codecov
 
 build_script:
 - ps: .\build.ps1 -Configuration Release -Target AppVeyor
-- ps: codecov -f $(Get-ChildItem -Path "./" -Name "OpenCover.xml" -Recurse -File | select -First 1) -X gcov
 - ps: |
     $wc = New-Object 'System.Net.WebClient'
     Get-ChildItem -Path "./" -Name "TestResult*.xml" -Recurse -File | % {

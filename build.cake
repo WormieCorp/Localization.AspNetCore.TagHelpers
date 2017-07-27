@@ -119,6 +119,17 @@ Task("Run-Unit-Tests")
   }
 });
 
+Task("Upload-Coverage-Report")
+  .IsDependentOn("Run-Unit-Tests")
+  .WithCriteria(() => parameters.IsRunningOnAppVeyor)
+  .Does(() =>
+{
+  Codecov(new CodecovSettings {
+    Files = new[] { parameters.Paths.Files.TestCoverageOutputFilePath },
+    Required = true
+  });
+});
+
 Task("Copy-Files")
   .IsDependentOn("Run-Unit-Tests")
   .IsDependentOn("Export-Release-Notes")
@@ -318,7 +329,7 @@ Task("Default")
   .IsDependentOn("Package");
 
 Task("AppVeyor")
-  .IsDependentOn("Run-Unit-Tests")
+  .IsDependentOn("Upload-Coverage-Report")
   .IsDependentOn("Publish-MyGet")
   .IsDependentOn("Publish-NuGet")
   .IsDependentOn("Publish-GitHub-Release")
