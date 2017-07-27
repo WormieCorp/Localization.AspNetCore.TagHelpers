@@ -48,7 +48,11 @@ Task("Restore-NPM-Packages")
   .WithCriteria(() => !HasEnvironmentVariable("WERCKER"))
   .Does(() =>
   {
-    Npm.WithLogLevel(NpmLogLevel.Warn).FromPath("./src/Localization.Demo").Install();
+    var settings = new NpmInstallSettings {
+      LogLevel = NpmLogLevel.Warn,
+      WorkingDirectory = "./src/Localization.Demo"
+    };
+    NpmInstall(settings);
   })
   .OnError(exception =>
 {
@@ -125,7 +129,7 @@ Task("Upload-Coverage-Report")
   .Does(() =>
 {
   Codecov(new CodecovSettings {
-    Files = new[] { parameters.Paths.Files.TestCoverageOutputFilePath },
+    Files = new[] { parameters.Paths.Files.TestCoverageOutputFilePath.ToString() },
     Required = true
   });
 });
