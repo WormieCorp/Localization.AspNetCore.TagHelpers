@@ -67,7 +67,7 @@ public class BuildVersion
     {
       Version = version,
       SemVersion = semVersion,
-      FullSemVer = fullSemVersion,
+      FullSemVersion = fullSemVersion,
       DotNetAsterix = semVersion.Substring(version.Length).TrimStart('-'),
       Milestone = milestone,
       CakeVersion = cakeVersion
