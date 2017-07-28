@@ -135,7 +135,7 @@ Task("Upload-Coverage-Report")
   Codecov(new CodecovSettings {
     Files = new[] { parameters.Paths.Files.TestCoverageOutputFilePath.ToString() },
     Required = true,
-    EnvironmentVariable = new Dictionary<string,string> { { "APPVEYOR_BUILD_VERSION", buildVersion } }
+    EnvironmentVariables = new Dictionary<string,string> { { "APPVEYOR_BUILD_VERSION", buildVersion } }
   });
 });
 
