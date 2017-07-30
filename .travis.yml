@@ -25,6 +25,7 @@ branches:
     - ci/appveyor
     - ci/wercker
     - /^v[0-9]/ # Skip tag builds, these should already have been tested before the tag was created
+    - gh-pages
 
 before_install:
   - git fetch --unshallow

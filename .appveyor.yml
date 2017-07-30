@@ -10,6 +10,7 @@ branches:
   except:
   - ci/travis
   - ci/wercker
+  - gh-pages
 
 init:
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
