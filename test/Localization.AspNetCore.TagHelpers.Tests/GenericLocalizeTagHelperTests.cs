@@ -305,7 +305,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var hostingEnvMock = new Mock<IHostingEnvironment>();
       hostingEnvMock.SetupGet(x => x.ApplicationName).Returns(TestHelper.ApplicationName);
 
-      var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodingEnabled = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
+      var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodeByDefault = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
       var helper = new GenericLocalizeTagHelper(factory.Object, hostingEnvMock.Object, options);
       helper.ViewContext = TestHelper.DefaultViewContext;
 

@@ -15,9 +15,10 @@ namespace Localization.AspNetCore.TagHelpers
   {
     /// <summary>
     /// Gets or sets wether the localize tag helpers should localize its content by default.
+    /// (Can be overridden by using <c>html=<see langword="false"/></c> when calling one of the localize tag helpers).
     /// </summary>
     /// <remarks>Defaults to <see langword="true"/></remarks>
-    public bool HtmlEncodingEnabled { get; set; } = true;
+    public bool HtmlEncodeByDefault { get; set; } = true;
 
     /// <summary>
     ///   Gets or sets what new lines should be normalized to, or <see cref="NewLineHandling.None" />
