@@ -631,3 +631,6 @@ build/
 # Cake tools directory
 tools/**/*
 !tools/packages.config
+
+# Build Artifacts
+BuildArtifacts/
