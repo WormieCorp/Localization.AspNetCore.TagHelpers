@@ -306,12 +306,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       hostingEnvMock.SetupGet(x => x.ApplicationName).Returns(TestHelper.ApplicationName);
 
       var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodeByDefault = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
-      var helper = new GenericLocalizeTagHelper(factory.Object, hostingEnvMock.Object, options);
-      helper.ViewContext = TestHelper.DefaultViewContext;
+      var helper = new GenericLocalizeTagHelper(factory.Object, hostingEnvMock.Object, options)
+      {
+        ViewContext = TestHelper.DefaultViewContext
+      };
+      var result = await TestHelper.GenerateHtmlAsync(helper, "p", expected);
 
-      await TestHelper.GenerateHtmlAsync(helper, "p", expected);
-
-      localizer.Verify(x => x.GetHtml(expected), Times.Once());
+      localizer.Verify(x => x[expected], Times.Once());
+      Assert.Equal("<p>" + expected + "</p>", result);
     }
     protected GenericLocalizeTagHelper CreateTagHelper()
       => CreateTagHelper(null);
