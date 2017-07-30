@@ -294,6 +294,25 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       Assert.Equal(expected, htmlOutput);
     }
 
+    [Fact]
+    public async Task ProcessAsync_DoesNotHtmlEncodeWhenGloballyDisabled()
+    {
+      const string expected = "<a href=\"https://google.com\">Hello</a>";
+
+      var localizer = TestHelper.CreateLocalizerMock(false);
+      SetupLocalizer(localizer, expected, expected, true);
+      var factory = TestHelper.CreateFactoryMock(localizer.Object);
+      var hostingEnvMock = new Mock<IHostingEnvironment>();
+      hostingEnvMock.SetupGet(x => x.ApplicationName).Returns(TestHelper.ApplicationName);
+
+      var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodingEnabled = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
+      var helper = new GenericLocalizeTagHelper(factory.Object, hostingEnvMock.Object, options);
+      helper.ViewContext = TestHelper.DefaultViewContext;
+
+      await TestHelper.GenerateHtmlAsync(helper, "p", expected);
+
+      localizer.Verify(x => x.GetHtml(expected), Times.Once());
+    }
     protected GenericLocalizeTagHelper CreateTagHelper()
       => CreateTagHelper(null);
 
