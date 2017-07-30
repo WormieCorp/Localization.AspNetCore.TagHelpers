@@ -69,11 +69,13 @@ namespace Localization.AspNetCore.TagHelpers
       {
         NewLineHandling = options.Value.NewLineHandling;
         TrimWhitespace = options.Value.TrimWhitespace;
+        IsHtml = !options.Value.HtmlEncodingEnabled;
       }
       else
       {
         NewLineHandling = NewLineHandling.Auto;
         TrimWhitespace = true;
+        IsHtml = false;
       }
     }
 
