@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+	<channel>
+		<title>Localization.AspNetCore.TagHelpers</title>
+		<link>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers</link>
+		<description />
+		<copyright>2017</copyright>
+		<pubDate>Sun, 01 Oct 2017 15:14:22 GMT</pubDate>
+		<lastBuildDate>Sun, 01 Oct 2017 15:14:22 GMT</lastBuildDate>
+		<item>
+			<title>New Release - 0.3.0</title>
+			<link>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.3.0</link>
+			<description>Release details of Localization.AspNetCore.TagHelpers version 0.3.0</description>
+			<author>AdmiringWorm</author>
+			<guid>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.3.0</guid>
+			<pubDate>Tue, 14 Mar 2017 00:00:00 GMT</pubDate>
+		</item>
+		<item>
+			<title>New Release - 0.2.0</title>
+			<link>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.2.0</link>
+			<description>Release details of Localization.AspNetCore.TagHelpers version 0.2.0</description>
+			<author>AdmiringWorm</author>
+			<guid>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.2.0</guid>
+			<pubDate>Wed, 26 Oct 2016 00:00:00 GMT</pubDate>
+		</item>
+		<item>
+			<title>New Release - 0.1.0</title>
+			<link>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0-1-0</link>
+			<description>Release details of Localization.AspNetCore.TagHelpers version 0.1.0</description>
+			<author>AdmiringWorm</author>
+			<guid>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0-1-0</guid>
+			<pubDate>Sun, 23 Oct 2016 00:00:00 GMT</pubDate>
+		</item>
+	</channel>
+</rss>

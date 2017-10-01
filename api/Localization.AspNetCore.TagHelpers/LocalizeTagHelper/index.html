@@ -1,0 +1,506 @@
+﻿<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="description">
+        <meta name="keywords" content="static content generator,static site generator,static site,HTML,web development,.NET,C#,Razor,Markdown,YAML">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
+        <title>Localization.AspNetCore.TagHelpers - API - LocalizeTagHelper Class</title>
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/mermaid.css" rel="stylesheet">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/theme/theme.css" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,400i,700,700i" rel="stylesheet">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/override.css" rel="stylesheet">
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery-2.2.3.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/bootstrap.min.js"></script>        
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/app.min.js"></script>         
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/highlight.pack.js"></script>   
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.slimscroll.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.sticky-kit.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/mermaid.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/html5shiv.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/respond.min.js"></script>
+        <![endif]-->  
+
+        
+    </head>
+    <body class="hold-transition wyam layout-boxed  ">    
+        <div class="top-banner"></div>
+        <div class="wrapper with-container">
+            <!-- Header -->
+            <header class="main-header">   
+                     
+                <a href="/Localization.AspNetCore.TagHelpers/" class="logo">
+                            <span>Localization.AspNetCore.TagHelpers</span>
+                </a>   
+                         
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                        <a href="#" class="sidebar-toggle visible-xs-block" data-toggle="offcanvas" role="button">
+                            <span class="sr-only">Toggle side menu</span>
+                            <i class="fa fa-chevron-circle-right"></i>
+                        </a>
+                                        
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <span class="sr-only">Toggle side menu</span>
+                            <i class="fa fa-chevron-circle-down"></i>
+                        </button>
+                    </div>
+            
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                        <ul class="nav navbar-nav">                            
+                                    <li><a href="/Localization.AspNetCore.TagHelpers/docs">Documentation</a></li>
+        <li><a href="/Localization.AspNetCore.TagHelpers/blog">Blog</a></li>
+        <li class="active"><a href="/Localization.AspNetCore.TagHelpers/api">API</a></li>
+ 
+                        </ul>       
+                    </div>
+                    <!-- /.navbar-collapse -->
+                
+                    <!-- Navbar Right Menu -->
+                </nav>
+            </header>
+            
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar ">
+                <section class="infobar" data-spy="affix" data-offset-top="60" data-offset-bottom="200"> 
+                    	
+	<div id="infobar-headings"><h6>On This Page</h6><p><a href="#Summary">Summary</a></p>
+<p><a href="#Syntax">Syntax</a></p>
+<p><a href="#Examples">Examples</a></p>
+<p><a href="#Attributes">Attributes</a></p>
+<p><a href="#Constructors">Constructors</a></p>
+<p><a href="#Properties">Properties</a></p>
+<p><a href="#Methods">Methods</a></p>
+<p><a href="#SeeAlso">See Also</a></p>
+<hr class="infobar-hidden">
+</div>
+
+                </section>
+                <section class="sidebar">                    
+                    	
+	    <script src="/Localization.AspNetCore.TagHelpers/assets/js/lunr.min.js"></script>
+    <script src="/Localization.AspNetCore.TagHelpers/assets/js/searchIndex.js"></script>
+    <div class="sidebar-form">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control" placeholder="Search Types...">
+            <span class="input-group-btn">
+                <button class="btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+    <div id="search-results">
+    </div>
+    <script>
+        function runSearch(query){
+            $("#search-results").empty();			
+            if( query.length < 2 ){
+                return;
+            }			
+            var results = searchModule.search("*" + query + "*");
+            var listHtml = "<ul class='sidebar-menu'>";	
+            listHtml += "<li class='header'>Type Results</li>";	
+            if(results.length == 0 ){
+                listHtml += "<li>No results found</li>";
+            } else {					
+                for(var i = 0; i < results.length; ++i){
+                    var res = results[i];
+                    listHtml += "<li><a href='" + res.url + "'>" + res.title + "</a></li>";
+                }				
+            }
+            listHtml += "</ul>";				
+            $("#search-results").append(listHtml);
+        }
+
+        $(document).ready(function(){
+            $("#search").on('input propertychange paste', function() {
+                runSearch($("#search").val());
+            });
+        });
+    </script>
+	
+    <hr>
+
+                    <ul class="sidebar-menu">
+                        
+			<li class="header">Namespace</li>
+		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></li>
+		<li role="separator" class="divider"></li>
+			<li class="header">Class Types</li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper">Localize<wbr>Attribute<wbr>Tag<wbr>Helper</a></li>
+				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper">LocalizeTagHelper</a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions">Localize<wbr>Tag<wbr>Helper<wbr>Options</a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/ParameterTagHelper">ParameterTagHelper</a></li>
+			<li class="header">Enum Types</li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling">NewLineHandling</a></li>
+
+
+                    </ul>
+                </section>                
+            </aside>
+            
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                
+
+
+
+<section class="content-header">
+	<h1>LocalizeTagHelper <small>Class</small></h1>
+</section>
+<section class="content">
+	
+	
+		<h1 id="Summary">Summary</h1>
+	<div class="lead">
+      Adds support to localize the everything with the <code class="cs">localize</code> tag.
+    </div>
+
+		<div class="panel panel-default">
+  			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6">
+						<dl class="dl-horizontal">		
+
+								<dt>Namespace</dt>
+								<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></dd>
+											
+							
+								<dt>Base Types</dt>
+								<dd>
+									<ul class="list-unstyled">										
+											<li>TagHelper</li>								
+											<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></li>								
+									</ul>
+								</dd>				
+							
+							
+						</dl>
+					</div>		
+					<div class="col-md-6">
+						<div class="mermaid">
+							graph TD
+	Base0["GenericLocalizeTagHelper"]--&gt;Type
+	click Base0 "/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper"
+	Base1["TagHelper"]--&gt;Base0
+	Type["LocalizeTagHelper"]
+class Type type-node
+
+						</div>
+					</div>
+				</div>
+  			</div>
+		</div>
+
+	<h1 id="Syntax">Syntax</h1>
+	<pre><code>[HtmlTargetElement(LOCALIZE_TAG_NAME)]
+public class LocalizeTagHelper : GenericLocalizeTagHelper</code></pre>
+
+	<h1 id="Examples">Examples</h1>
+	<div>
+      <pre><code class="cs">&lt;localize&gt;
+To text to localize goes here
+&lt;/localize&gt;</code></pre>
+    </div>
+
+
+	<h1 id="Attributes">Attributes</h1>
+	<div class="box">
+		<div class="box-body no-padding table-responsive">
+			<table class="table table-striped table-hover two-cols">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+					<tbody><tr>
+						<td>HtmlTargetElement</td>
+						<td></td>
+					</tr>
+			</tbody></table>
+		</div>
+	</div>	
+
+
+
+			<h1 id="Constructors">Constructors</h1>
+			<div class="box">
+				<div class="box-body no-padding table-responsive">
+					<table class="table table-striped table-hover two-cols">
+						<thead>
+							<tr>
+								<th>Name</th>
+									<th>Summary</th>
+							</tr>
+						</thead>
+							<tbody><tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper/DE134D74">LocalizeTagHelper<wbr>(<wbr>I<wbr>Html<wbr>Localizer<wbr>Factory, <wbr>I<wbr>Hosting<wbr>Environment, <wbr>IOptions<wbr>&lt;<wbr>Localize<wbr>Tag<wbr>Helper<wbr>Options&gt;<wbr>)<wbr></a></td>
+									<td>
+      Initializes a new instance of the <code class="cs"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper">LocalizeTagHelper</a></code> class.
+    </td>
+							</tr>
+					</tbody></table>
+				</div>
+			</div>
+		
+
+
+
+			<h1 id="Properties">Properties</h1>
+			<div class="box">
+				<div class="box-body no-padding table-responsive">
+					<table class="table table-striped table-hover three-cols">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Value</th>
+								<th>Summary</th>
+							</tr>
+						</thead>
+							<tbody><tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/72B7A671">IsHtml</a></td>
+								<td>bool</td>
+								<td>
+									<div>
+    Gets or sets a value indicating whether the inner text should be treated as HTML (no encoding).
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/6C7F7E36">Localizer</a></td>
+								<td>IHtmlLocalizer</td>
+								<td>
+									<div>
+     Gets or sets the localizer to use when resolving the specified strings.
+     </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/2EB690E0">Name</a></td>
+								<td>string</td>
+								<td>
+									<div>
+    Gets or sets the name to optionally override the name/path of the resource file. If the name
+    is empty it resolves to the current path and name of the view. i.e the view located at
+    <code class="cs">"~/Views/Home/About.cshtml"</code> passes the following name to the html localizer as <code class="cs">Views/Home/About</code>
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/6F544402">NewLineHandling</a></td>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling">NewLineHandling</a></td>
+								<td>
+									<div>
+    Gets or sets the new line handing method.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/B24DA850">SupportsParameters</a></td>
+								<td>bool</td>
+								<td>
+									<div>
+    Gets a value indicating whether this localizer tag helper supports parameters.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/4AAF3DA7">TrimEachLine</a></td>
+								<td>bool</td>
+								<td>
+									<div>
+    Gets or sets a value indicating whether to trim whitespace on each line. <note type="note">
+    If enabled, this will override the <see cref="P:Localization.AspNetCore.TagHelpers.GenericLocalizeTagHelper.TrimWhitespace">.</see></note>
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/D65F547D">TrimWhitespace</a></td>
+								<td>bool</td>
+								<td>
+									<div>
+    Gets or sets a value indicating whether beginning and ending whitespace.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/019F6D32">Type</a></td>
+								<td>Type</td>
+								<td>
+									<div>
+    Gets or sets the type to use when looking up the resource file.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/57992CFB">ViewContext</a></td>
+								<td>ViewContext</td>
+								<td>
+									<div>
+    Gets or sets the view context (automatically set when using razor views).
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+					</tbody></table>
+				</div>
+			</div>
+		
+
+			<h1 id="Methods">Methods</h1>
+			<div class="box">
+				<div class="box-body no-padding table-responsive">
+					<table class="table table-striped table-hover three-cols">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Value</th>
+								<th>Summary</th>
+							</tr>
+						</thead>
+							<tbody><tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/DB38415D">GetContentAsync<wbr>(TagHelperContext, <wbr>TagHelperOutput)<wbr></a></td>
+								<td>Task<wbr>&lt;string&gt;<wbr></td>
+								<td>
+									<div>
+    Gets the content/text that are to be localized.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/66B15E25">GetParameters<wbr>(TagHelperContext)<wbr></a></td>
+								<td>IEnumerable<wbr>&lt;object&gt;<wbr></td>
+								<td>
+									<div>
+    Gets the parameters to use when localizing the text.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/98843F3B">Init<wbr>(TagHelperContext)<wbr></a></td>
+								<td>void</td>
+								<td>
+									<div>
+    Initializes this Localize Tag Helpers, setting the html localizer and creating a stack list
+    for child tag helpers to add parameters to.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper/A02B0DF1">ProcessAsync<wbr>(TagHelperContext, <wbr>TagHelperOutput)<wbr></a></td>
+								<td>Task</td>
+								<td>
+									<div>
+      This function first calls the base ProcessAsync method, then removes the tag name.
+    </div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/6EEC0D04">SetContent<wbr>(TagHelperContext, <wbr>TagHelperContent, <wbr>string)<wbr></a></td>
+								<td>void</td>
+								<td>
+									<div>
+    Sets the localized content back to where the original content was.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper/3BD917DF">SetHtmlContent<wbr>(TagHelperContext, <wbr>TagHelperContent, <wbr>IHtmlContent)<wbr></a></td>
+								<td>void</td>
+								<td>
+									<div>
+    Sets the localized content without encoding it back to where the original content was.
+    </div>
+											<div><small><em>Inherited from <a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></em></small></div>
+								</td>
+							</tr>
+					</tbody></table>
+				</div>
+			</div>
+		
+
+
+	<h1 id="SeeAlso">See Also</h1>
+	<ul class="list-unstyled">
+			<li>Microsoft.AspNetCore.Razor.TagHelpers.TagHelper</li>
+			<li><code><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">GenericLocalizeTagHelper</a></code></li>
+	</ul>
+
+	
+</section>
+                
+            </div>           
+            
+            <!-- Footer -->
+            <footer class="main-footer">
+            </footer>
+            
+        </div>
+        <div class="wrapper bottom-wrapper">
+            <footer class="bottom-footer">
+                Generated by <a href="https://wyam.io">Wyam</a>
+            </footer>
+        </div>
+        <a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <script>           
+            // Close the sidebar if we select an anchor link
+            $(".main-sidebar a[href^='#']:not('.expand')").click(function(){
+                $(document.body).removeClass('sidebar-open');
+            });
+            
+            $(document).load(function() {
+                mermaid.initialize(
+                {
+                    flowchart:
+                    {
+                        htmlLabels: false,
+                        useMaxWidth:false
+                    }
+                });  
+                mermaid.init(undefined, ".mermaid")
+                $('svg').addClass('img-responsive');
+                
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });  
+            });
+            hljs.initHighlightingOnLoad();
+
+            // Back to top
+            $(window).scroll(function() {
+                if ($(this).scrollTop() >= 200) {        // If page is scrolled more than 50px
+                    $('#return-to-top').fadeIn(1000);    // Fade in the arrow
+                } else {
+                    $('#return-to-top').fadeOut(1000);   // Else fade out the arrow
+                }
+            });
+            $('#return-to-top').click(function() {      // When arrow is clicked
+                $('body,html').animate({
+                    scrollTop : 0                       // Scroll to top of body
+                }, 500);
+            });
+        </script>
+    
+</body></html>
