@@ -19,8 +19,7 @@ install:
 - ps: if ($isWindows) { Install-Product node $env:nodejs_version }
 
 build_script:
-- ps: if ($isWindows) { .\build.ps1 -Configuration Release -Target AppVeyor }
-- sh: bash ./build.sh --Configuration Release --Target AppVeyor
+- ps: .\build.ps1 -Configuration Release -Target AppVeyor
 - ps: |
     $wc = New-Object 'System.Net.WebClient'
     Get-ChildItem -Path "./" -Name "TestResult*.xml" -Recurse -File | % {
