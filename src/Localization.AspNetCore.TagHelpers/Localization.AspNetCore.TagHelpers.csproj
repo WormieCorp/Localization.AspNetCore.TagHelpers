@@ -24,7 +24,7 @@ Ability to localize html attribute using the following: `&lt;span localize-title
 Please see the documentation for all available attributes and their usage:
 https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki
     </Description>
-    <Copyright>Copyright 2016-2017 - Kim Nordmo</Copyright>
+    <Copyright>Copyright 2016-2018 - Kim Nordmo</Copyright>
     <Authors>AdmiringWorm</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Localization.AspNetCore.TagHelpers</AssemblyName>
@@ -35,8 +35,8 @@ https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6.1' ">1.6.1</NetStandardImplicitPackageVersion>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <IncludeSymbols>True</IncludeSymbols>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,6 +48,10 @@ https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../SolutionInfo.cs" />
+  </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard1.6' ">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="1.1.3" />
