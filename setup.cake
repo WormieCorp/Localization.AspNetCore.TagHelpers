@@ -11,7 +11,9 @@ BuildParameters.SetParameters(
     repositoryName: "Localization.AspNetCore.TagHelpers",
     appVeyorAccountName: "AdmiringWorm",
     solutionFilePath: "./Localization.AspNetCore.TagHelpers.sln",
-    shouldRunInspectCode: false
+    shouldRunInspectCode: false,
+    shouldRunDotNetCorePack: true,
+    shouldRunCodecov: true
 );
 
 ToolSettings.SetToolSettings(
