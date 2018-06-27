@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="LocalizeTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -21,7 +21,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
   public class LocalizeTagHelperTests
   {
-    public static IEnumerable<object> LocalizeTestData
+    public static IEnumerable<object[]> LocalizeTestData
     {
       get
       {

@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GenericLocalizeTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -49,7 +49,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       }
     }
 
-    public static IEnumerable LocalizeTestData
+    public static IEnumerable<object[]> LocalizeTestData
     {
       get
       {
@@ -66,7 +66,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       }
     }
 
-    public static IEnumerable LocalizeTestDataWithParameters
+    public static IEnumerable<object[]> LocalizeTestDataWithParameters
     {
       get
       {
@@ -105,7 +105,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       tagHelper.Init(tagContext);
       tagHelper.Init(tagContext);
 
-      Assert.Contains(tagContext.Items, (contextItems) => contextItems.Key == typeof(GenericLocalizeTagHelper));
+      Assert.Contains(tagContext.Items, (contextItems) => (Type)contextItems.Key == typeof(GenericLocalizeTagHelper));
       var item = tagContext.Items[typeof(GenericLocalizeTagHelper)];
       Assert.NotNull(item);
       Assert.IsType<Stack<List<object>>>(item);
@@ -120,11 +120,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       tagHelper.Init(tagContext);
 
-      Assert.Contains(tagContext.Items, (contextItem) => contextItem.Key == typeof(GenericLocalizeTagHelper));
+      Assert.Contains(tagContext.Items, (contextItem) => (Type)contextItem.Key == typeof(GenericLocalizeTagHelper));
       var item = tagContext.Items[typeof(GenericLocalizeTagHelper)];
       Assert.NotNull(item);
-      Assert.IsType<Stack<List<object>>>(item);
-      Assert.Equal(1, ((Stack<List<object>>)item).Count);
+      var stackList = Assert.IsType<Stack<List<object>>>(item);
+      Assert.Single(stackList);
     }
 
     [Theory]
@@ -146,11 +146,15 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var factoryMock = TestHelper.CreateFactoryMock(true);
       var view = new Mock<IView>();
       view.Setup(v => v.Path).Returns(viewPath);
-      var viewContext = new ViewContext();
-      viewContext.ExecutingFilePath = executionPath;
-      viewContext.View = view.Object;
-      var tagHelper = new GenericLocalizeTagHelper(factoryMock.Object, hostingEnvironment.Object, null);
-      tagHelper.ViewContext = viewContext;
+      var viewContext = new ViewContext
+      {
+        ExecutingFilePath = executionPath,
+        View = view.Object
+      };
+      var tagHelper = new GenericLocalizeTagHelper(factoryMock.Object, hostingEnvironment.Object, null)
+      {
+        ViewContext = viewContext
+      };
       var context = TestHelper.CreateTagContext();
 
       tagHelper.Init(context);
@@ -211,7 +215,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       tagHelper.Init(tagContext);
 
-      Assert.DoesNotContain(tagContext.Items, (item) => item.Key == typeof(GenericLocalizeTagHelper));
+      Assert.DoesNotContain(tagContext.Items, (item) => (Type)item.Key == typeof(GenericLocalizeTagHelper));
     }
 
     [Theory]
@@ -315,6 +319,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       localizer.Verify(x => x[expected], Times.Once());
       Assert.Equal("<p>" + expected + "</p>", result);
     }
+
     protected GenericLocalizeTagHelper CreateTagHelper()
       => CreateTagHelper(null);
 

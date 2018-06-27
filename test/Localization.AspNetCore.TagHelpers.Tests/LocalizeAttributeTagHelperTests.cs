@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="LocalizeAttributeTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -72,11 +72,15 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var factoryMock = TestHelper.CreateFactoryMock(true);
       var view = new Mock<IView>();
       view.Setup(v => v.Path).Returns(viewPath);
-      var viewContext = new ViewContext();
-      viewContext.ExecutingFilePath = executionPath;
-      viewContext.View = view.Object;
-      var tagHelper = new LocalizeAttributeTagHelper(factoryMock.Object, hostingEnvironment.Object);
-      tagHelper.ViewContext = viewContext;
+      var viewContext = new ViewContext
+      {
+        ExecutingFilePath = executionPath,
+        View = view.Object
+      };
+      var tagHelper = new LocalizeAttributeTagHelper(factoryMock.Object, hostingEnvironment.Object)
+      {
+        ViewContext = viewContext
+      };
       var context = TestHelper.CreateTagContext();
 
       tagHelper.Init(context);
