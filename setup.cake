@@ -29,5 +29,9 @@ ToolSettings.SetToolSettings(
     testCoverageExcludeByAttribute: "*.ExcludeFromCodeCoverage*",
     testCoverageExcludeByFile: "*Designer.cs;*7*.g.cs;*.g.i.cs;*.g.cs"
 );
+// We add this manually, otherwise we get build errors on linux builds on appveyor
+Task("Install-GitLink").Does(() => RequireTool(GitLinkTool, () => {}));
+
+BuildParameters.Tasks.DotNetCoreBuildTask.IsDependentOn("Install-GitLink");
 
 Build.RunDotNetCore();
