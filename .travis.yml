@@ -31,7 +31,7 @@ before_install:
 script:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then ulimit -n 1024; fi
   - chmod +x build.sh
-  - ./build.sh --target Unix-CI
+  - ./build.sh
 
 cache:
   bundler: true
