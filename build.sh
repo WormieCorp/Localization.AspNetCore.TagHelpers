@@ -23,7 +23,7 @@ else
 fi
 
 # Define default arguments.
-SCRIPT="build.cake"
+SCRIPT="setup.cake"
 TARGET="Default"
 CONFIGURATION="Release"
 VERBOSITY="verbose"
@@ -52,6 +52,17 @@ done
 # Make sure the tools folder exist.
 if [ ! -d "$TOOLS_DIR" ]; then
   mkdir "$TOOLS_DIR"
+fi
+
+if [ "$NETCOREONLY" != "true" ] && [ -z "$FrameworkPathOverride" ]; then
+  MONOLIBDIR="$(find /usr/lib/mono/4.5* /usr/local/lib/mono/4.5* /usr/local/Cellar/mono/*/lib/mono/4.5* /Library/Frameworks/Mono.framework/Versions/*/lib/mono/4.5* -name mscorlib.dll -print -quit 2>/dev/null)"
+  if [ ! -f "$MONOLIBDIR" ]; then
+    echo "MONO Library Directory was not found... Disabling mono build" >&2
+    NETCOREONLY=true
+  else
+    echo "Exporting framework path: $(dirname $MONOLIBDIR)/"
+    export FrameworkPathOverride="$(dirname $MONOLIBDIR)/"
+  fi
 fi
 
 # Make sure that packages.config exist.

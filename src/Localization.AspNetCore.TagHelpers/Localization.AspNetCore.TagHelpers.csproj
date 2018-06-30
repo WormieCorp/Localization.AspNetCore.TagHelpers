@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Condition="'$(NetCoreOnly)'=='true'">
-    <TargetFrameworks>netstandard1.6.1;netstandard1.6</TargetFrameworks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(NetCoreOnly)'!='true'">
-    <TargetFrameworks>netstandard1.6.1;netstandard1.6;net451</TargetFrameworks>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -24,7 +21,7 @@ Ability to localize html attribute using the following: `&lt;span localize-title
 Please see the documentation for all available attributes and their usage:
 https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki
     </Description>
-    <Copyright>Copyright 2016-2017 - Kim Nordmo</Copyright>
+    <Copyright>Copyright 2016-2018 - Kim Nordmo</Copyright>
     <Authors>AdmiringWorm</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Localization.AspNetCore.TagHelpers</AssemblyName>
@@ -34,9 +31,8 @@ https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki
     <PackageLicenseUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers</RepositoryUrl>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6.1' ">1.6.1</NetStandardImplicitPackageVersion>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <IncludeSymbols>True</IncludeSymbols>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -49,17 +45,8 @@ https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard1.6' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="1.1.1" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="1.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="1.0.2" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.1.1" />
   </ItemGroup>
 </Project>

@@ -1,26 +1,30 @@
-image: Visual Studio 2017
+image:
+- Visual Studio 2017
+- Ubuntu
 pull_requests:
   do_not_increment_build_number: true
 environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: "-t7z -m0=lzma -mx=9"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  nodejs_version: "6"
+  nodejs_version: "8"
 branches:
   except:
   - ci/travis
   - ci/wercker
-
-init:
-- "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+  - gh-pages
+stack: node 8
 
 install:
-- ps: Install-Product node $env:nodejs_version
-- pip install codecov
+- ps: if ($isWindows) { Install-Product node $env:nodejs_version }
 
 build_script:
-- ps: .\build.ps1 -Configuration Release -Target AppVeyor
-- ps: codecov -f $(Get-ChildItem -Path "./" -Name "OpenCover.xml" -Recurse -File | select -First 1) -X gcov
+- ps: |
+    if ($isWindows) {
+      .\build.ps1 -Configuration Release -Target AppVeyor
+    } else {
+      .\build.ps1 -Configuration Release -Target Upload-AppVeyor-Artifacts
+    }
 - ps: |
     $wc = New-Object 'System.Net.WebClient'
     Get-ChildItem -Path "./" -Name "TestResult*.xml" -Recurse -File | % {
@@ -34,6 +38,6 @@ artifacts:
 test: off
 
 cache:
-- tools -> .build/tools.cake,tools/packages.config
+- tools -> build.ps1,setup.cake
 - src/Localization.Demo/node_modules -> src/Localization.Demo/package.json
 - src/Localization.Demo/wwwroot/lib -> src/Localization.Demo/bower.json,src/Localization.Demo/.bowerrc
