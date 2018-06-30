@@ -3,8 +3,8 @@
 	<link rel="self" href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers" />
 	<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers</id>
 	<title>Localization.AspNetCore.TagHelpers</title>
-	<rights>2017</rights>
-	<updated>2017-10-01T15:14:22Z</updated>
+	<rights>2018</rights>
+	<updated>2018-06-30T10:43:36Z</updated>
 	<entry>
 		<author>
 			<name>AdmiringWorm</name>
@@ -13,7 +13,16 @@
 		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.3.0</id>
 		<title>New Release - 0.3.0</title>
 		<updated>2017-03-14T00:00:00Z</updated>
-		<summary>Release details of Localization.AspNetCore.TagHelpers version 0.3.0</summary>
+		<content>&lt;h1 id="release"&gt;0.3.0 Release&lt;/h1&gt;
+&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/0.2.0...0.3.0"&gt;25 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=3&amp;amp;state=closed"&gt;3 issues&lt;/a&gt; being closed.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Feature&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues/13"&gt;&lt;strong&gt;#13&lt;/strong&gt;&lt;/a&gt; Add ability to reuse an existing instantiated IViewLocalizer/IHtmlLocalizer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="where-to-get-it"&gt;Where to get it&lt;/h3&gt;
+&lt;p&gt;You can download this release from &lt;a href="https://www.nuget.org/packages/Localization.AspNetCore.TagHelpers/0.3.0"&gt;NuGet&lt;/a&gt;&lt;/p&gt;
+</content>
+		<summary>&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/0.2.0...0.3.0"&gt;25 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=3&amp;amp;state=closed"&gt;3 issues&lt;/a&gt; being closed.&lt;/p&gt;</summary>
 	</entry>
 	<entry>
 		<author>
@@ -23,7 +32,48 @@
 		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.2.0</id>
 		<title>New Release - 0.2.0</title>
 		<updated>2016-10-26T00:00:00Z</updated>
-		<summary>Release details of Localization.AspNetCore.TagHelpers version 0.2.0</summary>
+		<content>&lt;h1 id="release"&gt;0.2.0 Release&lt;/h1&gt;
+&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/v0.1.0...0.2.0"&gt;20 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=2&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Breaking change&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues/10"&gt;&lt;strong&gt;#10&lt;/strong&gt;&lt;/a&gt; Renamed most tag attributes
+&lt;ul&gt;
+&lt;li&gt;The following tag names was changes
+&lt;ul&gt;
+&lt;li&gt;localize-html -&amp;gt; html&lt;/li&gt;
+&lt;li&gt;localize (with name) -&amp;gt; resource-name&lt;/li&gt;
+&lt;li&gt;localize-trim -&amp;gt; trim&lt;/li&gt;
+&lt;li&gt;localize-type -&amp;gt; resource-type&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Features&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues/6"&gt;&lt;strong&gt;#6&lt;/strong&gt;&lt;/a&gt; Add ability to normalize newlines
+&lt;ul&gt;
+&lt;li&gt;Available using tag attribute &lt;code&gt;newline&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues/5"&gt;&lt;strong&gt;#5&lt;/strong&gt;&lt;/a&gt; Add line whitespace trimming
+&lt;ul&gt;
+&lt;li&gt;Available using tag attribute &lt;code&gt;trimlines&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Bug&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues/8"&gt;&lt;strong&gt;#8&lt;/strong&gt;&lt;/a&gt; Cannot implicitly convert type 'bool' to 'string'&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Improvement&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues/7"&gt;&lt;strong&gt;#7&lt;/strong&gt;&lt;/a&gt; Allow Whitespace trimming to be set globally&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="where-to-get-it"&gt;Where to get it&lt;/h3&gt;
+&lt;p&gt;You can download this release from &lt;a href="https://www.nuget.org/packages/Localization.AspNetCore.TagHelpers/0.2.0"&gt;NuGet&lt;/a&gt;&lt;/p&gt;
+</content>
+		<summary>&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/v0.1.0...0.2.0"&gt;20 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=2&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;</summary>
 	</entry>
 	<entry>
 		<author>
@@ -33,6 +83,11 @@
 		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0-1-0</id>
 		<title>New Release - 0.1.0</title>
 		<updated>2016-10-23T00:00:00Z</updated>
-		<summary>Release details of Localization.AspNetCore.TagHelpers version 0.1.0</summary>
+		<content>&lt;h1 id="release"&gt;0.1.0 Release&lt;/h1&gt;
+&lt;p&gt;This was originally meant to be the first working release of Localization.AspNetCore.TagHelpers.
+Unfortunately due to a missed bug during testing this release never worked at all.&lt;/p&gt;
+</content>
+		<summary>&lt;p&gt;This was originally meant to be the first working release of Localization.AspNetCore.TagHelpers.
+Unfortunately due to a missed bug during testing this release never worked at all.&lt;/p&gt;</summary>
 	</entry>
 </feed>

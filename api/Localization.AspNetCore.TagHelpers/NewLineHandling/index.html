@@ -57,6 +57,7 @@
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">                            
                                     <li><a href="/Localization.AspNetCore.TagHelpers/docs">Documentation</a></li>
+        <li><a href="/Localization.AspNetCore.TagHelpers/tasks">Tasks</a></li>
         <li><a href="/Localization.AspNetCore.TagHelpers/blog">Blog</a></li>
         <li class="active"><a href="/Localization.AspNetCore.TagHelpers/api">API</a></li>
  
@@ -79,7 +80,8 @@
 </div>
 
                 </section>
-                <section class="sidebar">                    
+                <section class="sidebar">    
+                                     
                     	
 	    <script src="/Localization.AspNetCore.TagHelpers/assets/js/lunr.min.js"></script>
     <script src="/Localization.AspNetCore.TagHelpers/assets/js/searchIndex.js"></script>
@@ -107,7 +109,7 @@
             } else {					
                 for(var i = 0; i < results.length; ++i){
                     var res = results[i];
-                    listHtml += "<li><a href='" + res.url + "'>" + res.title + "</a></li>";
+                    listHtml += "<li><a href='" + res.url + "'>" + htmlEscape(res.title) + "</a></li>";
                 }				
             }
             listHtml += "</ul>";				
@@ -119,6 +121,13 @@
                 runSearch($("#search").val());
             });
         });
+
+        function htmlEscape(html) {
+            return document.createElement('div')
+                .appendChild(document.createTextNode(html))
+                .parentNode
+                .innerHTML;
+        }
     </script>
 	
     <hr>
@@ -128,17 +137,18 @@
 			<li class="header">Namespace</li>
 		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></li>
 		<li role="separator" class="divider"></li>
+			<li class="header">Enum Types</li>
+				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling">NewLineHandling</a></li>
 			<li class="header">Class Types</li>
 				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">Generic<wbr>Localize<wbr>Tag<wbr>Helper</a></li>
 				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper">Localize<wbr>Attribute<wbr>Tag<wbr>Helper</a></li>
 				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper">LocalizeTagHelper</a></li>
 				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions">Localize<wbr>Tag<wbr>Helper<wbr>Options</a></li>
 				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/ParameterTagHelper">ParameterTagHelper</a></li>
-			<li class="header">Enum Types</li>
-				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling">NewLineHandling</a></li>
 
 
                     </ul>
+                            
                 </section>                
             </aside>
             

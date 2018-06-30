@@ -57,6 +57,7 @@
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">                            
                                     <li><a href="/Localization.AspNetCore.TagHelpers/docs">Documentation</a></li>
+        <li><a href="/Localization.AspNetCore.TagHelpers/tasks">Tasks</a></li>
         <li><a href="/Localization.AspNetCore.TagHelpers/blog">Blog</a></li>
         <li class="active"><a href="/Localization.AspNetCore.TagHelpers/api">API</a></li>
  
@@ -78,7 +79,8 @@
 </div>
 
                 </section>
-                <section class="sidebar">                    
+                <section class="sidebar">    
+                                     
                     	
 	    <script src="/Localization.AspNetCore.TagHelpers/assets/js/lunr.min.js"></script>
     <script src="/Localization.AspNetCore.TagHelpers/assets/js/searchIndex.js"></script>
@@ -106,7 +108,7 @@
             } else {					
                 for(var i = 0; i < results.length; ++i){
                     var res = results[i];
-                    listHtml += "<li><a href='" + res.url + "'>" + res.title + "</a></li>";
+                    listHtml += "<li><a href='" + res.url + "'>" + htmlEscape(res.title) + "</a></li>";
                 }				
             }
             listHtml += "</ul>";				
@@ -118,6 +120,13 @@
                 runSearch($("#search").val());
             });
         });
+
+        function htmlEscape(html) {
+            return document.createElement('div')
+                .appendChild(document.createTextNode(html))
+                .parentNode
+                .innerHTML;
+        }
     </script>
 	
     <hr>
@@ -130,7 +139,7 @@
 		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup">Startup</a></li>
 		<li role="separator" class="divider"></li>
 			<li class="header">Constructors</li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/A1EA3442">Startup<wbr>(<wbr>I<wbr>Hosting<wbr>Environment)<wbr></a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/AE3DC356">Startup<wbr>(IConfiguration)<wbr></a></li>
 			<li class="header">Property Members</li>
 				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/DF5DCC0B">Configuration</a></li>
 			<li class="header">Method Members</li>
@@ -139,6 +148,7 @@
 
 
                     </ul>
+                            
                 </section>                
             </aside>
             
@@ -171,7 +181,7 @@
 		</div>
 
 	<h1 id="Syntax">Syntax</h1>
-	<pre><code>public IConfigurationRoot Configuration { get; }</code></pre>
+	<pre><code>public IConfiguration Configuration { get; }</code></pre>
 
 
 
@@ -188,7 +198,7 @@
 					</tr>
 				</thead>
 				<tbody><tr>
-					<td>IConfigurationRoot</td>
+					<td>IConfiguration</td>
 					<td></td>
 				</tr>
 			</tbody></table>

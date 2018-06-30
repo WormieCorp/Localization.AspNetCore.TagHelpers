@@ -57,6 +57,7 @@
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">                            
                                     <li><a href="/Localization.AspNetCore.TagHelpers/docs">Documentation</a></li>
+        <li><a href="/Localization.AspNetCore.TagHelpers/tasks">Tasks</a></li>
         <li><a href="/Localization.AspNetCore.TagHelpers/blog">Blog</a></li>
         <li class="active"><a href="/Localization.AspNetCore.TagHelpers/api">API</a></li>
  
@@ -72,14 +73,14 @@
             <aside class="main-sidebar ">
                 <section class="infobar" data-spy="affix" data-offset-top="60" data-offset-bottom="200"> 
                     	
-	<div id="infobar-headings"><h6>On This Page</h6><p><a href="#ClassTypes">Class Types</a></p>
-<p><a href="#EnumTypes">Enum Types</a></p>
-<p><a href="#Namespaces">Namespaces</a></p>
+	<div id="infobar-headings"><h6>On This Page</h6><p><a href="#EnumTypes">Enum Types</a></p>
+<p><a href="#ClassTypes">Class Types</a></p>
 <hr class="infobar-hidden">
 </div>
 
                 </section>
-                <section class="sidebar">                    
+                <section class="sidebar">    
+                                     
                     	
 	    <script src="/Localization.AspNetCore.TagHelpers/assets/js/lunr.min.js"></script>
     <script src="/Localization.AspNetCore.TagHelpers/assets/js/searchIndex.js"></script>
@@ -107,7 +108,7 @@
             } else {					
                 for(var i = 0; i < results.length; ++i){
                     var res = results[i];
-                    listHtml += "<li><a href='" + res.url + "'>" + res.title + "</a></li>";
+                    listHtml += "<li><a href='" + res.url + "'>" + htmlEscape(res.title) + "</a></li>";
                 }				
             }
             listHtml += "</ul>";				
@@ -119,6 +120,13 @@
                 runSearch($("#search").val());
             });
         });
+
+        function htmlEscape(html) {
+            return document.createElement('div')
+                .appendChild(document.createTextNode(html))
+                .parentNode
+                .innerHTML;
+        }
     </script>
 	
     <hr>
@@ -134,12 +142,8 @@
 				<li class="treeview active">
 				<a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore">Localization<wbr>.AspNetCore</a> <a href="#" class="expand"></a>
 				<ul class="treeview-menu">
-			
-				<li class="treeview active selected">
-				<a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a> <a href="#" class="expand"></a>
-				<ul class="treeview-menu">
-						<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers.Internals">Localization<wbr>.AspNetCore<wbr>.TagHelpers<wbr>.Internals</a></li>
-</ul></li></ul></li>
+						<li class=" selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></li>
+</ul></li>
 				<li class="treeview">
 				<a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo">Localization<wbr>.Demo</a> <a href="#" class="expand"></a>
 				<ul class="treeview-menu">
@@ -147,6 +151,7 @@
 </ul></li></ul></li>      
 
                     </ul>
+                            
                 </section>                
             </aside>
             
@@ -164,6 +169,26 @@
 	
 	
 
+			<h1 id="EnumTypes">Enum Types</h1>
+			<div class="box">
+				<div class="box-body no-padding table-responsive">
+					<table class="table table-striped table-hover two-cols">
+						<thead>
+							<tr>
+								<th>Enum</th>
+									<th>Summary</th>
+							</tr>
+						</thead>
+							<tbody><tr>
+								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling">NewLineHandling</a></td>
+									<td>
+      Enumeration for what kind of newline normalization the supported tag helpers should apply.
+    </td>
+							</tr>
+					</tbody></table>
+				</div>
+			</div>
+		
 			<h1 id="ClassTypes">Class Types</h1>
 			<div class="box">
 				<div class="box-body no-padding table-responsive">
@@ -205,44 +230,6 @@
       Adds parameters to <code class="cs"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper">GenericLocalizeTagHelper</a></code> and
       <code class="cs"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper">LocalizeTagHelper</a></code>. Used through a <code class="cs">parameter</code> html tag.
     </td>
-							</tr>
-					</tbody></table>
-				</div>
-			</div>
-		
-			<h1 id="EnumTypes">Enum Types</h1>
-			<div class="box">
-				<div class="box-body no-padding table-responsive">
-					<table class="table table-striped table-hover two-cols">
-						<thead>
-							<tr>
-								<th>Enum</th>
-									<th>Summary</th>
-							</tr>
-						</thead>
-							<tbody><tr>
-								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling">NewLineHandling</a></td>
-									<td>
-      Enumeration for what kind of newline normalization the supported tag helpers should apply.
-    </td>
-							</tr>
-					</tbody></table>
-				</div>
-			</div>
-		
-			<h1 id="Namespaces">Namespaces</h1>
-			<div class="box">
-				<div class="box-body no-padding table-responsive">
-					<table class="table table-striped table-hover two-cols">
-						<thead>
-							<tr>
-								<th>Namespace</th>
-									<th>Summary</th>
-							</tr>
-						</thead>
-							<tbody><tr>
-								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers.Internals">Localization<wbr>.AspNetCore<wbr>.TagHelpers<wbr>.Internals</a></td>
-									<td></td>
 							</tr>
 					</tbody></table>
 				</div>

@@ -34,38 +34,6 @@ var searchModule = function() {
 
     a({
         id:0,
-        title:"GenericLocalizeTagHelper",
-        content:"GenericLocalizeTagHelper",
-        description:'',
-        tags:''
-    });
-
-    a({
-        id:1,
-        title:"Startup",
-        content:"Startup",
-        description:'',
-        tags:''
-    });
-
-    a({
-        id:2,
-        title:"LocalizeAttributeTagHelper",
-        content:"LocalizeAttributeTagHelper",
-        description:'',
-        tags:''
-    });
-
-    a({
-        id:3,
-        title:"LocalizeTagHelperOptions",
-        content:"LocalizeTagHelperOptions",
-        description:'',
-        tags:''
-    });
-
-    a({
-        id:4,
         title:"NewLineHandling",
         content:"NewLineHandling",
         description:'',
@@ -73,15 +41,7 @@ var searchModule = function() {
     });
 
     a({
-        id:5,
-        title:"ParameterTagHelper",
-        content:"ParameterTagHelper",
-        description:'',
-        tags:''
-    });
-
-    a({
-        id:6,
+        id:1,
         title:"Program",
         content:"Program",
         description:'',
@@ -89,7 +49,39 @@ var searchModule = function() {
     });
 
     a({
-        id:7,
+        id:2,
+        title:"ParameterTagHelper",
+        content:"ParameterTagHelper",
+        description:'',
+        tags:''
+    });
+
+    a({
+        id:3,
+        title:"HomeController",
+        content:"HomeController",
+        description:'',
+        tags:''
+    });
+
+    a({
+        id:4,
+        title:"GenericLocalizeTagHelper",
+        content:"GenericLocalizeTagHelper",
+        description:'',
+        tags:''
+    });
+
+    a({
+        id:5,
+        title:"Startup",
+        content:"Startup",
+        description:'',
+        tags:''
+    });
+
+    a({
+        id:6,
         title:"LocalizeTagHelper",
         content:"LocalizeTagHelper",
         description:'',
@@ -97,64 +89,72 @@ var searchModule = function() {
     });
 
     a({
+        id:7,
+        title:"LocalizeAttributeTagHelper",
+        content:"LocalizeAttributeTagHelper",
+        description:'',
+        tags:''
+    });
+
+    a({
         id:8,
-        title:"HomeController",
-        content:"HomeController",
+        title:"LocalizeTagHelperOptions",
+        content:"LocalizeTagHelperOptions",
         description:'',
         tags:''
     });
 
     y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper',
-        title:"GenericLocalizeTagHelper",
-        description:""
-    });
-
-    y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup',
-        title:"Startup",
-        description:""
-    });
-
-    y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper',
-        title:"LocalizeAttributeTagHelper",
-        description:""
-    });
-
-    y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions',
-        title:"LocalizeTagHelperOptions",
-        description:""
-    });
-
-    y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling',
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/NewLineHandling',
         title:"NewLineHandling",
         description:""
     });
 
     y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/ParameterTagHelper',
-        title:"ParameterTagHelper",
-        description:""
-    });
-
-    y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Program',
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Program',
         title:"Program",
         description:""
     });
 
     y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper',
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/ParameterTagHelper',
+        title:"ParameterTagHelper",
+        description:""
+    });
+
+    y({
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.Demo.Controllers/HomeController',
+        title:"HomeController",
+        description:""
+    });
+
+    y({
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/GenericLocalizeTagHelper',
+        title:"GenericLocalizeTagHelper",
+        description:""
+    });
+
+    y({
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup',
+        title:"Startup",
+        description:""
+    });
+
+    y({
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper',
         title:"LocalizeTagHelper",
         description:""
     });
 
     y({
-        url:'/Localization.AspNetCore.TagHelpers/Localization.AspNetCore.TagHelpers/api/Localization.Demo.Controllers/HomeController',
-        title:"HomeController",
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper',
+        title:"LocalizeAttributeTagHelper",
+        description:""
+    });
+
+    y({
+        url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions',
+        title:"LocalizeTagHelperOptions",
         description:""
     });
 

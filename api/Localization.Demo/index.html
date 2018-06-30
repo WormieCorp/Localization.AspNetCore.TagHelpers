@@ -57,6 +57,7 @@
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">                            
                                     <li><a href="/Localization.AspNetCore.TagHelpers/docs">Documentation</a></li>
+        <li><a href="/Localization.AspNetCore.TagHelpers/tasks">Tasks</a></li>
         <li><a href="/Localization.AspNetCore.TagHelpers/blog">Blog</a></li>
         <li class="active"><a href="/Localization.AspNetCore.TagHelpers/api">API</a></li>
  
@@ -78,7 +79,8 @@
 </div>
 
                 </section>
-                <section class="sidebar">                    
+                <section class="sidebar">    
+                                     
                     	
 	    <script src="/Localization.AspNetCore.TagHelpers/assets/js/lunr.min.js"></script>
     <script src="/Localization.AspNetCore.TagHelpers/assets/js/searchIndex.js"></script>
@@ -106,7 +108,7 @@
             } else {					
                 for(var i = 0; i < results.length; ++i){
                     var res = results[i];
-                    listHtml += "<li><a href='" + res.url + "'>" + res.title + "</a></li>";
+                    listHtml += "<li><a href='" + res.url + "'>" + htmlEscape(res.title) + "</a></li>";
                 }				
             }
             listHtml += "</ul>";				
@@ -118,6 +120,13 @@
                 runSearch($("#search").val());
             });
         });
+
+        function htmlEscape(html) {
+            return document.createElement('div')
+                .appendChild(document.createTextNode(html))
+                .parentNode
+                .innerHTML;
+        }
     </script>
 	
     <hr>
@@ -133,12 +142,8 @@
 				<li class="treeview">
 				<a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore">Localization<wbr>.AspNetCore</a> <a href="#" class="expand"></a>
 				<ul class="treeview-menu">
-			
-				<li class="treeview">
-				<a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a> <a href="#" class="expand"></a>
-				<ul class="treeview-menu">
-						<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers.Internals">Localization<wbr>.AspNetCore<wbr>.TagHelpers<wbr>.Internals</a></li>
-</ul></li></ul></li>
+						<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></li>
+</ul></li>
 				<li class="treeview active selected">
 				<a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo">Localization<wbr>.Demo</a> <a href="#" class="expand"></a>
 				<ul class="treeview-menu">
@@ -146,6 +151,7 @@
 </ul></li></ul></li>      
 
                     </ul>
+                            
                 </section>                
             </aside>
             
