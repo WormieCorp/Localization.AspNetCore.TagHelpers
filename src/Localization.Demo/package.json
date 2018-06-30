@@ -12,7 +12,6 @@
     "gulp-uglify": "^3.0.0",
     "merge-stream": "^1.0.1"
   },
-
   "scripts": {
     "bower": "bower",
     "gulp": "gulp",
