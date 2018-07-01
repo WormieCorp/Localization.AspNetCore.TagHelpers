@@ -45,4 +45,27 @@ Task("Client-Packages")
 
 BuildParameters.Tasks.DotNetCoreBuildTask.IsDependentOn("Client-Packages");
 
+private const string codeCoveTool = "#tool nuget:https://www.myget.org/F/wormie-nugets/api/v2?package=codecov&prerelease";
+
+// We want to use a different version of codecov, as such we override the default one
+BuildParameters.Tasks.UploadCodecovReportTask.Task.Actions.Clear();
+BuildParameters.Tasks.UploadCodecovReportTask.Does(() => RequireTool(codeCoveTool, () => {
+        var settings = new CodecovSettings {
+            Files = new[] { BuildParameters.Paths.Files.TestCoverageOutputFilePath.ToString() },
+            Required = true
+        };
+        if (BuildParameters.Version != null &&
+            !string.IsNullOrEmpty(BuildParameters.Version.FullSemVersion) &&
+            BuildParameters.IsRunningOnAppVeyor)
+        {
+            // Required to work correctly with appveyor because environment changes isn't detected until cake is done running.
+            var buildVersion = string.Format("{0}.build.{1}",
+                BuildParameters.Version.FullSemVersion,
+                BuildSystem.AppVeyor.Environment.Build.Number);
+            settings.EnvironmentVariables = new Dictionary<string, string> { { "APPVEYOR_BUILD_VERSION", buildVersion }};
+        }
+
+        Codecov(settings);
+    }));
+
 Build.RunDotNetCore();
