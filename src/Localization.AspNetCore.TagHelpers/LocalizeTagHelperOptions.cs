@@ -17,7 +17,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// Gets or sets wether the localize tag helpers should localize its content by default.
     /// (Can be overridden by using <c>html=<see langword="false"/></c> when calling one of the localize tag helpers).
     /// </summary>
-    /// <remarks>Defaults to <see langword="true"/></remarks>
+    /// <remarks>Defaults to <c>true</c></remarks>
     public bool HtmlEncodeByDefault { get; set; } = true;
 
     /// <summary>
@@ -31,7 +31,7 @@ namespace Localization.AspNetCore.TagHelpers
     ///   Gets or sets a value indicating whether beginning and ending whitespace.
     /// </summary>
     /// <value><c>true</c> to trim beginning and ending whitespace; otherwise, <c>false</c>.</value>
-    /// <remarks>Defaults to <see langword="true" /></remarks>
+    /// <remarks>Defaults to <c>true</c></remarks>
     public bool TrimWhitespace { get; set; } = true;
   }
 }

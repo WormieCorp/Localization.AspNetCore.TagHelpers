@@ -19,7 +19,7 @@ Usage with a html attribute `&lt;span localize&gt;Text to localize&lt;/localize&
 Ability to localize html attribute using the following: `&lt;span localize-title='I'm the title to localize'&gt;This won't&lt;/span&gt;`
 
 Please see the documentation for all available attributes and their usage:
-https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/wiki
+https://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/docs/helpers
     </Description>
     <Copyright>Copyright 2016-2018 - Kim Nordmo</Copyright>
     <Authors>AdmiringWorm</Authors>
