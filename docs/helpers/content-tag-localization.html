@@ -1,22 +1,20 @@
-﻿<!DOCTYPE html>
-<html>
-    <head>
+﻿<!DOCTYPE html><html><head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-        <meta name="description" />
-        <meta name="keywords" content="static content generator,static site generator,static site,HTML,web development,.NET,C#,Razor,Markdown,YAML" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="description">
+        <meta name="keywords" content="static content generator,static site generator,static site,HTML,web development,.NET,C#,Razor,Markdown,YAML">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
-        <title>Localization.AspNetCore.TagHelpers - Documentation</title>
+        <title>Localization.AspNetCore.TagHelpers - Localize content using a tag</title>
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/mermaid.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet" />
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet" />
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/theme/theme.css" rel="stylesheet" />
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet">
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/theme/theme.css" rel="stylesheet">
         <link href="//fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,400i,700,700i" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/override.css" rel="stylesheet" />
+        <link href="/Localization.AspNetCore.TagHelpers/assets/css/override.css" rel="stylesheet">
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery-2.2.3.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/bootstrap.min.js"></script>        
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/app.min.js"></script>         
@@ -75,8 +73,16 @@
             <aside class="main-sidebar ">
                 <section class="infobar" data-spy="affix" data-offset-top="60" data-offset-bottom="200"> 
                     	
-        <div><p><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/tree/develop/docs/input/docs/index.cshtml"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Content</a></p></div>
-    <div id="infobar-headings"></div>
+        <div><p><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/tree/develop/docs/input/docs/helpers/content-tag-localization.md"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Content</a></p></div>
+    <div id="infobar-headings"><h6>On This Page</h6><p><a href="#usage">Usage</a></p>
+<p><a href="#attributes-provided-by-helper">Attributes provided by helper</a></p>
+<p><a href="#overriding-the-generation-of-a-resource-to-use">Overriding the generation of a resource to use</a></p>
+<p><a href="#disabling-html-encoding-of-text-to-be-localized">Disabling Html Encoding of text to be localized</a></p>
+<p><a href="#enabledisable-trimming-whitespace">Enable/Disable trimming whitespace</a></p>
+<p><a href="#handling-line-endings">Handling line endings</a></p>
+<p><a href="#reuse-an-existing-ihtmllocalizeriviewlocalizer">Reuse an existing </a><a href="https://docs.microsoft.com/dotnet/api/Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer?view=aspnetcore-2.0">IHtmlLocalizer</a>/<a href="https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.localization.iviewlocalizer?view=aspnetcore-2.0">IViewLocalizer</a></p>
+<hr class="infobar-hidden">
+</div>
 
                 </section>
                 <section class="sidebar">    
@@ -86,10 +92,10 @@
                     <ul class="sidebar-menu">
                         
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/usage">Library Usage</a></li>
-                <li class="treeview">
+                <li class="treeview active">
                     <a href="/Localization.AspNetCore.TagHelpers/docs/helpers">Available helpers</a> <a href="#" class="expand"></a>
                     <ul class="treeview-menu">
-                                        <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></li>
+                                        <li class="selected"><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-attribute-localization">Localize content using an attribute</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/attribute-localization">Localize Attributes</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/localization-with-parameters">Localization with parameters</a></li>
@@ -109,60 +115,81 @@
 
 
 	<section class="content-header">
-		<h1>Documentation</h1>
+		<h1>Localize content using a tag</h1>
 	</section>
 	<section class="content">
-		<p>
-  This user guide, like Localization.AspNetCore.TagHelpers itself, is under very active development.
-  Some parts of it aren't documented as completely as they need to be, but we gladly accept your contributions.
-</p>
+		<h1 id="usage">Usage</h1>
+<p>The most basic and simplest use of this tag helper is with the following:</p>
+<pre><code class="language-html">&lt;localize&gt;
+  Whatever text you want to localize here
+&lt;/localize&gt;
+</code></pre>
+<h1 id="attributes-provided-by-helper">Attributes provided by helper</h1>
+<p>Below is the attributes that can be set with this tag helper:</p>
+<h1 id="overriding-the-generation-of-a-resource-to-use">Overriding the generation of a resource to use</h1>
+<p>This can be done with two different attribute names, each having their own use case.</p>
+<h2 id="option-1">Option 1</h2>
+<pre><code class="language-html">&lt;localize resource-name="ResourceFileNameOrPath"&gt;Text to localize&lt;/localize&gt;
+</code></pre>
+<p>You can use the <code>resource-name</code> attribute to pass the name of the resource file.
+This will be passed as it is typed to the underlying <a href="https://docs.microsoft.com/dotnet/api/Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer?view=aspnetcore-2.0">IHtmlLocalizer</a>
+which may point it to a resource file.</p>
+<p><strong><em>NOTE: This would depend on the implementation of the underlying localizer</em></strong></p>
+<h2 id="option-2">Option 2</h2>
+<pre><code class="language-html">&lt;localize resource-type="@typeof(MyClassName)"&gt;Text to localize&lt;/localize&gt;
+</code></pre>
+<p>You can use the `resource-type attribute to pass a class type which will be resolved by the
+underlying Resource Localizer.</p>
+<h1 id="disabling-html-encoding-of-text-to-be-localized">Disabling Html Encoding of text to be localized</h1>
+<pre><code class="language-html">&lt;localize html="true"&gt;Html content to be localized&lt;/localize&gt;
+</code></pre>
+<p>You can use the <code>html</code> attribute to choose whether the content should be html encoded or not,
+this defaults to <code>false</code> (meaning the content will be encoded) if no <code>html</code> attribute is used.</p>
+<p><strong><em>NOTE: Can also be globally overridden</em></strong></p>
+<h1 id="enabledisable-trimming-whitespace">Enable/Disable trimming whitespace</h1>
+<p>Again there are two distinct ways to do this.</p>
+<h2 id="option-1-1">Option 1</h2>
+<pre><code class="language-html">&lt;localize trim="true"&gt;  Text to localize  &lt;/localize&gt;
+</code></pre>
+<p>You can use the <code>trim</code> attribute to enable or disable trimming of whitespace at the beginning
+and the end of the content.
+This defaults to <code>true</code>, unless overridden in the global settings.</p>
+<p><strong><em>NOTE: If the attribute <code>trimlines</code> is used, this attribute is ignored.</em></strong></p>
+<h2 id="option-2-1">Option 2</h2>
+<pre><code class="language-html">&lt;localize trimlines="true"&gt;
+  Multiline text
+  to localize  
+&lt;/localize&gt;
+</code></pre>
+<p>You can use the <code>trimlines</code> attribute if you need to trim each line for its beginning and ending whitespace.
+This defaults to <code>false</code> and is not recommended to use when not needed.</p>
+<p><strong><em>NOTE: This overrides the previously mentioned <code>trim</code> attribute if it is set to <code>true</code>.</em></strong></p>
+<h1 id="handling-line-endings">Handling line endings</h1>
+<pre><code class="language-html">&lt;localize newline="NewLineHandling.Auto"&gt;
+Text to
+localize
+with pseudo
+different line
+endings
+&lt;/localize&gt;
+</code></pre>
+<p>You can use the <code>newline</code> attribute to normalize eol or if the resource file line endings and view line
+endings isn't the same.
+Defaults to Automatically using the current environments line endings, unless overridden in the global settings.</p>
+<p><strong><em>NOTE: the line endings are normalized on the text that are to be localized,
+but nothing is done with the already localized text.</em></strong></p>
+<p>See the <a href="../../api/Localization.AspNetCore.TagHelpers/NewLineHandling/">API documentation</a> for available values.</p>
+<h1 id="reuse-an-existing-ihtmllocalizeriviewlocalizer">Reuse an existing <a href="https://docs.microsoft.com/dotnet/api/Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer?view=aspnetcore-2.0">IHtmlLocalizer</a>/<a href="https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.localization.iviewlocalizer?view=aspnetcore-2.0">IViewLocalizer</a></h1>
+<p>If you're already have injected a html/view localizer into the current view, you may reuse that
+localizer by passing it for every call to the localize tag helper.</p>
+<pre><code class="language-html">@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer loc;
 
-<p>
-  We need your help to improve the documentation for Localization.AspNetCore.TagHelpers, so if there is something that you
-  would like to add then you can edit the content directly on GitHub.
-</p>
-
-  <h1>
-    <a href="/Localization.AspNetCore.TagHelpers/docs/usage">
-      Library Usage
-    </a>
-  </h1>
-    <p>How to reference and make use of the library.</p>
-  <h1>
-    <a href="/Localization.AspNetCore.TagHelpers/docs/helpers">
-      Available helpers
-    </a>
-  </h1>
-    <p>The following tag helpers is available to localize content.</p>
-			<div class="box">
-				<div class="box-body no-padding">
-					<table class="table table-striped table-hover two-cols-alt table-responsive">
-						
-						<tbody>
-								<tr>
-									<td><strong><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></strong></td>
-									<td>
-Make use of a specific tag to determine the content to localize.									</td>
-								</tr>
-								<tr>
-									<td><strong><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-attribute-localization">Localize content using an attribute</a></strong></td>
-									<td>
-Make use of a specific html attribute to determine the content to localize.									</td>
-								</tr>
-								<tr>
-									<td><strong><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/attribute-localization">Localize Attributes</a></strong></td>
-									<td>
-Localize html attributes.									</td>
-								</tr>
-								<tr>
-									<td><strong><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/localization-with-parameters">Localization with parameters</a></strong></td>
-									<td>
-Use parameters when localizing content.									</td>
-								</tr>
-						</tbody>				
-					</table>
-				</div>
-			</div> 
+&lt;localize localizer="@loc"&gt;
+  Text to localize
+&lt;/localize&gt;
+</code></pre>
+<p><strong><em>NOTE: There is a wish to have this automatically detected, but no such luck for this have been found yet.
+Any help for this would be appreciated.</em></strong></p>
 
 	</section>
                 
@@ -218,5 +245,5 @@ Use parameters when localizing content.									</td>
                 }, 500);
             });
         </script>
-    </body>
-</html>
+    
+</body></html>

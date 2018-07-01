@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
-        <title>Localization.AspNetCore.TagHelpers - API - LocalizeTagHelperOptions.HtmlEncodeByDefault Property</title>
+        <title>Localization.AspNetCore.TagHelpers - Localize content using an attribute</title>
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/mermaid.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
@@ -56,10 +56,10 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">                            
-                                    <li><a href="/Localization.AspNetCore.TagHelpers/docs">Documentation</a></li>
+                                    <li class="active"><a href="/Localization.AspNetCore.TagHelpers/docs">Documentation</a></li>
         <li><a href="/Localization.AspNetCore.TagHelpers/tasks">Tasks</a></li>
         <li><a href="/Localization.AspNetCore.TagHelpers/blog">Blog</a></li>
-        <li class="active"><a href="/Localization.AspNetCore.TagHelpers/api">API</a></li>
+        <li><a href="/Localization.AspNetCore.TagHelpers/api">API</a></li>
  
                         </ul>       
                     </div>
@@ -73,78 +73,29 @@
             <aside class="main-sidebar ">
                 <section class="infobar" data-spy="affix" data-offset-top="60" data-offset-bottom="200"> 
                     	
-	<div id="infobar-headings"><h6>On This Page</h6><p><a href="#Summary">Summary</a></p>
-<p><a href="#Syntax">Syntax</a></p>
-<p><a href="#Remarks">Remarks</a></p>
-<p><a href="#Value">Value</a></p>
+        <div><p><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/tree/develop/docs/input/docs/helpers/content-attribute-localization.md"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Content</a></p></div>
+    <div id="infobar-headings"><h6>On This Page</h6><p><a href="#usage">Usage</a></p>
 <hr class="infobar-hidden">
 </div>
 
                 </section>
                 <section class="sidebar">    
                                      
-                    	
-	    <script src="/Localization.AspNetCore.TagHelpers/assets/js/lunr.min.js"></script>
-    <script src="/Localization.AspNetCore.TagHelpers/assets/js/searchIndex.js"></script>
-    <div class="sidebar-form">
-        <div class="input-group">
-            <input type="text" name="search" id="search" class="form-control" placeholder="Search Types...">
-            <span class="input-group-btn">
-                <button class="btn btn-flat"><i class="fa fa-search"></i></button>
-            </span>
-        </div>
-    </div>
-    <div id="search-results">
-    </div>
-    <script>
-        function runSearch(query){
-            $("#search-results").empty();			
-            if( query.length < 2 ){
-                return;
-            }			
-            var results = searchModule.search("*" + query + "*");
-            var listHtml = "<ul class='sidebar-menu'>";	
-            listHtml += "<li class='header'>Type Results</li>";	
-            if(results.length == 0 ){
-                listHtml += "<li>No results found</li>";
-            } else {					
-                for(var i = 0; i < results.length; ++i){
-                    var res = results[i];
-                    listHtml += "<li><a href='" + res.url + "'>" + htmlEscape(res.title) + "</a></li>";
-                }				
-            }
-            listHtml += "</ul>";				
-            $("#search-results").append(listHtml);
-        }
-
-        $(document).ready(function(){
-            $("#search").on('input propertychange paste', function() {
-                runSearch($("#search").val());
-            });
-        });
-
-        function htmlEscape(html) {
-            return document.createElement('div')
-                .appendChild(document.createTextNode(html))
-                .parentNode
-                .innerHTML;
-        }
-    </script>
-	
-    <hr>
+                    
 
                     <ul class="sidebar-menu">
                         
-			<li class="header">Namespace</li>
-		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></li>
-		<li class="header">Type</li>
-		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions">Localize<wbr>Tag<wbr>Helper<wbr>Options</a></li>
-		<li role="separator" class="divider"></li>
-			<li class="header">Property Members</li>
-				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions/78C0010C">HtmlEncodeByDefault</a></li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions/525B0BFE">NewLineHandling</a></li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions/8D1ED38B">TrimWhitespace</a></li>
+                <li><a href="/Localization.AspNetCore.TagHelpers/docs/usage">Library Usage</a></li>
+                <li class="treeview active">
+                    <a href="/Localization.AspNetCore.TagHelpers/docs/helpers">Available helpers</a> <a href="#" class="expand"></a>
+                    <ul class="treeview-menu">
+                                        <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></li>
+                <li class="selected"><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-attribute-localization">Localize content using an attribute</a></li>
+                <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/attribute-localization">Localize Attributes</a></li>
+                <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/localization-with-parameters">Localization with parameters</a></li>
 
+                    </ul>
+                </li>
 
                     </ul>
                             
@@ -157,63 +108,20 @@
 
 
 
-<section class="content-header">
-			<h3><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions">Localize<wbr>Tag<wbr>Helper<wbr>Options</a>.</h3>
-	<h1>HtmlEncodeByDefault <small>Property</small></h1>
-</section>
-<section class="content">
-	
-	
-		<h1 id="Summary">Summary</h1>
-	<div class="lead">
-    Gets or sets wether the localize tag helpers should localize its content by default.
-    (Can be overridden by using <code class="cs">html=<see langword="false"></see></code> when calling one of the localize tag helpers).
-    </div>
+	<section class="content-header">
+		<h1>Localize content using an attribute</h1>
+	</section>
+	<section class="content">
+		<h1 id="usage">Usage</h1>
+<p>The most basic and simplest use of this tag helper is with the following:</p>
+<pre><code class="language-html">&lt;span localize&gt;
+  Whatever text you want to localize here.
+&lt;/span&gt;
+</code></pre>
+<p>This tag helper also provides exactly the same attributes as the Localize element tag helper.
+Please see <a href="content-tag-localization">Localize content using a tag</a> for possible attributes.</p>
 
-		<div class="panel panel-default">
-  			<div class="panel-body">
-				<dl class="dl-horizontal">	
-						
-						<dt>Namespace</dt>
-						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></dd>
-					
-						<dt>Containing Type</dt>
-						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions">Localize<wbr>Tag<wbr>Helper<wbr>Options</a></dd>		
-					
-				</dl>
-  			</div>
-		</div>
-
-	<h1 id="Syntax">Syntax</h1>
-	<pre><code>public bool HtmlEncodeByDefault { get; set; }</code></pre>
-
-
-	<h1 id="Remarks">Remarks</h1>
-	<div>Defaults to <code class="cs">true</code></div>
-
-
-
-	<h1 id="Value">Value</h1>
-	<div class="box">
-		<div class="box-body no-padding table-responsive">
-			<table class="table table-striped table-hover two-cols">
-				<thead>
-					<tr>
-						<th>Type</th>
-						<th>Description</th>
-					</tr>
-				</thead>
-				<tbody><tr>
-					<td>bool</td>
-					<td></td>
-				</tr>
-			</tbody></table>
-		</div>
-	</div>	
-
-
-	
-</section>
+	</section>
                 
             </div>           
             
