@@ -45,7 +45,7 @@ Task("Client-Packages")
 
 BuildParameters.Tasks.DotNetCoreBuildTask.IsDependentOn("Client-Packages");
 
-private const string codeCoveTool = "#tool nuget:https://www.myget.org/F/wormie-nugets/api/v2?package=codecov&prerelease";
+private const string codeCoveTool = "#tool nuget:https://www.myget.org/F/wormie-nugets/api/v2?package=Codecov&prerelease";
 
 // We want to use a different version of codecov, as such we override the default one
 BuildParameters.Tasks.UploadCodecovReportTask.Task.Actions.Clear();
