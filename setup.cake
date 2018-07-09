@@ -16,7 +16,7 @@ BuildParameters.SetParameters(
     shouldRunInspectCode: false,
     shouldRunDotNetCorePack: true,
     shouldRunCodecov: true,
-    shouldExecuteGitLink: IsRunningOnWindows() && BuildSystem.IsRunningOnAppVeyor // We need this so it doesn't fail on appveyor linux builds
+    shouldExecuteGitLink: false // We disable gitlink as it doesn't work for .NET Core anyhow
 );
 
 ToolSettings.SetToolSettings(
