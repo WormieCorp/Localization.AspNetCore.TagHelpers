@@ -105,5 +105,4 @@ localizer by passing it for every call to the localize tag helper.
 </localize>
 ```
 
-***NOTE: There is a wish to have this automatically detected, but no such luck for this have been found yet.
-Any help for this would be appreciated.***
+***NOTE: The tag helpers now cache IHTMLLocalizer instances, you don't have to explicitly cache them anymore.***
