@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GenericLocalizeTagHelper.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -46,6 +46,7 @@ namespace Localization.AspNetCore.TagHelpers
     private const string LOCALIZE_TRIM = "trim";
     private const string LOCALIZE_TRIM_LINES = "trimlines";
     private const string LOCALIZE_TYPE = "resource-type";
+    private const string CACHED_LOCALIZER_KEY = "CachedLocalizerFor";
     private readonly string applicationName;
     private readonly IHtmlLocalizerFactory localizerFactory;
 
@@ -193,7 +194,20 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc/>
     public override void Init(TagHelperContext context)
     {
-      Localizer = Localizer ?? localizerFactory.ResolveLocalizer(ViewContext, applicationName, Type, Name);
+      var key = CACHED_LOCALIZER_KEY + ViewContext.ExecutingFilePath;
+
+      if (Localizer is null)
+      {
+        if (ViewContext.ViewData.ContainsKey(key))
+        {
+          Localizer = ViewContext.ViewData[key] as IHtmlLocalizer;
+        }
+        else
+        {
+          Localizer = localizerFactory.ResolveLocalizer(ViewContext, applicationName, Type, Name);
+          ViewContext.ViewData[key] = Localizer;
+        }
+      }
 
       if (!SupportsParameters)
       {
