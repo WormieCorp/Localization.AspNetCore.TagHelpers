@@ -208,6 +208,43 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     }
 
     [Fact]
+    public void Init_CachesIHtmlLocalizerInstances()
+    {
+      var factoryMock = new Mock<IHtmlLocalizerFactory>();
+      var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
+      var tagContext = TestHelper.CreateTagContext();
+
+      // It seems that the tests are not run independently, See #26
+      tagHelper.ViewContext = new ViewContext { ExecutingFilePath = "View1" };
+      tagHelper.Localizer = null;
+
+      tagHelper.Init(tagContext);
+      tagHelper.Init(tagContext);
+
+      factoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Never);
+      factoryMock.Verify(f => f.Create(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public void Init_CreatesNewIHtmlLocalizerForEachView()
+    {
+      var factoryMock = new Mock<IHtmlLocalizerFactory>();
+      var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
+      var tagContext = TestHelper.CreateTagContext();
+
+      tagHelper.ViewContext.ExecutingFilePath = "View1";
+      tagHelper.Init(tagContext);
+      tagHelper.Init(tagContext);
+
+      tagHelper.ViewContext.ExecutingFilePath = "View2";
+      tagHelper.Init(tagContext);
+      tagHelper.Init(tagContext);
+
+      factoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Never);
+      factoryMock.Verify(f => f.Create(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
+    }
+
+    [Fact]
     public void Init_SkipsCreatingParameterStackIfInheritedClassSetsSupportsParametersToFalse()
     {
       var tagHelper = TestHelper.CreateTagHelper<NoParametersSupported>(null);
