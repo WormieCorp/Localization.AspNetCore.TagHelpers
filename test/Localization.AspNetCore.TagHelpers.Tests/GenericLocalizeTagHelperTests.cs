@@ -214,10 +214,6 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
       var tagContext = TestHelper.CreateTagContext();
 
-      // It seems that the tests are not run independently, See #26
-      tagHelper.ViewContext = new ViewContext { ExecutingFilePath = "View1" };
-      tagHelper.Localizer = null;
-
       tagHelper.Init(tagContext);
       tagHelper.Init(tagContext);
 
@@ -349,7 +345,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodeByDefault = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
       var helper = new GenericLocalizeTagHelper(factory.Object, hostingEnvMock.Object, options)
       {
-        ViewContext = TestHelper.DefaultViewContext
+        ViewContext = TestHelper.CreateViewContext()
       };
       var result = await TestHelper.GenerateHtmlAsync(helper, "p", expected);
 

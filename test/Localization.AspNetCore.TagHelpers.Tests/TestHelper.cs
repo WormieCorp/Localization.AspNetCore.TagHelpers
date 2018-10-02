@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="TestHelper.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -27,13 +27,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
   {
     public static readonly string ApplicationName = typeof(TestHelper).GetTypeInfo().Assembly.GetName().Name;
 
-    public static readonly ViewContext DefaultViewContext = new ViewContext();
-
-    static TestHelper()
+    public static ViewContext CreateViewContext()
     {
       var view = new Mock<IView>();
       view.SetupGet(x => x.Path).Returns("some/value.cshtml");
-      DefaultViewContext.View = view.Object;
+      var context = new ViewContext();
+      context.View = view.Object;
+
+      return context;
     }
 
     public static Mock<IHtmlLocalizerFactory> CreateFactoryMock(bool setup)
@@ -85,7 +86,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       }
 
       var instance = (T)Activator.CreateInstance(typeof(T), factory, hostingEnvironmentMock.Object, null);
-      instance.ViewContext = DefaultViewContext;
+      instance.ViewContext = CreateViewContext();
       instance.NewLineHandling = NewLineHandling.None;
 
       return instance;
