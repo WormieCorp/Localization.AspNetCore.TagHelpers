@@ -208,6 +208,39 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     }
 
     [Fact]
+    public void Init_CachesIHtmlLocalizerInstances()
+    {
+      var factoryMock = new Mock<IHtmlLocalizerFactory>();
+      var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
+      var tagContext = TestHelper.CreateTagContext();
+
+      tagHelper.Init(tagContext);
+      tagHelper.Init(tagContext);
+
+      factoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Never);
+      factoryMock.Verify(f => f.Create(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public void Init_CreatesNewIHtmlLocalizerForEachView()
+    {
+      var factoryMock = new Mock<IHtmlLocalizerFactory>();
+      var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
+      var tagContext = TestHelper.CreateTagContext();
+
+      tagHelper.ViewContext.ExecutingFilePath = "View1";
+      tagHelper.Init(tagContext);
+      tagHelper.Init(tagContext);
+
+      tagHelper.ViewContext.ExecutingFilePath = "View2";
+      tagHelper.Init(tagContext);
+      tagHelper.Init(tagContext);
+
+      factoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Never);
+      factoryMock.Verify(f => f.Create(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
+    }
+
+    [Fact]
     public void Init_SkipsCreatingParameterStackIfInheritedClassSetsSupportsParametersToFalse()
     {
       var tagHelper = TestHelper.CreateTagHelper<NoParametersSupported>(null);
@@ -312,7 +345,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodeByDefault = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
       var helper = new GenericLocalizeTagHelper(factory.Object, hostingEnvMock.Object, options)
       {
-        ViewContext = TestHelper.DefaultViewContext
+        ViewContext = TestHelper.CreateViewContext()
       };
       var result = await TestHelper.GenerateHtmlAsync(helper, "p", expected);
 
