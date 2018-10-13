@@ -1,5 +1,5 @@
 #load "nuget:https://www.myget.org/F/cake-contrib/api/v2?package=Cake.Recipe&prerelease"
-#addin "nuget:?package=Cake.Yarn&version=0.3.6"
+#addin "nuget:?package=Cake.Yarn&version=0.4.2"
 
 Environment.SetVariableNames();
 
@@ -16,7 +16,7 @@ BuildParameters.SetParameters(
     shouldRunInspectCode: false,
     shouldRunDotNetCorePack: true,
     shouldRunCodecov: true,
-    shouldExecuteGitLink: IsRunningOnWindows() && BuildSystem.IsRunningOnAppVeyor // We need this so it doesn't fail on appveyor linux builds
+    shouldExecuteGitLink: false // We disable gitlink as it doesn't work for .NET Core anyhow
 );
 
 ToolSettings.SetToolSettings(
@@ -44,28 +44,5 @@ Task("Client-Packages")
   });
 
 BuildParameters.Tasks.DotNetCoreBuildTask.IsDependentOn("Client-Packages");
-
-private const string codeCoveTool = "#tool nuget:https://www.myget.org/F/wormie-nugets/api/v2?package=Codecov&prerelease";
-
-// We want to use a different version of codecov, as such we override the default one
-BuildParameters.Tasks.UploadCodecovReportTask.Task.Actions.Clear();
-BuildParameters.Tasks.UploadCodecovReportTask.Does(() => RequireTool(codeCoveTool, () => {
-        var settings = new CodecovSettings {
-            Files = new[] { BuildParameters.Paths.Files.TestCoverageOutputFilePath.ToString() },
-            Required = true
-        };
-        if (BuildParameters.Version != null &&
-            !string.IsNullOrEmpty(BuildParameters.Version.FullSemVersion) &&
-            BuildParameters.IsRunningOnAppVeyor)
-        {
-            // Required to work correctly with appveyor because environment changes isn't detected until cake is done running.
-            var buildVersion = string.Format("{0}.build.{1}",
-                BuildParameters.Version.FullSemVersion,
-                BuildSystem.AppVeyor.Environment.Build.Number);
-            settings.EnvironmentVariables = new Dictionary<string, string> { { "APPVEYOR_BUILD_VERSION", buildVersion }};
-        }
-
-        Codecov(settings);
-    }));
 
 Build.RunDotNetCore();
