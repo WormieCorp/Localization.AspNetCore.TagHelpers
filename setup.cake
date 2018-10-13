@@ -1,5 +1,5 @@
-#load "nuget:https://www.myget.org/F/wormie-nugets/api/v2?package=Cake.Recipe&prerelease"
-#addin "nuget:?package=Cake.Yarn&version=0.4.0"
+#load "nuget:https://www.myget.org/F/cake-contrib/api/v2?package=Cake.Recipe&prerelease"
+#addin "nuget:?package=Cake.Yarn&version=0.4.2"
 
 Environment.SetVariableNames();
 

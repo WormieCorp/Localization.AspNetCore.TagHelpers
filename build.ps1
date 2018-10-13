@@ -48,7 +48,7 @@ Param(
     [switch]$DryRun,
     [switch]$Experimental,
     [switch]$Mono,
-    [version]$CakeVersion = '0.27.2',
+    [version]$CakeVersion = '0.30.0',
     [switch]$UseNetCore,
     [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
     [string[]]$ScriptArgs
