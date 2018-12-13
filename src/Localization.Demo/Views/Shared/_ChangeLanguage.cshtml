@@ -14,9 +14,13 @@
     .ToList();
 }
 
-<form class="navbar-form navbar-right" role="form" id="selectLanguage" asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@Context.Request.Path"
+<form class="form-inline" role="form" id="selectLanguage" asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@Context.Request.Path" method="post">
+  <select class="form-control mr-sm-2" name="culture" id="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="@cultureItems"></select>
+</form>
+
+<!--<form class="navbar-form navbar-right" role="form" id="selectLanguage" asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@Context.Request.Path"
       method="post">
   <div class="form-group">
     <select name="culture" id="culture" class="form-control" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="@cultureItems"></select>
   </div>
-</form>
+</form>-->
