@@ -5,7 +5,6 @@ pull_request_rules:
       - status-success=continuous-integration/appveyor/pr
       - status-success=WIP
       - status-success=codecov/patch
-      - status-success=Codacy/PR Quality Review
       - base=develop
     actions:
       merge:
