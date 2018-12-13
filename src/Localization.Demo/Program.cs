@@ -10,6 +10,7 @@ namespace Localization.Demo
 {
   using Microsoft.AspNetCore;
   using Microsoft.AspNetCore.Hosting;
+  using Microsoft.Extensions.Configuration;
 
   public static class Program
   {
