@@ -32,10 +32,6 @@ build_script:
       $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $_))
     }
 
-artifacts:
-- path: artifacts\**\*.zip
-- path: artifacts\**\*.nupkg
-
 test: off
 
 cache:
