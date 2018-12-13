@@ -1179,14 +1179,7 @@ jquery-validation-unobtrusive@3.2.6:
     jquery ">=1.8"
     jquery-validation ">=1.8"
 
-jquery-validation@1.16.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.16.0.tgz#b6e5277ebbd67c1fabab213eb4454eea8a3095ca"
-  integrity sha1-tuUnfrvWfB+rqyE+tEVO6oowlco=
-  dependencies:
-    jquery "^1.7 || ^2.0 || ^3.1"
-
-jquery-validation@>=1.8:
+jquery-validation@1.19.0, jquery-validation@>=1.8:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.19.0.tgz#0fedf0c0483a030c4fff072398898ac18cfd6e40"
   integrity sha512-i1ygcs9K9eI0jqQ8fiOZdT0Ofw941YII1zyPQDUkBS8t2G8SoSWz8UUEVT6gV1KvsaBbovtL8YxjLALACR0syQ==
