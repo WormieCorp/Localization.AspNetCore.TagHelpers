@@ -37,4 +37,4 @@ test: off
 cache:
 - tools -> build.ps1,setup.cake
 - src/Localization.Demo/node_modules -> src/Localization.Demo/package.json
-- src/Localization.Demo/wwwroot/lib -> src/Localization.Demo/bower.json,src/Localization.Demo/.bowerrc
+- src/Localization.Demo/wwwroot/lib -> src/Localization.Demo/package.json
