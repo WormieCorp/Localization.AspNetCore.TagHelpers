@@ -6,7 +6,7 @@ pull_request_rules:
       - status-success=WIP
       - status-success=codecov/patch
       - status-success=Codacy/PR Quality Review
-      - base=master
+      - base=develop
     actions:
       merge:
         strict: smart
