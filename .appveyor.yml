@@ -13,6 +13,7 @@ branches:
   - ci/travis
   - ci/wercker
   - gh-pages
+  - dependabot/.*
 stack: node 8
 
 install:
