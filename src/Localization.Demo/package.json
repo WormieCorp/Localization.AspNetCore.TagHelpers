@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "bower": "^1.8.4",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
@@ -13,8 +12,13 @@
     "merge-stream": "^1.0.1"
   },
   "scripts": {
-    "bower": "bower",
     "gulp": "gulp",
-    "postinstall": "bower install && gulp"
+    "postinstall": "gulp"
+  },
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "jquery": "3.2.1",
+    "jquery-validation": "1.16.0",
+    "jquery-validation-unobtrusive": "3.2.6"
   }
 }

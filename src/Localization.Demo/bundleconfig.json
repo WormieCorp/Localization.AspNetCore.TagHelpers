@@ -15,5 +15,16 @@
       "renameLocals": true
     },
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/lib/js/jquery.validate.unobtrusive.min.js",
+    "inputFiles": [
+      "wwwroot/lib/js/jquery.validate.unobtrusive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
   }
 ]
