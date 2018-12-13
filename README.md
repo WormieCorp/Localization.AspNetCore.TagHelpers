@@ -1,9 +1,9 @@
 # Localization.AspNetCore.TagHelpers
 
 [![Join the chat at https://gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers](https://badges.gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers.svg)](https://gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 [![CLA assistant](https://cla-assistant.io/readme/badge/WormieCorp/Localization.AspNetCore.TagHelpers)](https://cla-assistant.io/WormieCorp/Localization.AspNetCore.TagHelpers)
 [![Open Source Helpers](https://www.codetriage.com/wormiecorp/localization.aspnetcore.taghelpers/badges/users.svg)](https://www.codetriage.com/wormiecorp/localization.aspnetcore.taghelpers)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=WormieCorp/Localization.AspNetCore.TagHelpers)](https://dependabot.com)
 
 | AppVeyor | NuGet | GitHub | Codecov |
 | :------: | :---: | :----: | :-----: |
