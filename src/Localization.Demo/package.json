@@ -16,7 +16,7 @@
     "postinstall": "gulp"
   },
   "dependencies": {
-    "bootstrap": "3.3.7",
+    "bootstrap": "^4.1.3",
     "jquery": "3.3.1",
     "jquery-validation": "1.19.0",
     "jquery-validation-unobtrusive": "3.2.11"

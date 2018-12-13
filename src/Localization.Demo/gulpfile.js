@@ -21,9 +21,6 @@ var libFiles = {
     "./node_modules/jquery/dist/jquery{.min,}.js",
     "./node_modules/jquery-validation/dist/*.js",
     "./node_modules/jquery-validation-unobtrusive/*.js"
-  ],
-  fonts: [
-    "./node_modules/bootstrap/dist/fonts/*"
   ]
 };
 
@@ -35,11 +32,6 @@ gulp.task("copy:js", function() {
 gulp.task("copy:css", function() {
   return gulp.src(libFiles.css)
     .pipe(gulp.dest("./wwwroot/lib/css"));
-});
-
-gulp.task("copy:fonts", function() {
-  return gulp.src(libFiles.fonts)
-    .pipe(gulp.dest("./wwwroot/lib/fonts"));
 });
 
 gulp.task("min:js", ["copy:js"], function () {
@@ -94,7 +86,7 @@ gulp.task("watch", function () {
   });
 });
 
-gulp.task("default", ["copy:fonts", "min"]);
+gulp.task("default", [, "min"]);
 
 function getBundles(extension) {
   return bundleconfig.filter(function (bundle) {
