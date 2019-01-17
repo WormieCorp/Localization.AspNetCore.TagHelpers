@@ -86,7 +86,7 @@ gulp.task("watch", function () {
   });
 });
 
-gulp.task("default", [, "min"]);
+gulp.task("default", ["min"]);
 
 function getBundles(extension) {
   return bundleconfig.filter(function (bundle) {
