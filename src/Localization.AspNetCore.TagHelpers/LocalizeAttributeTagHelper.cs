@@ -1,10 +1,10 @@
-//-----------------------------------------------------------------------
-// <copyright file="LocalizeAttributeTagHelper.cs">
-//   Copyright (c) Kim Nordmo. All rights reserved.
+// -----------------------------------------------------------------------
+// <copyright file="LocalizeAttributeTagHelper.cs" company="WormieCorp">
+//   Copyright (c) WormieCorp. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
+// -----------------------------------------------------------------------
 // <author>Kim Nordmo</author>
-//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers
 {
@@ -39,7 +39,7 @@ namespace Localization.AspNetCore.TagHelpers
     private IHtmlLocalizer localizer;
 
     /// <summary>
-    ///   Initializes a new instance of the <see cref="LocalizeAttributeTagHelper" /> class.
+    ///   Initializes a new instance of the <see cref="LocalizeAttributeTagHelper"/> class.
     /// </summary>
     /// <param name="localizerFactory">The localizer factory.</param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
@@ -93,7 +93,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// <summary>
     ///   Synchronously executes the <see cref="T:Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
     ///   with the given <paramref name="context" /> and <paramref name="output" />. This is the
-    ///   method responsible for localizing the html attributes
+    ///   method responsible for localizing the html attributes.
     /// </summary>
     /// <param name="context">Contains information associated with the current HTML tag.</param>
     /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>

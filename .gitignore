@@ -634,3 +634,7 @@ tools/**/*
 
 # Build Artifacts
 BuildArtifacts/
+
+# Minified files
+*.min.css
+*.min.js

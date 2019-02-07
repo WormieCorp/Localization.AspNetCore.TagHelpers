@@ -1,10 +1,10 @@
-//-----------------------------------------------------------------------
-// <copyright file="GenericLocalizeTagHelper.cs">
-//   Copyright (c) Kim Nordmo. All rights reserved.
+// -----------------------------------------------------------------------
+// <copyright file="GenericLocalizeTagHelper.cs" company="WormieCorp">
+//   Copyright (c) WormieCorp. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
+// -----------------------------------------------------------------------
 // <author>Kim Nordmo</author>
-//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers
 {
@@ -13,7 +13,7 @@ namespace Localization.AspNetCore.TagHelpers
   using System.Linq;
   using System.Text;
   using System.Threading.Tasks;
-  using Internals;
+  using Localization.AspNetCore.TagHelpers.Internals;
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Html;
   using Microsoft.AspNetCore.Mvc.Localization;
@@ -119,7 +119,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// <summary>
     /// Gets or sets the name to optionally override the name/path of the resource file. If the name
     /// is empty it resolves to the current path and name of the view. i.e the view located at
-    /// <c>"~/Views/Home/About.cshtml"</c> passes the following name to the html localizer as <c>Views/Home/About</c>
+    /// <c>"~/Views/Home/About.cshtml"</c> passes the following name to the html localizer as <c>Views/Home/About</c>.
     /// </summary>
     /// <value>The optional name/path to the resource file.</value>
     /// <example>
@@ -130,7 +130,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// </span>
     /// ]]>
     /// </code>
-    /// Passes the path as <c>~/MyCustomResource</c>
+    /// Passes the path as <c>~/MyCustomResource</c>.
     /// </example>
     [HtmlAttributeName(LOCALIZE_NAME)]
     public virtual string Name { get; set; } = string.Empty;
@@ -290,7 +290,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// </summary>
     /// <param name="context">Contains information associated with the current HTML tag.</param>
     /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
-    /// <returns>An asynchronous task with the found content</returns>
+    /// <returns>An asynchronous task with the found content.</returns>
     protected virtual async Task<string> GetContentAsync(TagHelperContext context, TagHelperOutput output)
     {
       var content = await output.GetChildContentAsync(true);
@@ -400,6 +400,7 @@ namespace Localization.AspNetCore.TagHelpers
       {
         return content;
       }
+
       if (trimEachLine)
       {
         content = content.Trim();
