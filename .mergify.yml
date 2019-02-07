@@ -1,7 +1,6 @@
 pull_request_rules:
   - name: automatic merge when CI passes and 1 review
     conditions:
-      - author!=dependabot[bot]
       - "#approved-reviews-by>=1"
       - status-success=continuous-integration/appveyor/pr
       - status-success=WIP
@@ -12,17 +11,6 @@ pull_request_rules:
       merge:
         strict: smart
         method: merge
-  - name: automatic merge when CI passes and 1 review and is dependabot
-    conditions:
-      - author=dependabot[bot]
-      - "#approved-reviews-by>=1"
-      - status-success=continuous-integration/appveyor/pr
-      - status-success=codecov/patch
-      - base=develop
-    actions:
-      merge:
-        strict: smart
-        method: rebase
   - name: delete head branch after merge
     conditions: []
     actions:
