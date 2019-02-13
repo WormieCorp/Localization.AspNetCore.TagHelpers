@@ -15,7 +15,15 @@ issue-labels-include:
 - Feature
 - Bug
 - Improvement
+- dependencies
 - Documentation
 issue-labels-exclude:
 - Build
 - Refactor
+issue-labels-alias:
+  - name:    Documentation
+    header:  Documentation
+    plural:  Documentation
+  - name:    dependencies
+    header:  Dependency
+    plural:  Dependencies
