@@ -1,4 +1,5 @@
 # Localization.AspNetCore.TagHelpers
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
 
 [![Join the chat at https://gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers](https://badges.gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers.svg)](https://gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![CLA assistant](https://cla-assistant.io/readme/badge/WormieCorp/Localization.AspNetCore.TagHelpers)](https://cla-assistant.io/WormieCorp/Localization.AspNetCore.TagHelpers)
@@ -27,3 +28,14 @@ Ability to localize html attribute using the following: `<span localize-title="I
 
 You can read more about this on the [Documentation](https://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/docs/helpers) page.
 Please also see the Localization.Demo project for a working template with the use of these localization helpers (based on default asp.net core template)
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://github.com/AdmiringWorm"><img src="https://avatars3.githubusercontent.com/u/1474648?v=4" width="100px;" alt="Kim J. Nordmo"/><br /><sub><b>Kim J. Nordmo</b></sub></a><br /><a href="#maintenance-AdmiringWorm" title="Maintenance">🚧</a></td><td align="center"><a href="https://gitter.im"><img src="https://avatars2.githubusercontent.com/u/8518239?v=4" width="100px;" alt="The Gitter Badger"/><br /><sub><b>The Gitter Badger</b></sub></a><br /><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/commits?author=gitter-badger" title="Documentation">📖</a></td><td align="center"><a href="https://www.codetriage.com"><img src="https://avatars0.githubusercontent.com/u/35302948?v=4" width="100px;" alt="README Bot"/><br /><sub><b>README Bot</b></sub></a><br /><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/commits?author=codetriage-readme-bot" title="Documentation">📖</a></td><td align="center"><a href="https://encrypt0r.github.io/"><img src="https://avatars2.githubusercontent.com/u/16880059?v=4" width="100px;" alt="Muhammad Azeez"/><br /><sub><b>Muhammad Azeez</b></sub></a><br /><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?q=author%3Aencrypt0r" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/commits?author=encrypt0r" title="Code">💻</a></td><td align="center"><a href="https://github.com/apps/dependabot"><img src="https://avatars3.githubusercontent.com/in/2141?v=4" width="100px;" alt="dependabot[bot]"/><br /><sub><b>dependabot[bot]</b></sub></a><br /><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/commits?author=dependabot[bot]" title="Code">💻</a></td><td align="center"><a href="https://github.com/apps/whitesource-bolt-for-github"><img src="https://avatars2.githubusercontent.com/in/16809?v=4" width="100px;" alt="whitesource-bolt-for-github[bot]"/><br /><sub><b>whitesource-bolt-for-github[bot]</b></sub></a><br /><a href="#security-whitesource-bolt-for-github[bot]" title="Security">🛡️</a></td></tr></table>
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
