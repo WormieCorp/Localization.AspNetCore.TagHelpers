@@ -1,4 +1,4 @@
-#load "nuget:https://ci.appveyor.com/nuget/cake-recipe?package=Cake.Recipe&prerelease"
+#load "nuget:https://ci.appveyor.com/nuget/cake-recipe-pylg5x5ru9c2?package=Cake.Recipe&prerelease&version=0.3.0-alpha0464"
 #addin "nuget:?package=Cake.Yarn&version=0.4.2"
 
 Environment.SetVariableNames();

@@ -4,7 +4,7 @@
 $ubuntuScript = <<-SCRIPT
   wget -q https://packages.microsoft.com/config/ubuntu/$(lsb_release -r -s)/packages-microsoft-prod.deb
   dpkg -i packages-microsoft-prod.deb
-  sh -c 'echo "deb http://download.mono-project.com/repo/debian wheezy main" > /etc/apt/sources.list.d/mono.list'
+  sh -c 'echo "debug https://download.mono-project.com/repo/ubuntu stable-$(lsb_release -c -s) main" | > etc/apt/sources.list.d/mono.list'
   apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
   apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
   apt-get install apt-transport-https --no-install-recommends
@@ -21,6 +21,11 @@ $ubuntuScript = <<-SCRIPT
   exit 0
 SCRIPT
 Vagrant.configure("2") do |config|
+
+  config.vm.define :trusty, autostart: false do |trusty|
+    trusty.vm.box = "ubuntu/trusty64"
+    trusty.vm.provision :shell, inline: $ubuntuScript
+  end
 
   config.vm.define :xenial, autostart: false do |xenial|
     xenial.vm.box = "ubuntu/xenial64"
