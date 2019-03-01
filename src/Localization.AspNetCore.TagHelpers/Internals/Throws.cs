@@ -1,10 +1,10 @@
-//-----------------------------------------------------------------------
-// <copyright file="Throws.cs">
-//   Copyright (c) Kim Nordmo. All rights reserved.
+// -----------------------------------------------------------------------
+// <copyright file="Throws.cs" company="WormieCorp">
+//   Copyright (c) WormieCorp. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
+// -----------------------------------------------------------------------
 // <author>Kim Nordmo</author>
-//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers.Internals
 {
@@ -12,7 +12,7 @@ namespace Localization.AspNetCore.TagHelpers.Internals
   using System.Runtime.CompilerServices;
 
   /// <summary>
-  ///   Helper class from verifying parameters, and
+  ///   Helper class from verifying parameters.
   /// </summary>
   internal static class Throws
   {
@@ -23,7 +23,7 @@ namespace Localization.AspNetCore.TagHelpers.Internals
     /// <param name="value">The value to check.</param>
     /// <param name="name">The name of the parameter.</param>
     /// <exception cref="System.ArgumentNullException">
-    ///   If the <paramref name="value" /> is <see langword="null" />
+    ///   If the <paramref name="value" /> is <see langword="null" />.
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void NotNull(object value, string name)

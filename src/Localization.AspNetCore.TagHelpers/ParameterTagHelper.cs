@@ -1,10 +1,10 @@
-//-----------------------------------------------------------------------
-// <copyright file="ParameterTagHelper.cs">
-//   Copyright (c) Kim Nordmo. All rights reserved.
+// -----------------------------------------------------------------------
+// <copyright file="ParameterTagHelper.cs" company="WormieCorp">
+//   Copyright (c) WormieCorp. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
+// -----------------------------------------------------------------------
 // <author>Kim Nordmo</author>
-//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers
 {

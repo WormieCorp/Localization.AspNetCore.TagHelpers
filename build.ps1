@@ -48,8 +48,7 @@ Param(
     [switch]$DryRun,
     [switch]$Experimental,
     [switch]$Mono,
-    [version]$CakeVersion = '0.30.0',
-    [switch]$UseNetCore,
+    [version]$CakeVersion = '0.32.1',
     [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
     [string[]]$ScriptArgs
 )
@@ -88,12 +87,7 @@ if (!$PSScriptRoot) { $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand
 
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
 $CAKE_EXE_DIR = ""
-
-if ($UseNetCore) {
-    $CAKE_DIR_NAME = "Cake.CoreCLR"
-} else {
-    $CAKE_DIR_NAME = "Cake"
-}
+$CAKE_DIR_NAME = "Cake.CoreCLR"
 
 $CAKE_URL = "https://www.nuget.org/api/v2/package/$($CAKE_DIR_NAME)/$($CakeVersion)"
 
@@ -126,15 +120,11 @@ if (!(Test-Path $CAKE_EXE_DIR)) {
     Remove-Item -Recurse -Force $tmpDownloadFile,"$CAKE_EXE_DIR/_rels","$CAKE_EXE_DIR/``[Content_Types``].xml","$CAKE_EXE_DIR/package"
 }
 
-if ($UseNetCore) {
-    $CAKE_EXE = Get-ChildItem -LiteralPath $CAKE_EXE_DIR -Filter "Cake.dll" -Recurse | Select-Object -First 1 -ExpandProperty FullName
-    if (!$CAKE_EXE) { throw "Unable to find the Cake.dll library" }
-} else {
-    $CAKE_EXE = Get-ChildItem -LiteralPath $CAKE_EXE_DIR -Filter "Cake.exe" -Recurse | Select-Object -First 1 -ExpandProperty FullName
-    if (!$CAKE_EXE) { throw "Unable to find the Cake.exe executable" }
-}
+$CAKE_EXE = Get-ChildItem -LiteralPath $CAKE_EXE_DIR -Filter "Cake.dll" -Recurse | Select-Object -First 1 -ExpandProperty FullName
+if (!$CAKE_EXE) { throw "Unable to find the Cake.dll library" }
 
 $cakeArguments = New-Object System.Collections.Generic.List[string]
+$cakeArguments.Add($CAKE_EXE)
 $cakeArguments.Add($Script) | Out-Null
 $excludeArgs = @("Script","CakeVersion","UseNetCore","ScriptArgs", "Verbose")
 
@@ -149,15 +139,9 @@ if ($ScriptArgs) {
     $cakeArguments.AddRange($ScriptArgs) | Out-Null
 }
 
-if ($UseNetCore) {
-    $cakeArguments.Insert(0, $CAKE_EXE) | Out-Null
-    $CAKE_EXE = Get-Command -Name dotnet | ForEach-Object Definition
-} elseif ([System.Environment]::OSVersion.Platform -ne [System.PlatformID]::Win32NT) {
-    $cakeArguments.Insert(0, $CAKE_EXE) | Out-Null
-    $CAKE_EXE = Get-Command -Name mono | ForEach-Object Definition
-}
+$dotnet = Get-Command -Name dotnet | ForEach-Object Definition
 
 Write-Host "Running build script..."
 Write-Verbose "Calling & $CAKE_EXE $cakeArguments"
-& $Cake_EXE $cakeArguments
+& $dotnet $cakeArguments
 exit $LASTEXITCODE

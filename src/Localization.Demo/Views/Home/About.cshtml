@@ -2,7 +2,10 @@
 @{
     ViewData["Title"] = "About";
 }
-<h2 localize>@ViewData["Title"].</h2>
-<h3 localize>@ViewData["Message"]</h3>
+
+<header class="pb-2 mt-4 mb-2 border-bottom text-center">
+  <h1 localize>@ViewData["Title"].</h1>
+  <h2 localize>@ViewData["Message"]</h2>
+</header>
 
 <p localize localizer="@loc">Use this area to provide additional information.</p>

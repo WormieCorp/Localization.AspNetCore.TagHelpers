@@ -154,6 +154,51 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       locMock.Verify(x => x.GetString(value), Times.Never());
     }
 
+    [Theory]
+    [InlineData("Parameters")]
+    [InlineData("")]
+    public void Process_ShouldFormatContentWhenParamsWithSingleValue(string paramValue)
+    {
+      var tagHelper = InitTagHelper();
+      var context = CreateTagContext();
+      var output = CreateTagOutput("abbr", "IUP");
+      tagHelper.AttributeValues.Add("title", "I Use {0}");
+      tagHelper.ParameterValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+      {
+        { "title", paramValue }
+      };
+      locMock.Setup(x => x.GetString("I Use {0}", paramValue))
+        .Returns<string, string[]>((x,y) => new LocalizedString(x, string.Format(x, y) , true));
+
+      var expected = $"<abbr title=\"I Use {paramValue}\">IUP</abbr>";
+
+      var actual = CreateHtmlOutput(tagHelper, context, output);
+
+      Assert.Equal(expected, actual);
+
+      locMock.Verify(x => x.GetString("I Use {0}", paramValue), Times.Once());
+    }
+
+    [Fact]
+    public void Process_ShouldFormatContentWhenParamsWithSemiColorDelimitedValues()
+    {
+      var tagHelper = InitTagHelper();
+      var context = CreateTagContext();
+      var output = CreateTagOutput("abbr", "IUMP");
+      tagHelper.AttributeValues.Add("title", "I Use {0} {1}");
+      tagHelper.ParameterValues.Add("title", "Multiple;Parameters");
+      locMock.Setup(x => x.GetString("I Use {0} {1}", "Multiple", "Parameters"))
+        .Returns<string, string[]>((x, y) => new LocalizedString(x, string.Format(x, y), true));
+
+      var expected = "<abbr title=\"I Use Multiple Parameters\">IUMP</abbr>";
+
+      var actual = CreateHtmlOutput(tagHelper, context, output);
+
+      Assert.Equal(expected, actual);
+
+      locMock.Verify(x => x.GetString("I Use {0} {1}", "Multiple", "Parameters"), Times.Once());
+    }
+
     #endregion Process
 
     private string CreateHtmlOutput(LocalizeAttributeTagHelper tagHelper, TagHelperContext tagContext, TagHelperOutput tagOutput)

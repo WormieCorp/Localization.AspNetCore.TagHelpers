@@ -29,11 +29,8 @@ namespace Localization.Demo
     public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
-      loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-      loggerFactory.AddDebug();
-
       var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
       app.UseRequestLocalization(locOptions.Value);
 

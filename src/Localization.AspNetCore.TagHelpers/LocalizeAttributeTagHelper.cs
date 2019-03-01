@@ -1,10 +1,10 @@
-//-----------------------------------------------------------------------
-// <copyright file="LocalizeAttributeTagHelper.cs">
-//   Copyright (c) Kim Nordmo. All rights reserved.
+// -----------------------------------------------------------------------
+// <copyright file="LocalizeAttributeTagHelper.cs" company="WormieCorp">
+//   Copyright (c) WormieCorp. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
+// -----------------------------------------------------------------------
 // <author>Kim Nordmo</author>
-//-----------------------------------------------------------------------
 
 namespace Localization.AspNetCore.TagHelpers
 {
@@ -28,18 +28,29 @@ namespace Localization.AspNetCore.TagHelpers
   /// ]]>
   ///   </code>
   /// </example>
+  /// <example>
+  ///   <code>
+  /// <![CDATA[
+  /// <abbr localize-title="This will be localized. {0}" params-title="This will not, but will be inserted as a parameter for title">This will not</abbr>
+  /// ]]>
+  ///   </code>
+  /// </example>
   [HtmlTargetElement(Attributes = LOCALIZE_ATTRIBUTE_PREFIX + "*")]
   public class LocalizeAttributeTagHelper : TagHelper
   {
+    private const string LOCALIZE_ATTRIBUTE_PARAMETER_PREFIX = "params-";
     private const string LOCALIZE_ATTRIBUTE_PREFIX = "localize-";
     private const string LOCALIZE_DICTIONARY_NAME = "localize-all";
+    private const string LOCALIZE_DICTIONARY_PARAMETER_NAME = "params-all";
     private readonly string applicationName;
     private readonly IHtmlLocalizerFactory localizerFactory;
     private IDictionary<string, string> attributeValues;
     private IHtmlLocalizer localizer;
 
+    private IDictionary<string, string> parameterValues;
+
     /// <summary>
-    ///   Initializes a new instance of the <see cref="LocalizeAttributeTagHelper" /> class.
+    ///   Initializes a new instance of the <see cref="LocalizeAttributeTagHelper"/> class.
     /// </summary>
     /// <param name="localizerFactory">The localizer factory.</param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
@@ -75,6 +86,28 @@ namespace Localization.AspNetCore.TagHelpers
     }
 
     /// <summary>
+    /// Gets or sets the parameter values that are to be formatted into the localized attributes.
+    /// </summary>
+    [HtmlAttributeName(LOCALIZE_DICTIONARY_PARAMETER_NAME, DictionaryAttributePrefix = LOCALIZE_ATTRIBUTE_PARAMETER_PREFIX)]
+    public IDictionary<string, string> ParameterValues
+    {
+      get
+      {
+        if (parameterValues == null)
+        {
+          parameterValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        return parameterValues;
+      }
+
+      set
+      {
+        parameterValues = value;
+      }
+    }
+
+    /// <summary>
     ///   Gets or sets the view context (automatically set when using razor views).
     /// </summary>
     [HtmlAttributeNotBound]
@@ -93,7 +126,7 @@ namespace Localization.AspNetCore.TagHelpers
     /// <summary>
     ///   Synchronously executes the <see cref="T:Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
     ///   with the given <paramref name="context" /> and <paramref name="output" />. This is the
-    ///   method responsible for localizing the html attributes
+    ///   method responsible for localizing the html attributes.
     /// </summary>
     /// <param name="context">Contains information associated with the current HTML tag.</param>
     /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
@@ -105,7 +138,16 @@ namespace Localization.AspNetCore.TagHelpers
         string value = attribute.Value;
         if (!string.IsNullOrWhiteSpace(value))
         {
-          string newValue = localizer.GetString(value);
+          string newValue = null;
+
+          if (ParameterValues.ContainsKey(key))
+          {
+            newValue = localizer.GetString(value, ParameterValues[key].Split(';'));
+          }
+          else
+          {
+            newValue = localizer.GetString(value);
+          }
 
           output.Attributes.Add(key, newValue);
         }

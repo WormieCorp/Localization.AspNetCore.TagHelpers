@@ -1,6 +1,6 @@
 /* Control the margin for bootstrap alert boxes */
 .alert > p {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 /* Control the look and feel of the copy box applied to code sections */

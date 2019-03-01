@@ -31,8 +31,10 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     {
       var view = new Mock<IView>();
       view.SetupGet(x => x.Path).Returns("some/value.cshtml");
-      var context = new ViewContext();
-      context.View = view.Object;
+      var context = new ViewContext
+      {
+        View = view.Object
+      };
 
       return context;
     }

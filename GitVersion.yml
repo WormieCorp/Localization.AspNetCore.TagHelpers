@@ -5,8 +5,9 @@ branches:
   master:
     mode: ContinuousDelivery
     tag: ''
-  dev(elop)?(ment)?$:
+  develop:
     tag: alpha
     track-merge-target: true
 ignore:
-  sha: []
+  sha:
+    - 8db37d4284185e5f67cffc5882282eed344c80f9
