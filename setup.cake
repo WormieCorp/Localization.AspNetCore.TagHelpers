@@ -4,6 +4,7 @@
 
 Environment.SetVariableNames();
 
+var target = Argument("target", "Default");
 BuildParameters.SetParameters(
     context: Context,
     buildSystem: BuildSystem,
@@ -17,7 +18,9 @@ BuildParameters.SetParameters(
     shouldRunInspectCode: false,
     shouldRunDotNetCorePack: true,
     shouldRunCodecov: true,
-    shouldExecuteGitLink: false // We disable gitlink as it doesn't work for .NET Core anyhow
+    shouldExecuteGitLink: false, // We disable gitlink as it doesn't work for .NET Core anyhow
+    shouldDownloadFullReleaseNotes: string.Equals(target, "Export-Release-Notes", StringComparison.OrdinalIgnoreCase),
+    fullReleaseNotesFilePath: "./CHANGELOG.md"
 );
 
 ToolSettings.SetToolSettings(

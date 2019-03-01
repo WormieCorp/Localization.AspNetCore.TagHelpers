@@ -25,5 +25,5 @@ issue-labels-alias:
     header:  Documentation
     plural:  Documentation
   - name:    dependencies
-    header:  Dependency
-    plural:  Dependencies
+    header:  Improvement
+    plural:  Improvements
