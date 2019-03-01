@@ -31,12 +31,16 @@ namespace Localization.AspNetCore.TagHelpers
   [HtmlTargetElement(Attributes = LOCALIZE_ATTRIBUTE_PREFIX + "*")]
   public class LocalizeAttributeTagHelper : TagHelper
   {
+    private const string LOCALIZE_ATTRIBUTE_PARAMETER_PREFIX = "params-";
     private const string LOCALIZE_ATTRIBUTE_PREFIX = "localize-";
     private const string LOCALIZE_DICTIONARY_NAME = "localize-all";
+    private const string LOCALIZE_DICTIONARY_PARAMETER_NAME = "params-all";
     private readonly string applicationName;
     private readonly IHtmlLocalizerFactory localizerFactory;
     private IDictionary<string, string> attributeValues;
     private IHtmlLocalizer localizer;
+
+    private IDictionary<string, string> parameterValues;
 
     /// <summary>
     ///   Initializes a new instance of the <see cref="LocalizeAttributeTagHelper"/> class.
@@ -74,6 +78,24 @@ namespace Localization.AspNetCore.TagHelpers
       }
     }
 
+    [HtmlAttributeName(LOCALIZE_DICTIONARY_PARAMETER_NAME, DictionaryAttributePrefix = LOCALIZE_ATTRIBUTE_PARAMETER_PREFIX)]
+    public IDictionary<string, string> ParameterValues
+    {
+      get
+      {
+        if (parameterValues == null)
+        {
+          parameterValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        return parameterValues;
+      }
+      set
+      {
+        parameterValues = value;
+      }
+    }
+
     /// <summary>
     ///   Gets or sets the view context (automatically set when using razor views).
     /// </summary>
@@ -105,7 +127,16 @@ namespace Localization.AspNetCore.TagHelpers
         string value = attribute.Value;
         if (!string.IsNullOrWhiteSpace(value))
         {
-          string newValue = localizer.GetString(value);
+          string newValue = null;
+
+          if (ParameterValues.ContainsKey(key))
+          {
+            newValue = localizer.GetString(value, ParameterValues[key].Split(';'));
+          }
+          else
+          {
+            newValue = localizer.GetString(value);
+          }
 
           output.Attributes.Add(key, newValue);
         }
