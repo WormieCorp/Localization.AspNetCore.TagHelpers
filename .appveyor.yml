@@ -28,7 +28,8 @@ branches:
 
 install:
 - ps: if ($isWindows) { Install-Product node $env:nodejs_version }
-- npm update -g yarn
+- sh: npm update -g yarn
+- cmd: choco upgrade yarn
 - node --version
 - npm --version
 - yarn --version
