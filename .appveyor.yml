@@ -18,6 +18,7 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   nodejs_version: "10"
+stack: node 10
 branches:
   except:
   - ci/travis
@@ -27,6 +28,7 @@ branches:
 
 install:
 - ps: if ($isWindows) { Install-Product node $env:nodejs_version }
+- npm update -g yarn
 - node --version
 - npm --version
 
