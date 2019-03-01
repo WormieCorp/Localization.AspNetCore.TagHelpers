@@ -6,8 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
-        <title>Localization.AspNetCore.TagHelpers - API - Startup.Configure(IApplicationBuilder, IHostingEnvironment, ILoggerFactory) Method</title>
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/mermaid.css" rel="stylesheet">
+        <title>Localization.AspNetCore.TagHelpers - API - LocalizeAttributeTagHelper.ParameterValues Property</title>
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet">
@@ -22,6 +21,7 @@
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.slimscroll.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.sticky-kit.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/mermaid.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/svg-pan-zoom.min.js"></script>
         <!--[if lt IE 9]>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/html5shiv.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/respond.min.js"></script>
@@ -74,8 +74,8 @@
                 <section class="infobar" data-spy="affix" data-offset-top="60" data-offset-bottom="200"> 
                     	
 	<div id="infobar-headings"><h6>On This Page</h6><p><a href="#Syntax">Syntax</a></p>
-<p><a href="#Parameters">Parameters</a></p>
-<p><a href="#ReturnValue">Return Value</a></p>
+<p><a href="#Attributes">Attributes</a></p>
+<p><a href="#Value">Value</a></p>
 <hr class="infobar-hidden">
 </div>
 
@@ -135,17 +135,19 @@
                     <ul class="sidebar-menu">
                         
 			<li class="header">Namespace</li>
-		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo">Localization<wbr>.Demo</a></li>
+		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></li>
 		<li class="header">Type</li>
-		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup">Startup</a></li>
+		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper">Localize<wbr>Attribute<wbr>Tag<wbr>Helper</a></li>
 		<li role="separator" class="divider"></li>
 			<li class="header">Constructors</li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/AE3DC356">Startup<wbr>(IConfiguration)<wbr></a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper/E95D1C1A">Localize<wbr>Attribute<wbr>Tag<wbr>Helper<wbr>(<wbr>I<wbr>Html<wbr>Localizer<wbr>Factory, <wbr>IHostingEnvironment)<wbr></a></li>
 			<li class="header">Property Members</li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/DF5DCC0B">Configuration</a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper/8E5F1283">AttributeValues</a></li>
+				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper/B446EF10">ParameterValues</a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper/D67F76E0">ViewContext</a></li>
 			<li class="header">Method Members</li>
-				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/0523726C">Configure<wbr>(<wbr>I<wbr>Application<wbr>Builder, <wbr>I<wbr>Hosting<wbr>Environment, <wbr>ILoggerFactory)<wbr></a></li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/1BF7DF81">ConfigureServices<wbr>(IServiceCollection)<wbr></a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper/21B9E10B">Init<wbr>(TagHelperContext)<wbr></a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper/C91CA052">Process<wbr>(TagHelperContext, <wbr>TagHelperOutput)<wbr></a></li>
 
 
                     </ul>
@@ -160,65 +162,53 @@
 
 
 <section class="content-header">
-			<h3><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup">Startup</a>.</h3>
-	<h1>Configure<wbr>(<wbr>I<wbr>Application<wbr>Builder, <wbr>I<wbr>Hosting<wbr>Environment, <wbr>ILoggerFactory)<wbr> <small>Method</small></h1>
+			<h3><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper">Localize<wbr>Attribute<wbr>Tag<wbr>Helper</a>.</h3>
+	<h1>ParameterValues <small>Property</small></h1>
 </section>
 <section class="content">
 	
 	
 	
 		<div class="panel panel-default">
-  			<div class="panel-body">	
+  			<div class="panel-body">
 				<dl class="dl-horizontal">	
 						
 						<dt>Namespace</dt>
-						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo">Localization<wbr>.Demo</a></dd>
+						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers">Localization<wbr>.AspNetCore<wbr>.TagHelpers</a></dd>
 					
 						<dt>Containing Type</dt>
-						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup">Startup</a></dd>		
+						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper">Localize<wbr>Attribute<wbr>Tag<wbr>Helper</a></dd>		
 					
 				</dl>
   			</div>
 		</div>
 
 	<h1 id="Syntax">Syntax</h1>
-	<pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)</code></pre>
+	<pre><code>[HtmlAttributeName(LOCALIZE_DICTIONARY_PARAMETER_NAME, DictionaryAttributePrefix = LOCALIZE_ATTRIBUTE_PARAMETER_PREFIX)]
+public IDictionary&lt;string, string&gt; ParameterValues { get; set; }</code></pre>
 
 
 
-
-
-	<h1 id="Parameters">Parameters</h1>
+	<h1 id="Attributes">Attributes</h1>
 	<div class="box">
 		<div class="box-body no-padding table-responsive">
-			<table class="table table-striped table-hover three-cols">
+			<table class="table table-striped table-hover two-cols">
 				<thead>
 					<tr>
-						<th>Name</th>
 						<th>Type</th>
 						<th>Description</th>
 					</tr>
 				</thead>
 					<tbody><tr>
-						<td>app</td>
-						<td>IApplicationBuilder</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>env</td>
-						<td>IHostingEnvironment</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>loggerFactory</td>
-						<td>ILoggerFactory</td>
+						<td>HtmlAttributeName</td>
 						<td></td>
 					</tr>
 			</tbody></table>
 		</div>
 	</div>	
 
-	<h1 id="ReturnValue">Return Value</h1>
+
+	<h1 id="Value">Value</h1>
 	<div class="box">
 		<div class="box-body no-padding table-responsive">
 			<table class="table table-striped table-hover two-cols">
@@ -229,7 +219,7 @@
 					</tr>
 				</thead>
 				<tbody><tr>
-					<td>void</td>
+					<td>IDictionary<wbr>&lt;string, <wbr>string&gt;<wbr></td>
 					<td></td>
 				</tr>
 			</tbody></table>
@@ -260,22 +250,53 @@
                 $(document.body).removeClass('sidebar-open');
             });
             
-            $(document).load(function() {
+            $(document).ready(function() {
                 mermaid.initialize(
                 {
                     flowchart:
                     {
-                        htmlLabels: false,
-                        useMaxWidth:false
-                    }
-                });  
-                mermaid.init(undefined, ".mermaid")
-                $('svg').addClass('img-responsive');
+                        useMaxWidth: false
+                    },
+					startOnLoad: false,
+					cloneCssStyles: false
+                });     
+                mermaid.init(undefined, ".mermaid");
+
+                // Remove the max-width setting that Mermaid sets
+                var mermaidSvg = $('.mermaid svg');
+                mermaidSvg.addClass('img-responsive');
+                mermaidSvg.css('max-width', '');
+
+                // Make it scrollable
+				var target = document.querySelector(".mermaid svg");
+				if(target !== null)
+				{
+					var panZoom = window.panZoom = svgPanZoom(target, {
+						zoomEnabled: true,
+						controlIconsEnabled: true,
+						fit: true,
+						center: true,
+                        maxZoom: 20,
+                        zoomScaleSensitivity: 0.6
+					});			                          
+
+                    // Do the reset once right away to fit the diagram
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                    
+                    $(window).resize(function(){
+                        panZoom.resize();
+                        panZoom.fit();
+                        panZoom.center();
+                    });
+				}
                 
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
                 });  
             });
+
             hljs.initHighlightingOnLoad();
 
             // Back to top

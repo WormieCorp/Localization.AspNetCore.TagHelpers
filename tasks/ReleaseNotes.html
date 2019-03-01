@@ -9,7 +9,6 @@
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <title>Localization.AspNetCore.TagHelpers - Releasenotes</title>
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/mermaid.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet" />
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet" />
@@ -24,6 +23,7 @@
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.slimscroll.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.sticky-kit.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/mermaid.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/svg-pan-zoom.min.js"></script>
         <!--[if lt IE 9]>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/html5shiv.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/respond.min.js"></script>
@@ -85,6 +85,7 @@
 
                     <ul class="sidebar-menu">
                         
+
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Analyze">Analyze</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/AppVeyor">Appveyor</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Build">Build</a></li>
@@ -94,9 +95,11 @@
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/ClearCache">Clearcache</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Client-Packages">Client Packages</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Create-Chocolatey-Packages">Create Chocolatey Packages</a></li>
+                <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Create-Default-Labels">Create Default Labels</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Create-Nuget-Package">Create Nuget Package</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Create-NuGet-Packages">Create Nuget Packages</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Create-Release-Notes">Create Release Notes</a></li>
+                <li><a href="/Localization.AspNetCore.TagHelpers/tasks/CreateIssuesReport">Createissuesreport</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Default">Default</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Deploy-Graph-Documentation">Deploy Graph Documentation</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/DotNetCore-Build">Dotnetcore Build</a></li>
@@ -110,6 +113,7 @@
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Install-OpenCover">Install Opencover</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Install-ReportGenerator">Install Reportgenerator</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Install-ReportUnit">Install Reportunit</a></li>
+                <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Labels">Labels</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Package">Package</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Preview">Preview</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Preview-Documentation">Preview Documentation</a></li>
@@ -150,9 +154,9 @@
 
 
 
-	<section class="content-header">
-		<h1>Releasenotes</h1>
-	</section>
+		<section class="content-header">
+			<h1>Releasenotes</h1>
+		</section>
 	<section class="content">
 		<div class="mermaid">
 graph TD;
@@ -181,22 +185,53 @@ ReleaseNotes-->Create-Release-Notes;
                 $(document.body).removeClass('sidebar-open');
             });
             
-            $(document).load(function() {
+            $(document).ready(function() {
                 mermaid.initialize(
                 {
                     flowchart:
                     {
-                        htmlLabels: false,
-                        useMaxWidth:false
-                    }
-                });  
-                mermaid.init(undefined, ".mermaid")
-                $('svg').addClass('img-responsive');
+                        useMaxWidth: false
+                    },
+					startOnLoad: false,
+					cloneCssStyles: false
+                });     
+                mermaid.init(undefined, ".mermaid");
+
+                // Remove the max-width setting that Mermaid sets
+                var mermaidSvg = $('.mermaid svg');
+                mermaidSvg.addClass('img-responsive');
+                mermaidSvg.css('max-width', '');
+
+                // Make it scrollable
+				var target = document.querySelector(".mermaid svg");
+				if(target !== null)
+				{
+					var panZoom = window.panZoom = svgPanZoom(target, {
+						zoomEnabled: true,
+						controlIconsEnabled: true,
+						fit: true,
+						center: true,
+                        maxZoom: 20,
+                        zoomScaleSensitivity: 0.6
+					});			                          
+
+                    // Do the reset once right away to fit the diagram
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                    
+                    $(window).resize(function(){
+                        panZoom.resize();
+                        panZoom.fit();
+                        panZoom.center();
+                    });
+				}
                 
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
                 });  
             });
+
             hljs.initHighlightingOnLoad();
 
             // Back to top

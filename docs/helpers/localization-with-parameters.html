@@ -7,7 +7,6 @@
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <title>Localization.AspNetCore.TagHelpers - Localization with parameters</title>
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/mermaid.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet">
@@ -22,6 +21,7 @@
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.slimscroll.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.sticky-kit.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/mermaid.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/svg-pan-zoom.min.js"></script>
         <!--[if lt IE 9]>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/html5shiv.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/respond.min.js"></script>
@@ -86,11 +86,13 @@
 
                     <ul class="sidebar-menu">
                         
+
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/usage">Library Usage</a></li>
                 <li class="treeview active">
                     <a href="/Localization.AspNetCore.TagHelpers/docs/helpers">Available helpers</a> <a href="#" class="expand"></a>
                     <ul class="treeview-menu">
-                                        <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></li>
+                        
+                <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-attribute-localization">Localize content using an attribute</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/attribute-localization">Localize Attributes</a></li>
                 <li class="selected"><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/localization-with-parameters">Localization with parameters</a></li>
@@ -109,9 +111,9 @@
 
 
 
-	<section class="content-header">
-		<h1>Localization with parameters</h1>
-	</section>
+		<section class="content-header">
+			<h1>Localization with parameters</h1>
+		</section>
 	<section class="content">
 		<h1 id="usage">Usage</h1>
 <p>Yes, we also provide the ability to pass in parameters when localizing content.
@@ -143,8 +145,8 @@ By only using html elements and attributes.</p>
   This content is localized, but {0} isn't.
 &lt;/span&gt;
 </code></pre>
-<p><strong><em>NOTE: Be careful of nesting <code>&lt;parameter&gt;</code> elements, this scenario hasn't been tested yet and is expected
-to result in problems.</em></strong></p>
+<p><em><strong>NOTE: Be careful of nesting <code>&lt;parameter&gt;</code> elements, this scenario hasn't been tested yet and is expected
+to result in problems.</strong></em></p>
 
 	</section>
                 
@@ -168,22 +170,53 @@ to result in problems.</em></strong></p>
                 $(document.body).removeClass('sidebar-open');
             });
             
-            $(document).load(function() {
+            $(document).ready(function() {
                 mermaid.initialize(
                 {
                     flowchart:
                     {
-                        htmlLabels: false,
-                        useMaxWidth:false
-                    }
-                });  
-                mermaid.init(undefined, ".mermaid")
-                $('svg').addClass('img-responsive');
+                        useMaxWidth: false
+                    },
+					startOnLoad: false,
+					cloneCssStyles: false
+                });     
+                mermaid.init(undefined, ".mermaid");
+
+                // Remove the max-width setting that Mermaid sets
+                var mermaidSvg = $('.mermaid svg');
+                mermaidSvg.addClass('img-responsive');
+                mermaidSvg.css('max-width', '');
+
+                // Make it scrollable
+				var target = document.querySelector(".mermaid svg");
+				if(target !== null)
+				{
+					var panZoom = window.panZoom = svgPanZoom(target, {
+						zoomEnabled: true,
+						controlIconsEnabled: true,
+						fit: true,
+						center: true,
+                        maxZoom: 20,
+                        zoomScaleSensitivity: 0.6
+					});			                          
+
+                    // Do the reset once right away to fit the diagram
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                    
+                    $(window).resize(function(){
+                        panZoom.resize();
+                        panZoom.fit();
+                        panZoom.center();
+                    });
+				}
                 
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
                 });  
             });
+
             hljs.initHighlightingOnLoad();
 
             // Back to top

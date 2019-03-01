@@ -7,7 +7,6 @@
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <title>Localization.AspNetCore.TagHelpers - Localize content using a tag</title>
-        <link href="/Localization.AspNetCore.TagHelpers/assets/css/mermaid.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet">
@@ -22,6 +21,7 @@
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.slimscroll.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/jquery.sticky-kit.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/mermaid.min.js"></script>
+        <script src="/Localization.AspNetCore.TagHelpers/assets/js/svg-pan-zoom.min.js"></script>
         <!--[if lt IE 9]>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/html5shiv.min.js"></script>
         <script src="/Localization.AspNetCore.TagHelpers/assets/js/respond.min.js"></script>
@@ -91,11 +91,13 @@
 
                     <ul class="sidebar-menu">
                         
+
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/usage">Library Usage</a></li>
                 <li class="treeview active">
                     <a href="/Localization.AspNetCore.TagHelpers/docs/helpers">Available helpers</a> <a href="#" class="expand"></a>
                     <ul class="treeview-menu">
-                                        <li class="selected"><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></li>
+                        
+                <li class="selected"><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-tag-localization">Localize content using a tag</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/content-attribute-localization">Localize content using an attribute</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/attribute-localization">Localize Attributes</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/docs/helpers/localization-with-parameters">Localization with parameters</a></li>
@@ -114,9 +116,9 @@
 
 
 
-	<section class="content-header">
-		<h1>Localize content using a tag</h1>
-	</section>
+		<section class="content-header">
+			<h1>Localize content using a tag</h1>
+		</section>
 	<section class="content">
 		<h1 id="usage">Usage</h1>
 <p>The most basic and simplest use of this tag helper is with the following:</p>
@@ -134,7 +136,7 @@
 <p>You can use the <code>resource-name</code> attribute to pass the name of the resource file.
 This will be passed as it is typed to the underlying <a href="https://docs.microsoft.com/dotnet/api/Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer?view=aspnetcore-2.0">IHtmlLocalizer</a>
 which may point it to a resource file.</p>
-<p><strong><em>NOTE: This would depend on the implementation of the underlying localizer</em></strong></p>
+<p><em><strong>NOTE: This would depend on the implementation of the underlying localizer</strong></em></p>
 <h2 id="option-2">Option 2</h2>
 <pre><code class="language-html">&lt;localize resource-type="@typeof(MyClassName)"&gt;Text to localize&lt;/localize&gt;
 </code></pre>
@@ -145,7 +147,7 @@ underlying Resource Localizer.</p>
 </code></pre>
 <p>You can use the <code>html</code> attribute to choose whether the content should be html encoded or not,
 this defaults to <code>false</code> (meaning the content will be encoded) if no <code>html</code> attribute is used.</p>
-<p><strong><em>NOTE: Can also be globally overridden</em></strong></p>
+<p><em><strong>NOTE: Can also be globally overridden</strong></em></p>
 <h1 id="enabledisable-trimming-whitespace">Enable/Disable trimming whitespace</h1>
 <p>Again there are two distinct ways to do this.</p>
 <h2 id="option-1-1">Option 1</h2>
@@ -154,7 +156,7 @@ this defaults to <code>false</code> (meaning the content will be encoded) if no 
 <p>You can use the <code>trim</code> attribute to enable or disable trimming of whitespace at the beginning
 and the end of the content.
 This defaults to <code>true</code>, unless overridden in the global settings.</p>
-<p><strong><em>NOTE: If the attribute <code>trimlines</code> is used, this attribute is ignored.</em></strong></p>
+<p><em><strong>NOTE: If the attribute <code>trimlines</code> is used, this attribute is ignored.</strong></em></p>
 <h2 id="option-2-1">Option 2</h2>
 <pre><code class="language-html">&lt;localize trimlines="true"&gt;
   Multiline text
@@ -163,7 +165,7 @@ This defaults to <code>true</code>, unless overridden in the global settings.</p
 </code></pre>
 <p>You can use the <code>trimlines</code> attribute if you need to trim each line for its beginning and ending whitespace.
 This defaults to <code>false</code> and is not recommended to use when not needed.</p>
-<p><strong><em>NOTE: This overrides the previously mentioned <code>trim</code> attribute if it is set to <code>true</code>.</em></strong></p>
+<p><em><strong>NOTE: This overrides the previously mentioned <code>trim</code> attribute if it is set to <code>true</code>.</strong></em></p>
 <h1 id="handling-line-endings">Handling line endings</h1>
 <pre><code class="language-html">&lt;localize newline="NewLineHandling.Auto"&gt;
 Text to
@@ -176,8 +178,8 @@ endings
 <p>You can use the <code>newline</code> attribute to normalize eol or if the resource file line endings and view line
 endings isn't the same.
 Defaults to Automatically using the current environments line endings, unless overridden in the global settings.</p>
-<p><strong><em>NOTE: the line endings are normalized on the text that are to be localized,
-but nothing is done with the already localized text.</em></strong></p>
+<p><em><strong>NOTE: the line endings are normalized on the text that are to be localized,
+but nothing is done with the already localized text.</strong></em></p>
 <p>See the <a href="../../api/Localization.AspNetCore.TagHelpers/NewLineHandling/">API documentation</a> for available values.</p>
 <h1 id="reuse-an-existing-ihtmllocalizeriviewlocalizer">Reuse an existing <a href="https://docs.microsoft.com/dotnet/api/Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer?view=aspnetcore-2.0">IHtmlLocalizer</a>/<a href="https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.localization.iviewlocalizer?view=aspnetcore-2.0">IViewLocalizer</a></h1>
 <p>If you're already have injected a html/view localizer into the current view, you may reuse that
@@ -188,7 +190,7 @@ localizer by passing it for every call to the localize tag helper.</p>
   Text to localize
 &lt;/localize&gt;
 </code></pre>
-<p><strong><em>NOTE: The tag helpers now cache IHTMLLocalizer instances, you don't have to explicitly cache them anymore.</em></strong></p>
+<p><em><strong>NOTE: The tag helpers now cache IHTMLLocalizer instances, you don't have to explicitly cache them anymore.</strong></em></p>
 
 	</section>
                 
@@ -212,22 +214,53 @@ localizer by passing it for every call to the localize tag helper.</p>
                 $(document.body).removeClass('sidebar-open');
             });
             
-            $(document).load(function() {
+            $(document).ready(function() {
                 mermaid.initialize(
                 {
                     flowchart:
                     {
-                        htmlLabels: false,
-                        useMaxWidth:false
-                    }
-                });  
-                mermaid.init(undefined, ".mermaid")
-                $('svg').addClass('img-responsive');
+                        useMaxWidth: false
+                    },
+					startOnLoad: false,
+					cloneCssStyles: false
+                });     
+                mermaid.init(undefined, ".mermaid");
+
+                // Remove the max-width setting that Mermaid sets
+                var mermaidSvg = $('.mermaid svg');
+                mermaidSvg.addClass('img-responsive');
+                mermaidSvg.css('max-width', '');
+
+                // Make it scrollable
+				var target = document.querySelector(".mermaid svg");
+				if(target !== null)
+				{
+					var panZoom = window.panZoom = svgPanZoom(target, {
+						zoomEnabled: true,
+						controlIconsEnabled: true,
+						fit: true,
+						center: true,
+                        maxZoom: 20,
+                        zoomScaleSensitivity: 0.6
+					});			                          
+
+                    // Do the reset once right away to fit the diagram
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                    
+                    $(window).resize(function(){
+                        panZoom.resize();
+                        panZoom.fit();
+                        panZoom.center();
+                    });
+				}
                 
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
                 });  
             });
+
             hljs.initHighlightingOnLoad();
 
             // Back to top

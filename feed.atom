@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-	<link rel="self" href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers" />
 	<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers</id>
 	<title>Localization.AspNetCore.TagHelpers</title>
-	<rights>2018</rights>
-	<updated>2018-10-08T15:37:18Z</updated>
+	<link rel="self" href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers" />
+	<rights>2019</rights>
+	<updated>2019-03-01T11:16:24Z</updated>
 	<entry>
+		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.4.0</id>
+		<title>New Release - 0.4.0</title>
 		<author>
 			<name>AdmiringWorm</name>
 		</author>
 		<link href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.4.0" />
-		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.4.0</id>
-		<title>New Release - 0.4.0</title>
 		<updated>2018-07-01T00:00:00Z</updated>
 		<content>&lt;h1 id="release"&gt;0.4.0 Release&lt;/h1&gt;
 &lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/0.3.0...0.4.0"&gt;46 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=4&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;
@@ -37,12 +37,12 @@
 		<summary>&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/0.3.0...0.4.0"&gt;46 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=4&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;</summary>
 	</entry>
 	<entry>
+		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.3.0</id>
+		<title>New Release - 0.3.0</title>
 		<author>
 			<name>AdmiringWorm</name>
 		</author>
 		<link href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.3.0" />
-		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.3.0</id>
-		<title>New Release - 0.3.0</title>
 		<updated>2017-03-14T00:00:00Z</updated>
 		<content>&lt;h1 id="release"&gt;0.3.0 Release&lt;/h1&gt;
 &lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/0.2.0...0.3.0"&gt;25 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=3&amp;amp;state=closed"&gt;3 issues&lt;/a&gt; being closed.&lt;/p&gt;
@@ -56,14 +56,14 @@
 		<summary>&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/0.2.0...0.3.0"&gt;25 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=3&amp;amp;state=closed"&gt;3 issues&lt;/a&gt; being closed.&lt;/p&gt;</summary>
 	</entry>
 	<entry>
+		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.2.0</id>
+		<title>New Release - 0.2.0</title>
 		<author>
 			<name>AdmiringWorm</name>
 		</author>
 		<link href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.2.0" />
-		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.2.0</id>
-		<title>New Release - 0.2.0</title>
 		<updated>2016-10-26T00:00:00Z</updated>
-		<content>&lt;h1 id="release"&gt;0.2.0 Release&lt;/h1&gt;
+		<content>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id="release"&gt;0.2.0 Release&lt;/h1&gt;
 &lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/v0.1.0...0.2.0"&gt;20 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=2&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Breaking change&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -103,16 +103,16 @@
 &lt;/ul&gt;
 &lt;h3 id="where-to-get-it"&gt;Where to get it&lt;/h3&gt;
 &lt;p&gt;You can download this release from &lt;a href="https://www.nuget.org/packages/Localization.AspNetCore.TagHelpers/0.2.0"&gt;NuGet&lt;/a&gt;&lt;/p&gt;
-</content>
+&lt;/body&gt;&lt;/html&gt;</content>
 		<summary>&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/v0.1.0...0.2.0"&gt;20 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=2&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;</summary>
 	</entry>
 	<entry>
+		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0-1-0</id>
+		<title>New Release - 0.1.0</title>
 		<author>
 			<name>AdmiringWorm</name>
 		</author>
 		<link href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0-1-0" />
-		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0-1-0</id>
-		<title>New Release - 0.1.0</title>
 		<updated>2016-10-23T00:00:00Z</updated>
 		<content>&lt;h1 id="release"&gt;0.1.0 Release&lt;/h1&gt;
 &lt;p&gt;This was originally meant to be the first working release of Localization.AspNetCore.TagHelpers.
