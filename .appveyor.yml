@@ -24,7 +24,7 @@ build_script:
     if ($isWindows) {
       .\build.ps1 -Configuration Release -Target AppVeyor
     } else {
-      .\build.ps1 -Configuration Release -Target Upload-AppVeyor-Artifacts
+      .\build.ps1 -Configuration Release -Target AppVeyor-Linux
     }
 - ps: |
     $wc = New-Object 'System.Net.WebClient'
