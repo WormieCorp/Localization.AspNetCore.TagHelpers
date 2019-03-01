@@ -18,3 +18,13 @@ This can be easily achieved by making use of the following example.
 This can be used for any attribute on an html element, just by prefixing the html attribute with `localize-`.
 Unfortunately only basic localization is supported here, all text in the attribute will/should be html encoded.
 There is currently no support for adding html in html attributes, and currently no plans to add it either.
+
+Since the release of version `0.6.0` you can now also pass in parameters when localizing attributes.
+```html
+<img localize-alt="My {0} localizable text" params-alt="Alternative" src="whatever.png" />
+```
+
+You may also pass in several parameters by using a semi colon delimited string, like:
+```html
+<img localize-alt="My {0} {1} text" params-alt="Alternative;localizable" src="whatever.png" />
+```
