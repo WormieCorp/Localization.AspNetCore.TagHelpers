@@ -636,3 +636,7 @@ BuildArtifacts/
 # Minified files
 *.min.css
 *.min.js
+
+# Wyam generated files
+config.wyam.*
+docs/input/tasks/
