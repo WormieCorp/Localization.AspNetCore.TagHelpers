@@ -6,6 +6,7 @@ pull_request_rules:
       - status-success=WIP
       - status-success=codecov/patch
       - status-success=license/cla
+      - status-success=CodeFactor
       - base=develop
     actions:
       merge:

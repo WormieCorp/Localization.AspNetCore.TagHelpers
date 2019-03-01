@@ -6,7 +6,6 @@
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-concat": "^2.6.1",
-    "gulp-cssmin": "^0.2.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-uglify": "^3.0.1",
     "merge-stream": "^1.0.1"
@@ -17,6 +16,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "gulp-clean-css": "^4.0.0",
     "jquery": "3.3.1",
     "jquery-validation": "1.19.0",
     "jquery-validation-unobtrusive": "^3.2.11"

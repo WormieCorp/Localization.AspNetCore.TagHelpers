@@ -3,8 +3,7 @@
 
 var gulp = require("gulp"),
     concat = require("gulp-concat"),
-    cssmin = require("gulp-cssmin"),
-    htmlmin = require("gulp-htmlmin"),
+    cleancss = require("gulp-clean-css"),
     uglify = require("gulp-uglify"),
     merge = require("merge-stream"),
     del = require("del"),
@@ -35,9 +34,9 @@ gulp.task("copy:css", function() {
 gulp.task("min:js", gulp.series("copy:js", function () {
   var tasks = getBundles(".js").map(function (bundle) {
     return gulp.src(bundle.inputFiles, { base: "." })
-			.pipe(concat(bundle.outputFileName))
-			.pipe(uglify())
-			.pipe(gulp.dest("."));
+      .pipe(concat(bundle.outputFileName))
+      .pipe(uglify())
+      .pipe(gulp.dest("."));
   });
   return merge(tasks);
 }));
@@ -45,9 +44,9 @@ gulp.task("min:js", gulp.series("copy:js", function () {
 gulp.task("min:css", gulp.series("copy:css", function () {
   var tasks = getBundles(".css").map(function (bundle) {
     return gulp.src(bundle.inputFiles, { base: "." })
-			.pipe(concat(bundle.outputFileName))
-			.pipe(cssmin())
-			.pipe(gulp.dest("."));
+      .pipe(concat(bundle.outputFileName))
+      .pipe(cleancss({level: 2}))
+      .pipe(gulp.dest("."));
   });
   return merge(tasks);
 }));
