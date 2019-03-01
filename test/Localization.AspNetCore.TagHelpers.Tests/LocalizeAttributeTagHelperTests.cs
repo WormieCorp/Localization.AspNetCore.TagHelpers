@@ -163,6 +163,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var context = CreateTagContext();
       var output = CreateTagOutput("abbr", "IUP");
       tagHelper.AttributeValues.Add("title", "I Use {0}");
+      tagHelper.ParameterValues = new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);
       tagHelper.ParameterValues.Add("title", paramValue);
       locMock.Setup(x => x.GetString("I Use {0}", paramValue))
         .Returns<string, string[]>((x,y) => new LocalizedString(x, string.Format(x, y) , true));
