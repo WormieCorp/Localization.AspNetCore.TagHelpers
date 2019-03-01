@@ -56,6 +56,6 @@ https://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/docs/helpers
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-rc.108" PrivateAssets="All" />
   </ItemGroup>
 </Project>

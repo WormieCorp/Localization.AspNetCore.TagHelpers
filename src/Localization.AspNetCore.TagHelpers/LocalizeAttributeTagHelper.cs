@@ -28,6 +28,13 @@ namespace Localization.AspNetCore.TagHelpers
   /// ]]>
   ///   </code>
   /// </example>
+  /// <example>
+  ///   <code>
+  /// <![CDATA[
+  /// <abbr localize-title="This will be localized. {0}" params-title="This will not, but will be inserted as a parameter for title">This will not</abbr>
+  /// ]]>
+  ///   </code>
+  /// </example>
   [HtmlTargetElement(Attributes = LOCALIZE_ATTRIBUTE_PREFIX + "*")]
   public class LocalizeAttributeTagHelper : TagHelper
   {
@@ -78,6 +85,9 @@ namespace Localization.AspNetCore.TagHelpers
       }
     }
 
+    /// <summary>
+    /// Gets or sets the parameter values that are to be formatted into the localized attributes.
+    /// </summary>
     [HtmlAttributeName(LOCALIZE_DICTIONARY_PARAMETER_NAME, DictionaryAttributePrefix = LOCALIZE_ATTRIBUTE_PARAMETER_PREFIX)]
     public IDictionary<string, string> ParameterValues
     {
@@ -90,6 +100,7 @@ namespace Localization.AspNetCore.TagHelpers
 
         return parameterValues;
       }
+
       set
       {
         parameterValues = value;

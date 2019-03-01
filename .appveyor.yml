@@ -27,6 +27,8 @@ branches:
 
 install:
 - ps: if ($isWindows) { Install-Product node $env:nodejs_version }
+- node --version
+- npm --version
 
 build_script:
 - ps: |
