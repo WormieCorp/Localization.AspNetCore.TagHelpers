@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "del": "^4.0.0",
+    "del": "^4.1.0",
     "gulp": "^4.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",
