@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "del": "^4.1.0",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-uglify": "^3.0.2",
