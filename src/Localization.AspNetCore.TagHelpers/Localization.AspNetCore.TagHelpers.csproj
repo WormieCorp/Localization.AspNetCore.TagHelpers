@@ -21,28 +21,19 @@ Ability to localize html attribute using the following: `&lt;span localize-title
 Please see the documentation for all available attributes and their usage:
 https://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/docs/helpers
     </Description>
-    <Copyright>Copyright 2016-2018 - Kim Nordmo</Copyright>
+    <Copyright>Copyright 2016-$([System.DateTime]::Today.Year - Kim Nordmo</Copyright>
     <Authors>AdmiringWorm</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Localization.AspNetCore.TagHelpers</AssemblyName>
     <PackageId>Localization.AspNetCore.TagHelpers</PackageId>
     <PackageTags>localization;asp-net-core;web;taghelpers;localization-aspnetcore-taghelpers</PackageTags>
     <PackageProjectUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers</RepositoryUrl>
+    <RepositoryUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers.git</RepositoryUrl>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <IncludeSymbols>False</IncludeSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>True</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>True</DebugSymbols>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
