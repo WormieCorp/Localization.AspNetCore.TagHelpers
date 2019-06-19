@@ -5,11 +5,14 @@
 ##########################################################################
 
 <#
+
 .SYNOPSIS
 This is a Powershell script to bootstrap a Cake build.
+
 .DESCRIPTION
 This Powershell script will download NuGet if missing, restore NuGet tools (including Cake)
 and execute your Cake build script with the parameters you provide.
+
 .PARAMETER Script
 The build script to execute.
 .PARAMETER Target
@@ -22,18 +25,14 @@ Specifies the amount of information to be displayed.
 Shows description about tasks.
 .PARAMETER DryRun
 Performs a dry run.
-.PARAMETER Experimental
-Uses the nightly builds of the Roslyn script engine.
-.PARAMETER Mono
-Uses the Mono Compiler rather than the Roslyn script engine.
-.PARAMETER CakeVersion
-The Cake version to use when running the build script.
-.PARAMETER UseNetCore
-The the CORE CLR edition of Cake.
+.PARAMETER SkipToolPackageRestore
+Skips restoring of packages.
 .PARAMETER ScriptArgs
 Remaining arguments are added here.
+
 .LINK
 https://cakebuild.net
+
 #>
 
 [CmdletBinding()]
@@ -46,36 +45,50 @@ Param(
     [switch]$ShowDescription,
     [Alias("WhatIf", "Noop")]
     [switch]$DryRun,
-    [switch]$Experimental,
-    [switch]$Mono,
-    [version]$CakeVersion = '0.32.1',
-    [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
+    [switch]$SkipToolPackageRestore,
+    [Parameter(Position = 0, Mandatory = $false, ValueFromRemainingArguments = $true)]
     [string[]]$ScriptArgs
 )
 
-if (!(Test-Path Function:\Expand-Archive)) {
-    function Expand-Archive() {
-        param([string]$Path, [string]$DestinationPath)
+# Attempt to set highest encryption available for SecurityProtocol.
+# PowerShell will not set this by default (until maybe .NET 4.6.x). This
+# will typically produce a message for PowerShell v2 (just an info
+# message though)
+try {
+    # Set TLS 1.2 (3072), then TLS 1.1 (768), then TLS 1.0 (192), finally SSL 3.0 (48)
+    # Use integers because the enumeration values for TLS 1.2 and TLS 1.1 won't
+    # exist in .NET 4.0, even though they are addressable if .NET 4.5+ is
+    # installed (.NET 4.5 is an in-place upgrade).
+    # PowerShell Core already has support for TLS 1.2 so we can skip this if running in that.
+    if (-not $IsCoreCLR) {
+        [System.Net.ServicePointManager]::SecurityProtocol = 3072 -bor 768 -bor 192 -bor 48
+    }
+}
+catch {
+    Write-Output 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to upgrade to .NET Framework 4.5+ and PowerShell v3'
+}
 
-        if (!(Test-Path $DestinationPath)) { New-Item -Type Directory -Path $DestinationPath }
+[Reflection.Assembly]::LoadWithPartialName("System.Security") | Out-Null
+function MD5HashFile([string] $filePath) {
+    if ([string]::IsNullOrEmpty($filePath) -or !(Test-Path $filePath -PathType Leaf)) {
+        return $null
+    }
 
-        $isPowershellCore = $PSVersionTable -and $PSVersionTable.PSEdition -eq 'Core'
-        $haveNet45 = $PSVersionTable -and $PSVersionTable.CLRVersion -and ($PSVersionTable.CLRVersion -ge [version]'4.0.30319.17001')
-
-        if ($isPowershellCore -or $haveNet45) {
-            Add-Type -AssemblyName System.IO.Compression.FileSystem
-            [System.IO.Compression.ZipFile]::ExtractToDirectory($Path, $DestinationPath)
-        } else {
-            $shellApplication = New-Object -ComObject shell.application
-            $zipPackage = $shellApplication.namespace($Path)
-            $destinationFolder = $shellApplication.namespace($DestinationPath)
-            $destinationFolder.CopyHere($zipPackage.Items(), 16)
+    [System.IO.Stream] $file = $null;
+    [System.Security.Cryptography.MD5] $md5 = $null;
+    try {
+        $md5 = [System.Security.Cryptography.MD5]::Create()
+        $file = [System.IO.File]::OpenRead($filePath)
+        return [System.BitConverter]::ToString($md5.ComputeHash($file))
+    }
+    finally {
+        if ($file -ne $null) {
+            $file.Dispose()
         }
     }
 }
 
-function GetProxyEnabledWebClient
-{
+function GetProxyEnabledWebClient {
     $wc = New-Object System.Net.WebClient
     $proxy = [System.Net.WebRequest]::GetSystemWebProxy()
     $proxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
@@ -83,65 +96,159 @@ function GetProxyEnabledWebClient
     return $wc
 }
 
-if (!$PSScriptRoot) { $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition }
+Write-Host "Preparing to run build script..."
 
-$TOOLS_DIR = Join-Path $PSScriptRoot "tools"
-$CAKE_EXE_DIR = ""
-$CAKE_DIR_NAME = "Cake.CoreCLR"
-
-$CAKE_URL = "https://www.nuget.org/api/v2/package/$($CAKE_DIR_NAME)/$($CakeVersion)"
-
-if ($CakeVersion) {
-    $CAKE_EXE_DIR = Join-Path "$TOOLS_DIR" "$CAKE_DIR_NAME.$($CakeVersion.ToString())"
-} else {
-    $CAKE_EXE_DIR = Join-Path "$TOOLS_DIR" "$CAKE_DIR_NAME"
+if (!$PSScriptRoot) {
+    $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
+$TOOLS_DIR = Join-Path $PSScriptRoot "tools"
+$ADDINS_DIR = Join-Path $TOOLS_DIR "Addins"
+$MODULES_DIR = Join-Path $TOOLS_DIR "Modules"
+$NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
+$CAKE_EXE = Join-Path $TOOLS_DIR "Cake/Cake.exe"
+$NUGET_URL = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+$PACKAGES_CONFIG = Join-Path $TOOLS_DIR "packages.config"
+$PACKAGES_CONFIG_MD5 = Join-Path $TOOLS_DIR "packages.config.md5sum"
+$ADDINS_PACKAGES_CONFIG = Join-Path $ADDINS_DIR "packages.config"
+$MODULES_PACKAGES_CONFIG = Join-Path $MODULES_DIR "packages.config"
+
+# Make sure tools folder exists
 if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {
-    Write-Verbose "Creating tools directory..."
+    Write-Verbose -Message "Creating tools directory..."
     New-Item -Path $TOOLS_DIR -Type Directory | Out-Null
 }
 
-if (!(Test-Path $CAKE_EXE_DIR)) {
-    # We download and save it as a normal zip file, in cases
-    # were we need to extract it using com.
-    $tmpDownloadFile = Join-Path "$TOOLS_DIR" "$CAKE_DIR_NAME.zip"
-    Write-Verbose "Downloading Cake package..."
-
+# Make sure that packages.config exist.
+if (!(Test-Path $PACKAGES_CONFIG)) {
+    Write-Verbose -Message "Downloading packages.config..."
     try {
         $wc = GetProxyEnabledWebClient
-        $wc.DownloadFile($CAKE_URL, $tmpDownloadFile)
-    } catch {
-        throw "Could not download Cake package...`n`nException:$_"
+        $wc.DownloadFile("https://cakebuild.net/download/bootstrapper/packages", $PACKAGES_CONFIG)
     }
-
-    Write-Verbose "Extracting Cake package..."
-    Expand-Archive -Path $tmpDownloadFile -DestinationPath $CAKE_EXE_DIR
-    Remove-Item -Recurse -Force $tmpDownloadFile,"$CAKE_EXE_DIR/_rels","$CAKE_EXE_DIR/``[Content_Types``].xml","$CAKE_EXE_DIR/package"
+    catch {
+        Throw "Could not download packages.config."
+    }
 }
 
-$CAKE_EXE = Get-ChildItem -LiteralPath $CAKE_EXE_DIR -Filter "Cake.dll" -Recurse | Select-Object -First 1 -ExpandProperty FullName
-if (!$CAKE_EXE) { throw "Unable to find the Cake.dll library" }
-
-$cakeArguments = New-Object System.Collections.Generic.List[string]
-$cakeArguments.Add($CAKE_EXE)
-$cakeArguments.Add($Script) | Out-Null
-$excludeArgs = @("Script","CakeVersion","UseNetCore","ScriptArgs", "Verbose")
-
-$PSBoundParameters.GetEnumerator() | ? { !$excludeArgs.Contains($_.Key) } | % {
-    if ($_.Value) {
-        $cakeArguments.Add("-$($_.Key)=$($_.Value)")
-    } else {
-        $cakeArguments.Add("-$($_.Key)")
+# Try find NuGet.exe in path if not exists
+if (!(Test-Path $NUGET_EXE)) {
+    Write-Verbose -Message "Trying to find nuget.exe in PATH..."
+    $existingPaths = $Env:Path -Split ';' | Where-Object { (![string]::IsNullOrEmpty($_)) -and (Test-Path $_ -PathType Container) }
+    $NUGET_EXE_IN_PATH = Get-ChildItem -Path $existingPaths -Filter "nuget.exe" | Select -First 1
+    if ($NUGET_EXE_IN_PATH -ne $null -and (Test-Path $NUGET_EXE_IN_PATH.FullName)) {
+        Write-Verbose -Message "Found in PATH at $($NUGET_EXE_IN_PATH.FullName)."
+        $NUGET_EXE = $NUGET_EXE_IN_PATH.FullName
     }
-} | Out-Null
-if ($ScriptArgs) {
-    $cakeArguments.AddRange($ScriptArgs) | Out-Null
 }
 
-$dotnet = Get-Command -Name dotnet | ForEach-Object Definition
+# Try download NuGet.exe if not exists
+if (!(Test-Path $NUGET_EXE)) {
+    Write-Verbose -Message "Downloading NuGet.exe..."
+    try {
+        $wc = GetProxyEnabledWebClient
+        $wc.DownloadFile($NUGET_URL, $NUGET_EXE)
+    }
+    catch {
+        Throw "Could not download NuGet.exe."
+    }
+}
 
+# Save nuget.exe path to environment to be available to child processed
+$env:NUGET_EXE = $NUGET_EXE
+$env:NUGET_EXE_INVOCATION = if ($IsLinux -or $IsMacOS) {
+    "mono `"$NUGET_EXE`""
+}
+else {
+    "`"$NUGET_EXE`""
+}
+
+# Restore tools from NuGet?
+if (-Not $SkipToolPackageRestore.IsPresent) {
+    Push-Location
+    Set-Location $TOOLS_DIR
+
+    # Check for changes in packages.config and remove installed tools if true.
+    [string] $md5Hash = MD5HashFile $PACKAGES_CONFIG
+    if ((!(Test-Path $PACKAGES_CONFIG_MD5)) -Or
+        ($md5Hash -ne (Get-Content $PACKAGES_CONFIG_MD5 ))) {
+        Write-Verbose -Message "Missing or changed package.config hash..."
+        Get-ChildItem -Exclude packages.config, nuget.exe, Cake.Bakery |
+        Remove-Item -Recurse
+    }
+
+    Write-Verbose -Message "Restoring tools from NuGet..."
+
+    $NuGetOutput = Invoke-Expression "& $env:NUGET_EXE_INVOCATION install -ExcludeVersion -OutputDirectory `"$TOOLS_DIR`""
+
+    if ($LASTEXITCODE -ne 0) {
+        Throw "An error occurred while restoring NuGet tools."
+    }
+    else {
+        $md5Hash | Out-File $PACKAGES_CONFIG_MD5 -Encoding "ASCII"
+    }
+    Write-Verbose -Message ($NuGetOutput | Out-String)
+
+    Pop-Location
+}
+
+# Restore addins from NuGet
+if (Test-Path $ADDINS_PACKAGES_CONFIG) {
+    Push-Location
+    Set-Location $ADDINS_DIR
+
+    Write-Verbose -Message "Restoring addins from NuGet..."
+    $NuGetOutput = Invoke-Expression "& $env:NUGET_EXE_INVOCATION install -ExcludeVersion -OutputDirectory `"$ADDINS_DIR`""
+
+    if ($LASTEXITCODE -ne 0) {
+        Throw "An error occurred while restoring NuGet addins."
+    }
+
+    Write-Verbose -Message ($NuGetOutput | Out-String)
+
+    Pop-Location
+}
+
+# Restore modules from NuGet
+if (Test-Path $MODULES_PACKAGES_CONFIG) {
+    Push-Location
+    Set-Location $MODULES_DIR
+
+    Write-Verbose -Message "Restoring modules from NuGet..."
+    $NuGetOutput = Invoke-Expression "& $env:NUGET_EXE_INVOCATION install -ExcludeVersion -OutputDirectory `"$MODULES_DIR`""
+
+    if ($LASTEXITCODE -ne 0) {
+        Throw "An error occurred while restoring NuGet modules."
+    }
+
+    Write-Verbose -Message ($NuGetOutput | Out-String)
+
+    Pop-Location
+}
+
+# Make sure that Cake has been installed.
+if (!(Test-Path $CAKE_EXE)) {
+    Throw "Could not find Cake.exe at $CAKE_EXE"
+}
+
+$CAKE_EXE_INVOCATION = if ($IsLinux -or $IsMacOS) {
+    "mono `"$CAKE_EXE`""
+}
+else {
+    "`"$CAKE_EXE`""
+}
+
+
+# Build Cake arguments
+$cakeArguments = @("$Script");
+if ($Target) { $cakeArguments += "-target=$Target" }
+if ($Configuration) { $cakeArguments += "-configuration=$Configuration" }
+if ($Verbosity) { $cakeArguments += "-verbosity=$Verbosity" }
+if ($ShowDescription) { $cakeArguments += "-showdescription" }
+if ($DryRun) { $cakeArguments += "-dryrun" }
+$cakeArguments += $ScriptArgs
+
+# Start Cake
 Write-Host "Running build script..."
-Write-Verbose "Calling & $CAKE_EXE $cakeArguments"
-& $dotnet $cakeArguments
+Invoke-Expression "& $CAKE_EXE_INVOCATION $($cakeArguments -join " ")"
 exit $LASTEXITCODE
