@@ -6,6 +6,7 @@
 // <author>Kim Nordmo</author>
 //-----------------------------------------------------------------------
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
   using System;
@@ -102,6 +103,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [MemberData(nameof(LocalizeTestData))]
     public async Task ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml, string expected)
     {
+      if (text is null)
+      {
+        throw new ArgumentNullException(nameof(text));
+      }
+
       var textToLocalize = trim ? text.Trim() : text;
       var localizer = TestHelper.CreateLocalizerMock(false);
       SetupLocalizer(localizer, textToLocalize, expectedText, isHtml);
@@ -110,7 +116,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       helper.TrimWhitespace = trim;
       helper.IsHtml = isHtml;
 
-      var output = await TestHelper.GenerateHtmlAsync(helper, tagName, text);
+      var output = await TestHelper.GenerateHtmlAsync(helper, tagName, text).ConfigureAwait(false);
 
       if (isHtml)
       {
@@ -130,17 +136,17 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var tagHelper = CreateTagHelper();
       var expected = "This should be the only content";
 
-      var output = await TestHelper.GenerateHtmlAsync(tagHelper, "localize", expected);
+      var output = await TestHelper.GenerateHtmlAsync(tagHelper, "localize", expected).ConfigureAwait(false);
 
       Assert.Equal(expected, output);
     }
 
-    protected LocalizeTagHelper CreateTagHelper()
+    protected static LocalizeTagHelper CreateTagHelper()
     {
       return TestHelper.CreateTagHelper<LocalizeTagHelper>(null);
     }
 
-    protected LocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
+    protected static LocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
     {
       return TestHelper.CreateTagHelper<LocalizeTagHelper>(factory);
     }
@@ -157,7 +163,9 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       }
     }
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
     private class LocalizeNoParametersTagHelper : LocalizeTagHelper
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
 #if NETCOREAPP3_0
       public LocalizeNoParametersTagHelper(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)

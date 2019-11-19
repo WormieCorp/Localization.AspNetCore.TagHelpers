@@ -10,6 +10,9 @@ namespace Localization.AspNetCore.TagHelpers
 {
   using System.Collections.Generic;
   using System.Threading.Tasks;
+
+  using Localization.AspNetCore.TagHelpers.Internals;
+
   using Microsoft.AspNetCore.Razor.TagHelpers;
 
   /// <summary>
@@ -21,13 +24,7 @@ namespace Localization.AspNetCore.TagHelpers
   public class ParameterTagHelper : TagHelper
   {
     /// <inheritdoc />
-    public override int Order
-    {
-      get
-      {
-        return 2;
-      }
-    }
+    public override int Order => 2;
 
     /// <summary>
     ///   This method adds parameters to the parent tag helper if they are a
@@ -36,7 +33,17 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc />
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-      var content = await output.GetChildContentAsync(NullHtmlEncoder.Default);
+      if (context is null)
+      {
+        throw new System.ArgumentNullException(nameof(context));
+      }
+
+      if (output is null)
+      {
+        throw new System.ArgumentNullException(nameof(output));
+      }
+
+      var content = await output.GetChildContentAsync(NullHtmlEncoder.Default).ConfigureAwait(false);
       if (output.IsContentModified)
       {
         content = output.Content;

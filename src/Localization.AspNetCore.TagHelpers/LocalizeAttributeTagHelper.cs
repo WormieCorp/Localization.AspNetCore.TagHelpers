@@ -60,10 +60,12 @@ namespace Localization.AspNetCore.TagHelpers
     public LocalizeAttributeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
 #endif
     {
-      Throws.NotNull(localizerFactory, nameof(localizerFactory));
-      Throws.NotNull(hostingEnvironment, nameof(hostingEnvironment));
+      if (hostingEnvironment is null)
+      {
+        throw new ArgumentNullException(nameof(hostingEnvironment));
+      }
 
-      this.localizerFactory = localizerFactory;
+      this.localizerFactory = localizerFactory ?? throw new ArgumentNullException(nameof(localizerFactory));
       applicationName = hostingEnvironment.ApplicationName;
     }
 
@@ -83,10 +85,7 @@ namespace Localization.AspNetCore.TagHelpers
         return attributeValues;
       }
 
-      set
-      {
-        attributeValues = value;
-      }
+      set => attributeValues = value;
     }
 
     /// <summary>
@@ -105,10 +104,7 @@ namespace Localization.AspNetCore.TagHelpers
         return parameterValues;
       }
 
-      set
-      {
-        parameterValues = value;
-      }
+      set => parameterValues = value;
     }
 
     /// <summary>
@@ -128,7 +124,7 @@ namespace Localization.AspNetCore.TagHelpers
     }
 
     /// <summary>
-    ///   Synchronously executes the <see cref="T:Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
+    ///   Synchronously executes the <see cref="TagHelper" />
     ///   with the given <paramref name="context" /> and <paramref name="output" />. This is the
     ///   method responsible for localizing the html attributes.
     /// </summary>
@@ -136,10 +132,15 @@ namespace Localization.AspNetCore.TagHelpers
     /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
+      if (output is null)
+      {
+        throw new ArgumentNullException(nameof(output));
+      }
+
       foreach (var attribute in AttributeValues)
       {
-        string key = attribute.Key;
-        string value = attribute.Value;
+        var key = attribute.Key;
+        var value = attribute.Value;
         if (!string.IsNullOrWhiteSpace(value))
         {
           string newValue = null;

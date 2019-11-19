@@ -65,11 +65,13 @@ namespace Localization.AspNetCore.TagHelpers
     public GenericLocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
 #endif
     {
-      Throws.NotNull(localizerFactory, nameof(localizerFactory));
-      Throws.NotNull(hostingEnvironment, nameof(hostingEnvironment));
+      if (hostingEnvironment is null)
+      {
+        throw new ArgumentNullException(nameof(hostingEnvironment));
+      }
 
-      this.localizerFactory = localizerFactory;
-      this.applicationName = hostingEnvironment.ApplicationName;
+      this.localizerFactory = localizerFactory ?? throw new ArgumentNullException(nameof(localizerFactory));
+      applicationName = hostingEnvironment.ApplicationName;
 
       if (options != null)
       {
@@ -199,6 +201,11 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc/>
     public override void Init(TagHelperContext context)
     {
+      if (context is null)
+      {
+        throw new ArgumentNullException(nameof(context));
+      }
+
       if (Localizer is null)
       {
         Localizer = localizerFactory.ResolveLocalizer(ViewContext, applicationName, Type, Name);
@@ -231,13 +238,18 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc/>
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+      if (output is null)
+      {
+        throw new ArgumentNullException(nameof(output));
+      }
+
       if (output.Attributes.ContainsName("localize"))
       {
-        int index = output.Attributes.IndexOfName("localize");
+        var index = output.Attributes.IndexOfName("localize");
         output.Attributes.RemoveAt(index);
       }
 
-      var content = await GetContentAsync(context, output);
+      var content = await GetContentAsync(context, output).ConfigureAwait(false);
 
       if (TrimWhitespace || TrimEachLine)
       {
@@ -288,7 +300,12 @@ namespace Localization.AspNetCore.TagHelpers
     /// <returns>An asynchronous task with the found content.</returns>
     protected virtual async Task<string> GetContentAsync(TagHelperContext context, TagHelperOutput output)
     {
-      var content = await output.GetChildContentAsync(true);
+      if (output is null)
+      {
+        throw new ArgumentNullException(nameof(output));
+      }
+
+      var content = await output.GetChildContentAsync(true).ConfigureAwait(false);
       if (output.IsContentModified)
       {
         return output.Content.GetContent(NullHtmlEncoder.Default);
@@ -304,9 +321,14 @@ namespace Localization.AspNetCore.TagHelpers
     /// <returns>A Enumerable object filled with the necessary parameters.</returns>
     protected virtual IEnumerable<object> GetParameters(TagHelperContext context)
     {
+      if (context is null)
+      {
+        throw new ArgumentNullException(nameof(context));
+      }
+
       if (!context.Items.ContainsKey(typeof(GenericLocalizeTagHelper)))
       {
-        return new object[0];
+        return Array.Empty<object>();
       }
 
       var stack = (Stack<List<object>>)context.Items[typeof(GenericLocalizeTagHelper)];
@@ -322,6 +344,11 @@ namespace Localization.AspNetCore.TagHelpers
     /// <param name="content">The content to set.</param>
     protected virtual void SetContent(TagHelperContext context, TagHelperContent outputContent, string content)
     {
+      if (outputContent is null)
+      {
+        throw new ArgumentNullException(nameof(outputContent));
+      }
+
       outputContent.SetContent(content);
     }
 
@@ -333,12 +360,19 @@ namespace Localization.AspNetCore.TagHelpers
     /// <param name="htmlContent">The content to set.</param>
     protected virtual void SetHtmlContent(TagHelperContext context, TagHelperContent outputContent, IHtmlContent htmlContent)
     {
+      if (outputContent is null)
+      {
+        throw new ArgumentNullException(nameof(outputContent));
+      }
+
       outputContent.SetHtmlContent(htmlContent);
     }
 
     private static void AppendContent(string content, bool trimEachLine, StringBuilder newContent, int lastIndex, int index)
     {
+#pragma warning disable IDE0057 // Use range operator
       var substring = content.Substring(lastIndex, index - lastIndex);
+#pragma warning restore IDE0057 // Use range operator
       if (trimEachLine)
       {
         newContent.Append(substring.Trim());
@@ -401,10 +435,10 @@ namespace Localization.AspNetCore.TagHelpers
         content = content.Trim();
       }
 
-      StringBuilder newContent = new StringBuilder();
-      int lastIndex = 0;
+      var newContent = new StringBuilder();
+      var lastIndex = 0;
       int index;
-      string newLine = GetDefaultNewLine(newLineHandling);
+      var newLine = GetDefaultNewLine(newLineHandling);
 
       while ((index = content.IndexOf('\n', lastIndex)) >= 0)
       {

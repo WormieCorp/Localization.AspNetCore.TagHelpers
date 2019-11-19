@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="ParamTagHelperTests.cs">
 //   Copyright (c) Kim Nordmo. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -6,6 +6,7 @@
 // <author>Kim Nordmo</author>
 //-----------------------------------------------------------------------
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
   using System;
@@ -45,7 +46,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var stack = (Stack<List<object>>)context.Items[typeof(GenericLocalizeTagHelper)];
       var parameters = stack.Peek();
 
-      await helper.ProcessAsync(context, output);
+      await helper.ProcessAsync(context, output).ConfigureAwait(false);
 
       Assert.Equal(expected, parameters);
     }
@@ -58,7 +59,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       context.Items.Remove(typeof(GenericLocalizeTagHelper));
       var output = CreateTagOutput("parameter", "My Localized String");
 
-      var html = await CreateHtmlOutput(helper, context, output);
+      var html = await CreateHtmlOutput(helper, context, output).ConfigureAwait(false);
 
       Assert.Empty(context.Items);
       Assert.Equal("<parameter>My Localized String</parameter>", html);
@@ -71,7 +72,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var context = CreateTagContext();
       var output = CreateTagOutput("parameter", "My loc");
 
-      await helper.ProcessAsync(context, output);
+      await helper.ProcessAsync(context, output).ConfigureAwait(false);
 
       Assert.True(output.Content.IsEmptyOrWhiteSpace);
     }
@@ -83,7 +84,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var context = CreateTagContext();
       var output = CreateTagOutput("parameter", "my Lc");
 
-      await helper.ProcessAsync(context, output);
+      await helper.ProcessAsync(context, output).ConfigureAwait(false);
 
       Assert.Null(output.TagName);
     }
@@ -92,7 +93,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     {
       var sb = new StringBuilder();
 
-      await tagHelper.ProcessAsync(tagContext, tagOutput);
+      await tagHelper.ProcessAsync(tagContext, tagOutput).ConfigureAwait(false);
 
       using (var writer = new StringWriter(sb))
       {

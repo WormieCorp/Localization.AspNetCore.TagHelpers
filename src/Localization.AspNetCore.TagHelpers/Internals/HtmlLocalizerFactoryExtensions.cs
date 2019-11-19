@@ -105,7 +105,7 @@ namespace Localization.AspNetCore.TagHelpers.Internals
     private static IHtmlLocalizer GetLocalizerForName(IHtmlLocalizerFactory factory, ViewContext context, string resourceName, string applicationName)
     {
       var cacheName = $"{applicationName}:{resourceName}";
-      IHtmlLocalizer localizer = GetLocalizerFromCache(context, cacheName);
+      var localizer = GetLocalizerFromCache(context, cacheName);
 
       if (localizer == null)
       {
@@ -131,7 +131,7 @@ namespace Localization.AspNetCore.TagHelpers.Internals
     {
       var typeName = resourceType.FullName;
 
-      IHtmlLocalizer localizer = GetLocalizerFromCache(context, typeName);
+      var localizer = GetLocalizerFromCache(context, typeName);
 
       if (localizer == null)
       {

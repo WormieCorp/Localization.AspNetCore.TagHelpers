@@ -9,6 +9,9 @@
 namespace Localization.AspNetCore.TagHelpers
 {
   using System.Threading.Tasks;
+
+  using Localization.AspNetCore.TagHelpers.Internals;
+
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Mvc.Localization;
   using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -57,7 +60,12 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc />
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-      await base.ProcessAsync(context, output);
+      if (output is null)
+      {
+        throw new System.ArgumentNullException(nameof(output));
+      }
+
+      await base.ProcessAsync(context, output).ConfigureAwait(false);
 
       output.TagName = null;
     }
