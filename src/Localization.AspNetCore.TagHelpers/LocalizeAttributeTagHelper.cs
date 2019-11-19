@@ -54,7 +54,11 @@ namespace Localization.AspNetCore.TagHelpers
     /// </summary>
     /// <param name="localizerFactory">The localizer factory.</param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
+#if NETCOREAPP3_0
+    public LocalizeAttributeTagHelper(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment)
+#else
     public LocalizeAttributeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment)
+#endif
     {
       Throws.NotNull(localizerFactory, nameof(localizerFactory));
       Throws.NotNull(hostingEnvironment, nameof(hostingEnvironment));

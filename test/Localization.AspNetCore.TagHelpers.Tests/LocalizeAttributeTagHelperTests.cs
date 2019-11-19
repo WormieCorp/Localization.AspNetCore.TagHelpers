@@ -25,14 +25,23 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
   public class LocalizeAttributeTagHelperTests
   {
+#if NETCOREAPP3_0
+    private Mock<IWebHostEnvironment> hostingMock;
+#else
     private Mock<IHostingEnvironment> hostingMock;
+#endif
     private Mock<IHtmlLocalizerFactory> locFactoryMock;
     private Mock<IHtmlLocalizer> locMock;
 
     public LocalizeAttributeTagHelperTests()
     {
       locMock = new Mock<IHtmlLocalizer>();
-      hostingMock = new Mock<IHostingEnvironment>();
+      hostingMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingMock.Setup(x => x.ApplicationName).Returns("Localization.AspNetCore.TagHelpers.Tests");
       locFactoryMock = new Mock<IHtmlLocalizerFactory>();
       locFactoryMock.Setup(x => x.Create(It.IsAny<string>(), hostingMock.Object.ApplicationName)).Returns(locMock.Object);
@@ -46,7 +55,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Fact]
     public void Constructor_ThrowsArgumentNullExceptionIfPassedIViewLocalizerIsNull()
     {
-      Assert.Throws<ArgumentNullException>(() => new LocalizeAttributeTagHelper(null, new Mock<IHostingEnvironment>().Object));
+      var hostMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
+      Assert.Throws<ArgumentNullException>(() => new LocalizeAttributeTagHelper(null, hostMock.Object));
     }
 
     #endregion Constructor
@@ -67,7 +82,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [InlineData("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
     public void Init_CreatesHtmlLocalizerFromViewContext(string appName, string viewPath, string executionPath, string expectedBaseName)
     {
-      var hostingEnvironment = new Mock<IHostingEnvironment>();
+      var hostingEnvironment =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvironment.Setup(a => a.ApplicationName).Returns(appName);
       var factoryMock = TestHelper.CreateFactoryMock(true);
       var view = new Mock<IView>();

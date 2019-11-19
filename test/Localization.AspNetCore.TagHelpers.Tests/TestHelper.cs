@@ -80,7 +80,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     public static T CreateTagHelper<T>(IHtmlLocalizerFactory factory)
       where T : GenericLocalizeTagHelper
     {
-      var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
+      var hostingEnvironmentMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvironmentMock.SetupGet(x => x.ApplicationName).Returns(ApplicationName);
       if (factory == null)
       {

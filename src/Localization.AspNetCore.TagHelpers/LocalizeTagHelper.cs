@@ -41,7 +41,11 @@ namespace Localization.AspNetCore.TagHelpers
     /// </param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
     /// <param name="options">The default options unless overridden when calling the tag helper.</param>
+#if NETCOREAPP3_0
+    public LocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#else
     public LocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#endif
       : base(localizerFactory, hostingEnvironment, options)
     {
     }

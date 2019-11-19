@@ -93,7 +93,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Fact]
     public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
     {
-      Assert.Throws<ArgumentNullException>(() => new GenericLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null));
+      var hostMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
+      Assert.Throws<ArgumentNullException>(() => new GenericLocalizeTagHelper(null, hostMock.Object, null));
     }
 
     [Fact]
@@ -141,7 +147,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [InlineData("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
     public void Init_CreatesHtmlLocalizerFromViewContext(string appName, string viewPath, string executionPath, string expectedBaseName)
     {
-      var hostingEnvironment = new Mock<IHostingEnvironment>();
+      var hostingEnvironment =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvironment.Setup(a => a.ApplicationName).Returns(appName);
       var factoryMock = TestHelper.CreateFactoryMock(true);
       var view = new Mock<IView>();
@@ -345,7 +356,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var localizer = TestHelper.CreateLocalizerMock(false);
       SetupLocalizer(localizer, expected, expected, true);
       var factory = TestHelper.CreateFactoryMock(localizer.Object);
-      var hostingEnvMock = new Mock<IHostingEnvironment>();
+      var hostingEnvMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvMock.SetupGet(x => x.ApplicationName).Returns(TestHelper.ApplicationName);
 
       var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodeByDefault = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
@@ -391,7 +407,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     private class NoParametersSupported : GenericLocalizeTagHelper
     {
+#if NETCOREAPP3_0
+      public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#else
       public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#endif
         : base(localizerFactory, hostingEnvironment, options)
       {
       }

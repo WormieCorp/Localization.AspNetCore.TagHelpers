@@ -47,7 +47,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Fact]
     public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
     {
-      Assert.Throws<ArgumentNullException>(() => new LocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null));
+      var hostMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
+      Assert.Throws<ArgumentNullException>(() => new LocalizeTagHelper(null, hostMock.Object, null));
     }
 
     [Theory]
@@ -153,7 +159,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     private class LocalizeNoParametersTagHelper : LocalizeTagHelper
     {
+#if NETCOREAPP3_0
+      public LocalizeNoParametersTagHelper(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#else
       public LocalizeNoParametersTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#endif
         : base(localizerFactory, hostingEnvironment, options)
       {
       }
