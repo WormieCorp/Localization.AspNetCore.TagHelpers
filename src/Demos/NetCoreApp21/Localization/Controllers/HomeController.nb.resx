@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Your application description page." xml:space="preserve">
-    <value>Bruk denne siden til å detaljere personvernreglene for nettstedet.</value>
+    <value>Beskrivelsen av din applikasjon.</value>
   </data>
   <data name="Your contact page." xml:space="preserve">
     <value>Din kontakt side.</value>
