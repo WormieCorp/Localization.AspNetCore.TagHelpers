@@ -1,5 +1,5 @@
 Denne katalogen er ansvarlig for å levere alle
-nødvendige files som trengs for å lokaliseringstrenger
+nødvendige filer som trengs for å lokaliseringstrenger
 som kan/har blitt oversatt til andre språk.
 
 Selv om filer som ender i `.en.resx` ikke trengs
