@@ -168,6 +168,9 @@
   <data name="Run your app" xml:space="preserve">
     <value>Kjør din applikasjon</value>
   </data>
+  <data name="Sample pages using ASP.NET Core MVC" xml:space="preserve">
+    <value>Eksempel på sider ved hjelp av ASP.NET Core MVC</value>
+  </data>
   <data name="Security" xml:space="preserve">
     <value>Sikkerhet</value>
   </data>
