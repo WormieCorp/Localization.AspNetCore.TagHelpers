@@ -6,10 +6,12 @@
 // <author>Kim Nordmo</author>
 //-----------------------------------------------------------------------
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
   using System;
   using System.Collections.Generic;
+using System.Globalization;
   using System.IO;
   using System.Text;
   using System.Text.Encodings.Web;
@@ -25,14 +27,23 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
   public class LocalizeAttributeTagHelperTests
   {
-    private Mock<IHostingEnvironment> hostingMock;
-    private Mock<IHtmlLocalizerFactory> locFactoryMock;
-    private Mock<IHtmlLocalizer> locMock;
+#if NETCOREAPP3_0
+    private readonly Mock<IWebHostEnvironment> hostingMock;
+#else
+    private readonly Mock<IHostingEnvironment> hostingMock;
+#endif
+    private readonly Mock<IHtmlLocalizerFactory> locFactoryMock;
+    private readonly Mock<IHtmlLocalizer> locMock;
 
     public LocalizeAttributeTagHelperTests()
     {
       locMock = new Mock<IHtmlLocalizer>();
-      hostingMock = new Mock<IHostingEnvironment>();
+      hostingMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingMock.Setup(x => x.ApplicationName).Returns("Localization.AspNetCore.TagHelpers.Tests");
       locFactoryMock = new Mock<IHtmlLocalizerFactory>();
       locFactoryMock.Setup(x => x.Create(It.IsAny<string>(), hostingMock.Object.ApplicationName)).Returns(locMock.Object);
@@ -46,7 +57,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Fact]
     public void Constructor_ThrowsArgumentNullExceptionIfPassedIViewLocalizerIsNull()
     {
-      Assert.Throws<ArgumentNullException>(() => new LocalizeAttributeTagHelper(null, new Mock<IHostingEnvironment>().Object));
+      var hostMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
+      Assert.Throws<ArgumentNullException>(() => new LocalizeAttributeTagHelper(null, hostMock.Object));
     }
 
     #endregion Constructor
@@ -67,7 +84,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [InlineData("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
     public void Init_CreatesHtmlLocalizerFromViewContext(string appName, string viewPath, string executionPath, string expectedBaseName)
     {
-      var hostingEnvironment = new Mock<IHostingEnvironment>();
+      var hostingEnvironment =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvironment.Setup(a => a.ApplicationName).Returns(appName);
       var factoryMock = TestHelper.CreateFactoryMock(true);
       var view = new Mock<IView>();
@@ -168,7 +190,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
         { "title", paramValue }
       };
       locMock.Setup(x => x.GetString("I Use {0}", paramValue))
-        .Returns<string, string[]>((x,y) => new LocalizedString(x, string.Format(x, y) , true));
+        .Returns<string, string[]>((x,y) => new LocalizedString(x, string.Format(CultureInfo.InvariantCulture, x, y) , true));
 
       var expected = $"<abbr title=\"I Use {paramValue}\">IUP</abbr>";
 
@@ -188,7 +210,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       tagHelper.AttributeValues.Add("title", "I Use {0} {1}");
       tagHelper.ParameterValues.Add("title", "Multiple;Parameters");
       locMock.Setup(x => x.GetString("I Use {0} {1}", "Multiple", "Parameters"))
-        .Returns<string, string[]>((x, y) => new LocalizedString(x, string.Format(x, y), true));
+        .Returns<string, string[]>((x, y) => new LocalizedString(x, string.Format(CultureInfo.InvariantCulture, x, y), true));
 
       var expected = "<abbr title=\"I Use Multiple Parameters\">IUMP</abbr>";
 

@@ -6,11 +6,13 @@
 // <author>Kim Nordmo</author>
 //-----------------------------------------------------------------------
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
   using System;
   using System.Collections;
   using System.Collections.Generic;
+  using System.Globalization;
   using System.Text.Encodings.Web;
   using System.Threading.Tasks;
   using Microsoft.AspNetCore.Hosting;
@@ -30,11 +32,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       {
         var text = "This is\r\nThe\nUnormalized Text\r\n";
         yield return new object[] { text, text.Trim(), NewLineHandling.None, true, false };
-        var expectedText = text.Replace("\r\n", "\n").Replace("\n", Environment.NewLine);
+        var expectedText = text.Replace("\r\n", "\n", StringComparison.OrdinalIgnoreCase).Replace("\n", Environment.NewLine, StringComparison.OrdinalIgnoreCase);
         yield return new object[] { text, expectedText.Trim(), NewLineHandling.Auto, true, false };
-        expectedText = text.Replace("\n", "\r\n").Replace("\r\r", "\r");
+        expectedText = text.Replace("\n", "\r\n", StringComparison.OrdinalIgnoreCase).Replace("\r\r", "\r", StringComparison.OrdinalIgnoreCase);
         yield return new object[] { text, expectedText.Trim(), NewLineHandling.Windows, true, false };
-        expectedText = text.Replace("\r", "");
+        expectedText = text.Replace("\r", "", StringComparison.OrdinalIgnoreCase);
         yield return new object[] { text, expectedText.Trim(), NewLineHandling.Unix, true, false };
 
         text = "  This\r\n   Will\r\nAlways\r\n    Trimmed \r\nDown   ";
@@ -75,12 +77,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
         yield return new object[] { "p", "This will be {0}", "This is the {0} text", true, false, new[] { "Localized" }, "<p>This is the Localized text</p>" };
         var text = "This the the <small>{0}</small> {1} with <strong>html</strong>";
         var parameters = new[] { "Localized", "text" };
-        yield return new object[] { "p", "This wi be localized", text, true, false, parameters, $"<p>{encoder.Encode(string.Format(text, parameters))}</p>" };
-        yield return new object[] { "span", "This", text, true, true, parameters, $"<span>{string.Format(text, parameters)}</span>" };
-        yield return new object[] { "div", "Localize", $"    {text}    ", false, false, parameters, $"<div>    {encoder.Encode(string.Format(text, parameters))}    </div>" };
-        yield return new object[] { "div", "Localize", $"    {text}    ", false, true, parameters, $"<div>    {string.Format(text, parameters)}    </div>" };
-        yield return new object[] { "div", "     Localize    ", $"{text}", true, false, parameters, $"<div>{encoder.Encode(string.Format(text, parameters))}</div>" };
-        yield return new object[] { "div", "    Localize    ", $"{text}", true, true, parameters, $"<div>{string.Format(text, parameters)}</div>" };
+        yield return new object[] { "p", "This wi be localized", text, true, false, parameters, $"<p>{encoder.Encode(string.Format(CultureInfo.InvariantCulture, text, parameters))}</p>" };
+        yield return new object[] { "span", "This", text, true, true, parameters, $"<span>{string.Format(CultureInfo.InvariantCulture, text, parameters)}</span>" };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, false, parameters, $"<div>    {encoder.Encode(string.Format(CultureInfo.InvariantCulture, text, parameters))}    </div>" };
+        yield return new object[] { "div", "Localize", $"    {text}    ", false, true, parameters, $"<div>    {string.Format(CultureInfo.InvariantCulture, text, parameters)}    </div>" };
+        yield return new object[] { "div", "     Localize    ", $"{text}", true, false, parameters, $"<div>{encoder.Encode(string.Format(CultureInfo.InvariantCulture, text, parameters))}</div>" };
+        yield return new object[] { "div", "    Localize    ", $"{text}", true, true, parameters, $"<div>{string.Format(CultureInfo.InvariantCulture, text, parameters)}</div>" };
       }
     }
 
@@ -93,7 +95,13 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Fact]
     public void Constructor_ThrowsArgumentNullExceptionOnHtmlLocalizerFactoryIsNull()
     {
-      Assert.Throws<ArgumentNullException>(() => new GenericLocalizeTagHelper(null, new Mock<IHostingEnvironment>().Object, null));
+      var hostMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
+      Assert.Throws<ArgumentNullException>(() => new GenericLocalizeTagHelper(null, hostMock.Object, null));
     }
 
     [Fact]
@@ -141,7 +149,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [InlineData("TestApplication", "Views/Home/Index.txt", "", "TestApplication.Views.Home.Index")]
     public void Init_CreatesHtmlLocalizerFromViewContext(string appName, string viewPath, string executionPath, string expectedBaseName)
     {
-      var hostingEnvironment = new Mock<IHostingEnvironment>();
+      var hostingEnvironment =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvironment.Setup(a => a.ApplicationName).Returns(appName);
       var factoryMock = TestHelper.CreateFactoryMock(true);
       var view = new Mock<IView>();
@@ -270,7 +283,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       helper.NewLineHandling = handling;
       helper.TrimEachLine = trimEachLine;
 
-      await TestHelper.GenerateHtmlAsync(helper, "span", text);
+      await TestHelper.GenerateHtmlAsync(helper, "span", text).ConfigureAwait(false);
 
       localizer.Verify(x => x.GetString(expectedText), Times.Once);
     }
@@ -279,6 +292,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [MemberData(nameof(LocalizeTestData))]
     public async Task ProcessAsync_CanLocalizeText(string tagName, string text, string expectedText, bool trim, bool isHtml, string expected)
     {
+      if (text is null)
+      {
+        throw new ArgumentNullException(nameof(text));
+      }
+
       var textToLocalize = trim ? text.Trim() : text;
       var localizer = TestHelper.CreateLocalizerMock(false);
       SetupLocalizer(localizer, textToLocalize, expectedText, isHtml);
@@ -287,7 +305,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       helper.TrimWhitespace = trim;
       helper.IsHtml = isHtml;
 
-      var output = await TestHelper.GenerateHtmlAsync(helper, tagName, text);
+      var output = await TestHelper.GenerateHtmlAsync(helper, tagName, text).ConfigureAwait(false);
 
       if (isHtml)
       {
@@ -305,6 +323,16 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [MemberData(nameof(LocalizeTestDataWithParameters))]
     public async Task ProcessAsync_CanLocalizeTextWithParameters(string tagName, string text, string expectedText, bool trim, bool isHtml, object[] parameters, string expected)
     {
+      if (text is null)
+      {
+        throw new ArgumentNullException(nameof(text));
+      }
+
+      if (parameters is null)
+      {
+        throw new ArgumentNullException(nameof(parameters));
+      }
+
       var textToLocalize = trim ? text.Trim() : text;
       var localizer = TestHelper.CreateLocalizerMock(false);
       SetupLocalizerWithParameters(localizer, textToLocalize, expectedText, isHtml);
@@ -323,7 +351,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
       var output = TestHelper.CreateTagOutput(tagName, text);
 
-      var htmlOutput = await TestHelper.GenerateHtmlAsync(helper, context, output);
+      var htmlOutput = await TestHelper.GenerateHtmlAsync(helper, context, output).ConfigureAwait(false);
 
       if (isHtml)
       {
@@ -345,7 +373,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       var localizer = TestHelper.CreateLocalizerMock(false);
       SetupLocalizer(localizer, expected, expected, true);
       var factory = TestHelper.CreateFactoryMock(localizer.Object);
-      var hostingEnvMock = new Mock<IHostingEnvironment>();
+      var hostingEnvMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvMock.SetupGet(x => x.ApplicationName).Returns(TestHelper.ApplicationName);
 
       var options = Options.Create(new LocalizeTagHelperOptions { HtmlEncodeByDefault = false, NewLineHandling = NewLineHandling.None, TrimWhitespace = false });
@@ -353,17 +386,21 @@ namespace Localization.AspNetCore.TagHelpers.Tests
       {
         ViewContext = TestHelper.CreateViewContext()
       };
-      var result = await TestHelper.GenerateHtmlAsync(helper, "p", expected);
+      var result = await TestHelper.GenerateHtmlAsync(helper, "p", expected).ConfigureAwait(false);
 
       localizer.Verify(x => x[expected], Times.Once());
       Assert.Equal("<p>" + expected + "</p>", result);
     }
 
-    protected GenericLocalizeTagHelper CreateTagHelper()
-      => CreateTagHelper(null);
+    protected static GenericLocalizeTagHelper CreateTagHelper()
+    {
+      return CreateTagHelper(null);
+    }
 
-    protected GenericLocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
-      => TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factory);
+    protected static GenericLocalizeTagHelper CreateTagHelper(IHtmlLocalizerFactory factory)
+    {
+      return TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factory);
+    }
 
     private void SetupLocalizer(Mock<IHtmlLocalizer> localizer, string textToLocalize, string expectedText, bool isHtml)
     {
@@ -381,17 +418,23 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     {
       if (isHtml)
       {
-        localizer.Setup(x => x[textToLocalize, It.IsAny<object[]>()]).Returns<string, object[]>((s, o) => new LocalizedHtmlString(s, string.Format(expectedText, o), s == expectedText));
+        localizer.Setup(x => x[textToLocalize, It.IsAny<object[]>()]).Returns<string, object[]>((s, o) => new LocalizedHtmlString(s, string.Format(CultureInfo.InvariantCulture, expectedText, o), s == expectedText));
       }
       else
       {
-        localizer.Setup(x => x.GetString(textToLocalize, It.IsAny<object[]>())).Returns<string, object[]>((s, o) => new LocalizedString(s, string.Format(expectedText, o), s == expectedText));
+        localizer.Setup(x => x.GetString(textToLocalize, It.IsAny<object[]>())).Returns<string, object[]>((s, o) => new LocalizedString(s, string.Format(CultureInfo.InvariantCulture, expectedText, o), s == expectedText));
       }
     }
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
     private class NoParametersSupported : GenericLocalizeTagHelper
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
+#if NETCOREAPP3_0
+      public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#else
       public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#endif
         : base(localizerFactory, hostingEnvironment, options)
       {
       }

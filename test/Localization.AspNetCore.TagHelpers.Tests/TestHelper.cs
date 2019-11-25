@@ -10,6 +10,7 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 {
   using System;
   using System.Collections.Generic;
+  using System.Globalization;
   using System.IO;
   using System.Reflection;
   using System.Text;
@@ -61,9 +62,9 @@ namespace Localization.AspNetCore.TagHelpers.Tests
         mock.Setup(x => x.GetString(It.IsAny<string>())).Returns<string>(s => new LocalizedString(s, s, true));
         mock.Setup(x => x[It.IsAny<string>()]).Returns<string>(s => new LocalizedHtmlString(s, s, true));
         mock.Setup(x => x.GetString(It.IsAny<string>(), It.IsAny<object[]>()))
-          .Returns<string, object[]>((s, o) => new LocalizedString(s, string.Format(s, o), true));
+          .Returns<string, object[]>((s, o) => new LocalizedString(s, string.Format(CultureInfo.InvariantCulture, s, o), true));
         mock.Setup(x => x[It.IsAny<string>(), It.IsAny<object[]>()])
-          .Returns<string, object[]>((s, o) => new LocalizedHtmlString(s, string.Format(s, o), true));
+          .Returns<string, object[]>((s, o) => new LocalizedHtmlString(s, string.Format(CultureInfo.InvariantCulture, s, o), true));
       }
 
       return mock;
@@ -80,7 +81,12 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     public static T CreateTagHelper<T>(IHtmlLocalizerFactory factory)
       where T : GenericLocalizeTagHelper
     {
-      var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
+      var hostingEnvironmentMock =
+#if NETCOREAPP3_0
+  new Mock<IWebHostEnvironment>();
+#else
+  new Mock<IHostingEnvironment>();
+#endif
       hostingEnvironmentMock.SetupGet(x => x.ApplicationName).Returns(ApplicationName);
       if (factory == null)
       {
@@ -109,9 +115,19 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     public static async Task<string> GenerateHtmlAsync(TagHelper helper, TagHelperContext context, TagHelperOutput output)
     {
+      if (helper is null)
+      {
+        throw new ArgumentNullException(nameof(helper));
+      }
+
+      if (output is null)
+      {
+        throw new ArgumentNullException(nameof(output));
+      }
+
       var sb = new StringBuilder();
 
-      await helper.ProcessAsync(context, output);
+      await helper.ProcessAsync(context, output).ConfigureAwait(false);
 
       using (var writer = new StringWriter(sb))
       {
@@ -123,11 +139,16 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content)
     {
-      return GenerateHtmlAsync(helper, tagName, content, new TagHelperAttribute[0]);
+      return GenerateHtmlAsync(helper, tagName, content, Array.Empty<TagHelperAttribute>());
     }
 
     public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content, params TagHelperAttribute[] attributes)
     {
+      if (helper is null)
+      {
+        throw new ArgumentNullException(nameof(helper));
+      }
+
       var tagContext = CreateTagContext();
       var tagOutput = CreateTagOutput(tagName, content, attributes);
 
@@ -138,6 +159,11 @@ namespace Localization.AspNetCore.TagHelpers.Tests
 
     public static Task<string> GenerateHtmlAsync(TagHelper helper, string tagName, string content, params object[] parameters)
     {
+      if (helper is null)
+      {
+        throw new ArgumentNullException(nameof(helper));
+      }
+
       var tagContext = CreateTagContext();
       var tagOutput = CreateTagOutput(tagName, content);
 

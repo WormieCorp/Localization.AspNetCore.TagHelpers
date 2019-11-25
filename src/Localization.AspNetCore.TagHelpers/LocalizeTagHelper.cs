@@ -9,6 +9,9 @@
 namespace Localization.AspNetCore.TagHelpers
 {
   using System.Threading.Tasks;
+
+  using Localization.AspNetCore.TagHelpers.Internals;
+
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Mvc.Localization;
   using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -41,7 +44,11 @@ namespace Localization.AspNetCore.TagHelpers
     /// </param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
     /// <param name="options">The default options unless overridden when calling the tag helper.</param>
+#if NETCOREAPP3_0
+    public LocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#else
     public LocalizeTagHelper(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
+#endif
       : base(localizerFactory, hostingEnvironment, options)
     {
     }
@@ -53,7 +60,12 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc />
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-      await base.ProcessAsync(context, output);
+      if (output is null)
+      {
+        throw new System.ArgumentNullException(nameof(output));
+      }
+
+      await base.ProcessAsync(context, output).ConfigureAwait(false);
 
       output.TagName = null;
     }

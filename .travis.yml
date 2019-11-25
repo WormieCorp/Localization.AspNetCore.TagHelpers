@@ -9,7 +9,7 @@ os:
   - linux
   - osx
 mono: 4.4.2
-dotnet: 2.0.3
+dotnet: 3.0.100
 node_js: "lts/*"
 
 branches:
