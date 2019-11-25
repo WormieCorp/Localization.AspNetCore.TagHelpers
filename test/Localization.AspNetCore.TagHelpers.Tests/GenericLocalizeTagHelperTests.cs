@@ -210,7 +210,9 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Fact]
     public void Init_CachesIHtmlLocalizerInstances()
     {
+      var localizerMock = new Mock<IHtmlLocalizer>();
       var factoryMock = new Mock<IHtmlLocalizerFactory>();
+      factoryMock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(localizerMock.Object);
       var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
       var tagContext = TestHelper.CreateTagContext();
 
@@ -224,13 +226,17 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     [Fact]
     public void Init_CreatesNewIHtmlLocalizerForEachView()
     {
+      var localizerMock = new Mock<IHtmlLocalizer>();
       var factoryMock = new Mock<IHtmlLocalizerFactory>();
+      factoryMock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(localizerMock.Object);
       var tagHelper = TestHelper.CreateTagHelper<GenericLocalizeTagHelper>(factoryMock.Object);
       var tagContext = TestHelper.CreateTagContext();
 
       tagHelper.ViewContext.ExecutingFilePath = "View1";
       tagHelper.Init(tagContext);
       tagHelper.Init(tagContext);
+
+      tagHelper.Localizer = null;
 
       tagHelper.ViewContext.ExecutingFilePath = "View2";
       tagHelper.Init(tagContext);

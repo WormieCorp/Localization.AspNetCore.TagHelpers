@@ -12,6 +12,7 @@ namespace Localization.AspNetCore.TagHelpers.Internals
   using System.Diagnostics;
   using System.IO;
   using System.Text;
+
   using Microsoft.AspNetCore.Mvc.Localization;
   using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -20,6 +21,8 @@ namespace Localization.AspNetCore.TagHelpers.Internals
   /// </summary>
   internal static class HtmlLocalizerFactoryExtensions
   {
+    private const string CACHED_LOCALIZER_KEY = "CachedLocalizerFor";
+
     /// <summary>
     ///   Resolves a HTML localizer using the view name from the specified
     ///   <paramref name="context">view context</paramref>.
@@ -66,26 +69,21 @@ namespace Localization.AspNetCore.TagHelpers.Internals
     {
       if (resourceType != null)
       {
-        return factory.Create(resourceType);
+        return GetLocalizerForType(factory, context, resourceType);
       }
       else
       {
-        string name = resourceName;
-        if (string.IsNullOrEmpty(name))
-        {
-          var path = context.ExecutingFilePath;
-          if (string.IsNullOrEmpty(path))
-          {
-            path = context.View.Path;
-          }
-
-          Debug.Assert(!string.IsNullOrEmpty(path), "Couldn't determine a path for the view");
-
-          name = BuildBaseName(path, applicationName);
-        }
-
-        return factory.Create(name, applicationName);
+        return string.IsNullOrEmpty(resourceName)
+          ? GetLocalizerForPath(factory, context, applicationName)
+          : GetLocalizerForName(factory, context, resourceName, applicationName);
       }
+    }
+
+    private static void AddLocalizerToCache(IHtmlLocalizer localizer, ViewContext context, string name)
+    {
+      var cacheName = CACHED_LOCALIZER_KEY + name;
+
+      context.ViewData[cacheName] = localizer;
     }
 
     private static string BuildBaseName(string path, string applicationName)
@@ -102,6 +100,55 @@ namespace Localization.AspNetCore.TagHelpers.Internals
       builder.Insert(0, applicationName);
 
       return builder.ToString();
+    }
+
+    private static IHtmlLocalizer GetLocalizerForName(IHtmlLocalizerFactory factory, ViewContext context, string resourceName, string applicationName)
+    {
+      var cacheName = $"{applicationName}:{resourceName}";
+      IHtmlLocalizer localizer = GetLocalizerFromCache(context, cacheName);
+
+      if (localizer == null)
+      {
+        localizer = factory.Create(resourceName, applicationName);
+        AddLocalizerToCache(localizer, context, cacheName);
+      }
+
+      return localizer;
+    }
+
+    private static IHtmlLocalizer GetLocalizerForPath(IHtmlLocalizerFactory factory, ViewContext context, string applicationName)
+    {
+      var name = string.IsNullOrEmpty(context.ExecutingFilePath)
+        ? context.View.Path
+        : context.ExecutingFilePath;
+
+      Debug.Assert(!string.IsNullOrEmpty(name), "Couldn't determine a path for the view");
+
+      return GetLocalizerForName(factory, context, BuildBaseName(name, applicationName), applicationName);
+    }
+
+    private static IHtmlLocalizer GetLocalizerForType(IHtmlLocalizerFactory factory, ViewContext context, Type resourceType)
+    {
+      var typeName = resourceType.FullName;
+
+      IHtmlLocalizer localizer = GetLocalizerFromCache(context, typeName);
+
+      if (localizer == null)
+      {
+        localizer = factory.Create(resourceType);
+        AddLocalizerToCache(localizer, context, typeName);
+      }
+
+      return localizer;
+    }
+
+    private static IHtmlLocalizer GetLocalizerFromCache(ViewContext context, string name)
+    {
+      var cacheName = CACHED_LOCALIZER_KEY + name;
+
+      return context.ViewData.ContainsKey(cacheName)
+        ? context.ViewData[cacheName] as IHtmlLocalizer
+        : null;
     }
   }
 }

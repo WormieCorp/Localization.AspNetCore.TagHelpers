@@ -13,7 +13,9 @@ namespace Localization.AspNetCore.TagHelpers
   using System.Linq;
   using System.Text;
   using System.Threading.Tasks;
+
   using Localization.AspNetCore.TagHelpers.Internals;
+
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Html;
   using Microsoft.AspNetCore.Mvc.Localization;
@@ -46,7 +48,6 @@ namespace Localization.AspNetCore.TagHelpers
     private const string LOCALIZE_TRIM = "trim";
     private const string LOCALIZE_TRIM_LINES = "trimlines";
     private const string LOCALIZE_TYPE = "resource-type";
-    private const string CACHED_LOCALIZER_KEY = "CachedLocalizerFor";
     private readonly string applicationName;
     private readonly IHtmlLocalizerFactory localizerFactory;
 
@@ -194,19 +195,9 @@ namespace Localization.AspNetCore.TagHelpers
     /// <inheritdoc/>
     public override void Init(TagHelperContext context)
     {
-      var key = CACHED_LOCALIZER_KEY + ViewContext.ExecutingFilePath;
-
       if (Localizer is null)
       {
-        if (ViewContext.ViewData.ContainsKey(key))
-        {
-          Localizer = ViewContext.ViewData[key] as IHtmlLocalizer;
-        }
-        else
-        {
-          Localizer = localizerFactory.ResolveLocalizer(ViewContext, applicationName, Type, Name);
-          ViewContext.ViewData[key] = Localizer;
-        }
+        Localizer = localizerFactory.ResolveLocalizer(ViewContext, applicationName, Type, Name);
       }
 
       if (!SupportsParameters)
