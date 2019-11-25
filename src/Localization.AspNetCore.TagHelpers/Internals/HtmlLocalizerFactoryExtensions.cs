@@ -104,6 +104,11 @@ namespace Localization.AspNetCore.TagHelpers.Internals
 
     private static IHtmlLocalizer GetLocalizerForName(IHtmlLocalizerFactory factory, ViewContext context, string resourceName, string applicationName)
     {
+      if (resourceName.IndexOfAny(new[] { '/', '\\' }) >= 0)
+      {
+        resourceName = BuildBaseName(resourceName, applicationName);
+      }
+
       var cacheName = $"{applicationName}:{resourceName}";
       var localizer = GetLocalizerFromCache(context, cacheName);
 
@@ -124,7 +129,7 @@ namespace Localization.AspNetCore.TagHelpers.Internals
 
       Debug.Assert(!string.IsNullOrEmpty(name), "Couldn't determine a path for the view");
 
-      return GetLocalizerForName(factory, context, BuildBaseName(name, applicationName), applicationName);
+      return GetLocalizerForName(factory, context, name, applicationName);
     }
 
     private static IHtmlLocalizer GetLocalizerForType(IHtmlLocalizerFactory factory, ViewContext context, Type resourceType)
