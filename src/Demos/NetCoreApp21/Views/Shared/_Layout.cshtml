@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <localize resource-name="Common">@ViewData["Title"]</localize>
+    -
+    <localize>Localization Demo</localize>
+  </title>
+
+  <environment include="Development">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" lazyload />
+    <link rel="stylesheet" href="~/css/site.css" lazyload />
+  </environment>
+  <environment exclude="Development">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" async="async" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" lazyload />
+  </environment>
+</head>
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only" localize>Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" localize>Localization Demo</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a asp-area="" asp-controller="Home" asp-action="Index" localize resource-name="Common">Home</a></li>
+          <li><a asp-area="" asp-controller="Home" asp-action="About" localize resource-name="Common">About</a></li>
+          <li><a asp-area="" asp-controller="Home" asp-action="Contact" localize resource-name="Common">Contact</a></li>
+          <li><a asp-area="" asp-controller="Home" asp-action="Privacy" localize resource-name="Common">Privacy</a></li>
+        </ul>
+        <partial name="_ChangeLanguage" />
+      </div>
+    </div>
+  </nav>
+
+  <partial name="_CookieConsentPartial" />
+
+  <div class="container body-content">
+    @RenderBody()
+    <hr />
+    <footer>
+      <p localize>
+        <parameter>@DateTime.UtcNow.Year</parameter>
+        {0} - Localization Demo
+      </p>
+    </footer>
+  </div>
+
+  <environment include="Development">
+    <script src="~/lib/jquery/dist/jquery.js" defer></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js" async></script>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+  </environment>
+  <environment exclude="Development">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" defer>
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" defer>
+    </script>
+    <script src="~/js/site.min.js" asp-append-version="true" defer></script>
+  </environment>
+
+  @RenderSection("Scripts", required: false)
+</body>
+</html>

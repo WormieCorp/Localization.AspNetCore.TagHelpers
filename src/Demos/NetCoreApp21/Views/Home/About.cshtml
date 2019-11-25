@@ -1,0 +1,13 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer loc
+@{
+    ViewData["Title"] = "About";
+}
+
+  <header class="page-header">
+    <h1>
+      <localize resource-name="Common">@ViewData["Title"]</localize>
+      <small>@ViewData["Message"]</small>
+    </h1>
+  </header>
+
+<p localize localizer="loc">Use this area to provide additional information.</p>
