@@ -214,6 +214,9 @@ public class LocalizeAttributeTagHelper : TagHelper</code></pre>
 	<h1 id="Examples">Examples</h1>
 	<div>
       <pre><code class="cs">&lt;abbr localize-title="This will be localized"&gt;This will not&lt;/abbr&gt;</code></pre>
+    
+
+      <pre><code class="cs">&lt;abbr localize-title="This will be localized. {0}" params-title="This will not, but will be inserted as a parameter for title"&gt;This will not&lt;/abbr&gt;</code></pre>
     </div>
 
 
@@ -285,7 +288,9 @@ public class LocalizeAttributeTagHelper : TagHelper</code></pre>
 								<td><a href="/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper/B446EF10">ParameterValues</a></td>
 								<td>IDictionary<wbr>&lt;string, <wbr>string&gt;<wbr></td>
 								<td>
-									<div></div>
+									<div>
+    Gets or sets the parameter values that are to be formatted into the localized attributes.
+    </div>
 								</td>
 							</tr>
 							<tr>
@@ -327,7 +332,7 @@ public class LocalizeAttributeTagHelper : TagHelper</code></pre>
 								<td>void</td>
 								<td>
 									<div>
-      Synchronously executes the <code class="cs">Microsoft.AspNetCore.Razor.TagHelpers.TagHelper</code>
+      Synchronously executes the <code class="cs">TagHelper</code>
       with the given <span name="context" class="paramref">context</span> and <span name="output" class="paramref">output</span>. This is the
       method responsible for localizing the html attributes.
     </div>

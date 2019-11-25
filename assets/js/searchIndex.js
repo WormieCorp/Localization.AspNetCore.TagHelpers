@@ -39,20 +39,6 @@ var searchModule = function() {
     a(
         {
             id:0,
-            title:"LocalizeTagHelperOptions",
-            content:"LocalizeTagHelperOptions",
-            description:'',
-            tags:''
-        },
-        {
-            url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions',
-            title:"LocalizeTagHelperOptions",
-            description:""
-        }
-    );
-    a(
-        {
-            id:1,
             title:"NewLineHandling",
             content:"NewLineHandling",
             description:'',
@@ -66,63 +52,35 @@ var searchModule = function() {
     );
     a(
         {
-            id:2,
-            title:"Program",
-            content:"Program",
-            description:'',
-            tags:''
-        },
-        {
-            url:'/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Program',
-            title:"Program",
-            description:""
-        }
-    );
-    a(
-        {
-            id:3,
-            title:"LocalizeTagHelper",
-            content:"LocalizeTagHelper",
-            description:'',
-            tags:''
-        },
-        {
-            url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper',
-            title:"LocalizeTagHelper",
-            description:""
-        }
-    );
-    a(
-        {
-            id:4,
-            title:"HomeController",
-            content:"HomeController",
-            description:'',
-            tags:''
-        },
-        {
-            url:'/Localization.AspNetCore.TagHelpers/api/Localization.Demo.Controllers/HomeController',
-            title:"HomeController",
-            description:""
-        }
-    );
-    a(
-        {
-            id:5,
+            id:1,
             title:"Startup",
             content:"Startup",
             description:'',
             tags:''
         },
         {
-            url:'/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup',
+            url:'/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup',
             title:"Startup",
             description:""
         }
     );
     a(
         {
-            id:6,
+            id:2,
+            title:"HomeController",
+            content:"HomeController",
+            description:'',
+            tags:''
+        },
+        {
+            url:'/Localization.AspNetCore.TagHelpers/api/NetCoreApp21.Controllers/HomeController',
+            title:"HomeController",
+            description:""
+        }
+    );
+    a(
+        {
+            id:3,
             title:"ParameterTagHelper",
             content:"ParameterTagHelper",
             description:'',
@@ -136,7 +94,21 @@ var searchModule = function() {
     );
     a(
         {
-            id:7,
+            id:4,
+            title:"LocalizeTagHelperOptions",
+            content:"LocalizeTagHelperOptions",
+            description:'',
+            tags:''
+        },
+        {
+            url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelperOptions',
+            title:"LocalizeTagHelperOptions",
+            description:""
+        }
+    );
+    a(
+        {
+            id:5,
             title:"GenericLocalizeTagHelper",
             content:"GenericLocalizeTagHelper",
             description:'',
@@ -150,7 +122,7 @@ var searchModule = function() {
     );
     a(
         {
-            id:8,
+            id:6,
             title:"LocalizeAttributeTagHelper",
             content:"LocalizeAttributeTagHelper",
             description:'',
@@ -159,6 +131,48 @@ var searchModule = function() {
         {
             url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeAttributeTagHelper',
             title:"LocalizeAttributeTagHelper",
+            description:""
+        }
+    );
+    a(
+        {
+            id:7,
+            title:"LocalizeTagHelper",
+            content:"LocalizeTagHelper",
+            description:'',
+            tags:''
+        },
+        {
+            url:'/Localization.AspNetCore.TagHelpers/api/Localization.AspNetCore.TagHelpers/LocalizeTagHelper',
+            title:"LocalizeTagHelper",
+            description:""
+        }
+    );
+    a(
+        {
+            id:8,
+            title:"Program",
+            content:"Program",
+            description:'',
+            tags:''
+        },
+        {
+            url:'/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Program',
+            title:"Program",
+            description:""
+        }
+    );
+    a(
+        {
+            id:9,
+            title:"ErrorViewModel",
+            content:"ErrorViewModel",
+            description:'',
+            tags:''
+        },
+        {
+            url:'/Localization.AspNetCore.TagHelpers/api/NetCoreApp21.Models/ErrorViewModel',
+            title:"ErrorViewModel",
             description:""
         }
     );

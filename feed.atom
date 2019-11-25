@@ -4,7 +4,7 @@
 	<title>Localization.AspNetCore.TagHelpers</title>
 	<link rel="self" href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers" />
 	<rights>2019</rights>
-	<updated>2019-03-01T11:16:24Z</updated>
+	<updated>2019-11-25T18:22:18Z</updated>
 	<entry>
 		<id>http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.4.0</id>
 		<title>New Release - 0.4.0</title>
@@ -63,7 +63,7 @@
 		</author>
 		<link href="http://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/blog/new-release-0.2.0" />
 		<updated>2016-10-26T00:00:00Z</updated>
-		<content>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id="release"&gt;0.2.0 Release&lt;/h1&gt;
+		<content>&lt;h1 id="release"&gt;0.2.0 Release&lt;/h1&gt;
 &lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/v0.1.0...0.2.0"&gt;20 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=2&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Breaking change&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -103,7 +103,7 @@
 &lt;/ul&gt;
 &lt;h3 id="where-to-get-it"&gt;Where to get it&lt;/h3&gt;
 &lt;p&gt;You can download this release from &lt;a href="https://www.nuget.org/packages/Localization.AspNetCore.TagHelpers/0.2.0"&gt;NuGet&lt;/a&gt;&lt;/p&gt;
-&lt;/body&gt;&lt;/html&gt;</content>
+</content>
 		<summary>&lt;p&gt;As part of this release we had &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/compare/v0.1.0...0.2.0"&gt;20 commits&lt;/a&gt; which resulted in &lt;a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/issues?milestone=2&amp;amp;state=closed"&gt;5 issues&lt;/a&gt; being closed.&lt;/p&gt;</summary>
 	</entry>
 	<entry>

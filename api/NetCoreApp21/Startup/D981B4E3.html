@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
-        <title>Localization.AspNetCore.TagHelpers - API - Startup.Startup(IConfiguration) Constructor</title>
+        <title>Localization.AspNetCore.TagHelpers - API - Startup.Configure(IApplicationBuilder, IHostingEnvironment) Method</title>
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet">
@@ -135,17 +135,17 @@
                     <ul class="sidebar-menu">
                         
 			<li class="header">Namespace</li>
-		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo">Localization<wbr>.Demo</a></li>
+		<li><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21">NetCoreApp21</a></li>
 		<li class="header">Type</li>
-		<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup">Startup</a></li>
+		<li><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup">Startup</a></li>
 		<li role="separator" class="divider"></li>
 			<li class="header">Constructors</li>
-				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/AE3DC356">Startup<wbr>(IConfiguration)<wbr></a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup/19E70D63">Startup<wbr>(IConfiguration)<wbr></a></li>
 			<li class="header">Property Members</li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/DF5DCC0B">Configuration</a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup/EA49FB94">Configuration</a></li>
 			<li class="header">Method Members</li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/F5C5C2A4">Configure<wbr>(<wbr>I<wbr>Application<wbr>Builder, <wbr>IHostingEnvironment)<wbr></a></li>
-				<li><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup/1BF7DF81">ConfigureServices<wbr>(IServiceCollection)<wbr></a></li>
+				<li class="selected"><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup/D981B4E3">Configure<wbr>(<wbr>I<wbr>Application<wbr>Builder, <wbr>IHostingEnvironment)<wbr></a></li>
+				<li><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup/49DDD565">ConfigureServices<wbr>(IServiceCollection)<wbr></a></li>
 
 
                     </ul>
@@ -160,8 +160,8 @@
 
 
 <section class="content-header">
-			<h3><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup">Startup</a>.</h3>
-	<h1>Startup<wbr>(IConfiguration)<wbr> <small>Constructor</small></h1>
+			<h3><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup">Startup</a>.</h3>
+	<h1>Configure<wbr>(<wbr>I<wbr>Application<wbr>Builder, <wbr>IHostingEnvironment)<wbr> <small>Method</small></h1>
 </section>
 <section class="content">
 	
@@ -172,17 +172,17 @@
 				<dl class="dl-horizontal">	
 						
 						<dt>Namespace</dt>
-						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo">Localization<wbr>.Demo</a></dd>
+						<dd><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21">NetCoreApp21</a></dd>
 					
 						<dt>Containing Type</dt>
-						<dd><a href="/Localization.AspNetCore.TagHelpers/api/Localization.Demo/Startup">Startup</a></dd>		
+						<dd><a href="/Localization.AspNetCore.TagHelpers/api/NetCoreApp21/Startup">Startup</a></dd>		
 					
 				</dl>
   			</div>
 		</div>
 
 	<h1 id="Syntax">Syntax</h1>
-	<pre><code>public Startup(IConfiguration configuration)</code></pre>
+	<pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env)</code></pre>
 
 
 
@@ -200,8 +200,13 @@
 					</tr>
 				</thead>
 					<tbody><tr>
-						<td>configuration</td>
-						<td>IConfiguration</td>
+						<td>app</td>
+						<td>IApplicationBuilder</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>env</td>
+						<td>IHostingEnvironment</td>
 						<td></td>
 					</tr>
 			</tbody></table>

@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/Localization.AspNetCore.TagHelpers/assets/img/favicon.ico" type="image/x-icon">
-        <title>Localization.AspNetCore.TagHelpers - Inspectcode</title>
+        <title>Localization.AspNetCore.TagHelpers - Appveyor Linux</title>
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/highlight.css" rel="stylesheet">
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/bootstrap/bootstrap.css" rel="stylesheet" />
         <link href="/Localization.AspNetCore.TagHelpers/assets/css/adminlte/AdminLTE.css" rel="stylesheet" />
@@ -75,7 +75,7 @@
             <aside class="main-sidebar ">
                 <section class="infobar" data-spy="affix" data-offset-top="60" data-offset-bottom="200"> 
                     	
-        <div><p><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/tree/develop/docs/input/tasks/InspectCode.md"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Content</a></p></div>
+        <div><p><a href="https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers/tree/develop/docs/input/tasks/AppVeyor-Linux.md"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Content</a></p></div>
     <div id="infobar-headings"></div>
 
                 </section>
@@ -88,7 +88,7 @@
 
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Analyze">Analyze</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/AppVeyor">Appveyor</a></li>
-                <li><a href="/Localization.AspNetCore.TagHelpers/tasks/AppVeyor-Linux">Appveyor Linux</a></li>
+                <li class="selected"><a href="/Localization.AspNetCore.TagHelpers/tasks/AppVeyor-Linux">Appveyor Linux</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Build">Build</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Clean">Clean</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Clean-Documentation">Clean Documentation</a></li>
@@ -110,7 +110,7 @@
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/DupFinder">Dupfinder</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Export-Release-Notes">Export Release Notes</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Force-Publish-Documentation">Force Publish Documentation</a></li>
-                <li class="selected"><a href="/Localization.AspNetCore.TagHelpers/tasks/InspectCode">Inspectcode</a></li>
+                <li><a href="/Localization.AspNetCore.TagHelpers/tasks/InspectCode">Inspectcode</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Install-OpenCover">Install Opencover</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Install-ReportGenerator">Install Reportgenerator</a></li>
                 <li><a href="/Localization.AspNetCore.TagHelpers/tasks/Install-ReportUnit">Install Reportunit</a></li>
@@ -156,12 +156,31 @@
 
 
 		<section class="content-header">
-			<h1>Inspectcode</h1>
+			<h1>Appveyor Linux</h1>
 		</section>
 	<section class="content">
 		<div class="mermaid">
 graph TD;
-InspectCode;
+AppVeyor-Linux-->Upload-AppVeyor-Artifacts;
+Upload-AppVeyor-Artifacts-->Package;
+Package-->Export-Release-Notes;
+Package-->Analyze;
+Package-->Test;
+Package-->Create-NuGet-Packages;
+Package-->Create-Chocolatey-Packages;
+Package-->DotNetCore-Pack;
+DotNetCore-Pack-->DotNetCore-Build;
+DotNetCore-Build-->Clean;
+DotNetCore-Build-->DotNetCore-Restore;
+DotNetCore-Build-->Client-Packages;
+Clean-->Show-Info;
+Clean-->Print-AppVeyor-Environment-Variables;
+Test-->DotNetCore-Test;
+DotNetCore-Test-->Install-OpenCover;
+Install-OpenCover-->Install-ReportGenerator;
+Analyze-->DupFinder;
+Analyze-->InspectCode;
+Analyze-->CreateIssuesReport;
 </div>
 
 	</section>
