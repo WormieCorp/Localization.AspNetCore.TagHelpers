@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,40 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>Om</value>
+  <data name="&lt;strong&gt;Request ID:&lt;/strong&gt;&#xD;&#xA;&lt;code&gt;{0}&lt;/code&gt;" xml:space="preserve">
+    <value>&lt;strong&gt;Request ID:&lt;/strong&gt;
+&lt;code&gt;{0}&lt;/code&gt;</value>
   </data>
-  <data name="Accept" xml:space="preserve">
-    <value>Aksepter</value>
+  <data name="&lt;strong&gt;The Development environment shouldn't be enabled for deployed applications.&lt;/strong&gt;&#xD;&#xA;It can result in displaying sensitive information from exceptions to end users.&#xD;&#xA;For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;&#xD;&#xA;and restarting the app." xml:space="preserve">
+    <value>&lt;strong&gt;The Development environment shouldn't be enabled for deployed applications.&lt;/strong&gt;
+It can result in displaying sensitive information from exceptions to end users.
+For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;
+and restarting the app.</value>
   </data>
-  <data name="Contact" xml:space="preserve">
-    <value>Kontakt</value>
+  <data name="An error occurred while processing your request." xml:space="preserve">
+    <value>An error occurred while processing your request.</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Feil</value>
+  <data name="Development Mode" xml:space="preserve">
+    <value>Development Mode</value>
   </data>
-  <data name="Error." xml:space="preserve">
-    <value>Feil.</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Hjem</value>
-  </data>
-  <data name="Home Page" xml:space="preserve">
-    <value>Hjemmeside</value>
-  </data>
-  <data name="Learn More" xml:space="preserve">
-    <value>Lær mer</value>
-  </data>
-  <data name="Next" xml:space="preserve">
-    <value>Neste</value>
-  </data>
-  <data name="Previous" xml:space="preserve">
-    <value>Forrige</value>
-  </data>
-  <data name="Privacy" xml:space="preserve">
-    <value>Personvern</value>
-  </data>
-  <data name="Privacy Policy" xml:space="preserve">
-    <value>Retningslinjer for personvern</value>
+  <data name="Swapping to &lt;strong&gt;Development&lt;/strong&gt; environment will display more detailed information about the error that occurred." xml:space="preserve">
+    <value>Swapping to &lt;strong&gt;Development&lt;/strong&gt; environment will display more detailed information about the error that occurred.</value>
   </data>
 </root>

@@ -141,6 +141,9 @@
   <data name="How to" xml:space="preserve">
     <value>How to</value>
   </data>
+  <data name="Learn about &lt;a href=&quot;{0}&quot; target=&quot;_blank&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;." xml:space="preserve">
+    <value>Learn about &lt;a href="{0}" target="_blank"&gt;building Web apps with ASP.NET Core&lt;/a&gt;.</value>
+  </data>
   <data name="Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps." xml:space="preserve">
     <value>Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.</value>
   </data>
@@ -185,6 +188,9 @@
   </data>
   <data name="Use logging to log a message." xml:space="preserve">
     <value>Use logging to log a message.</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
   </data>
   <data name="Working with Data" xml:space="preserve">
     <value>Working with Data</value>

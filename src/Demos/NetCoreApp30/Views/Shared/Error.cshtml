@@ -3,12 +3,8 @@
   ViewData["Title"] = "Error";
 }
 
-<header class="page-header">
-  <h1 class="text-danger">
-    <localize resource-name="Common">Error.</localize>
-    <small localize>An error occurred while processing your request.</small>
-  </h1>
-</header>
+<h1 class="text-danger" localize resource-name="Common">Error.</h1>
+<h2 class="text-danger" localize>An error occurred while processing your request.</h2>
 
 @if (Model.ShowRequestId)
 {
@@ -19,7 +15,7 @@
   </p>
 }
 
-<h2 localize>Development Mode</h2>
+<h3 localize>Development Mode</h3>
 <p localize html="true">
   Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
 </p>
