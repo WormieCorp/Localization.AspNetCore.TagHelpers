@@ -25,6 +25,9 @@ branches:
   - gh-pages
   - /dependabot\/.*/
 
+init:
+- dotnet --info
+
 build_script:
 - ps: |
     if ($isWindows) {
