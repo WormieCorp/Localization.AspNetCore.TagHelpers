@@ -13,6 +13,7 @@ for:
       - docs/*
 pull_requests:
   do_not_increment_build_number: true
+skip_branch_with_pr: true
 environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: "-t7z -m0=lzma -mx=9"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
