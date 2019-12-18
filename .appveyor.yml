@@ -1,6 +1,6 @@
 image:
-- Visual Studio 2019
-- Ubuntu
+#- Visual Studio 2019
+#- Ubuntu
 - macos
 matrix:
   fast_finish: true
@@ -28,6 +28,13 @@ branches:
 
 init:
 - dotnet --info
+
+install:
+- ps: |
+    if ($IsMacOS) {
+      brew update
+      brew install mono
+    }
 
 build_script:
 - ps: |
