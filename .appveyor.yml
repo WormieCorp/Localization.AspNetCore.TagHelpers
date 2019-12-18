@@ -1,13 +1,14 @@
 image:
 - Visual Studio 2019
 - Ubuntu
+- macos
 matrix:
   fast_finish: true
 for:
 -
   matrix:
-    only:
-      - image: Ubuntu
+    except:
+      - image: Visual Studio 2019
   skip_commits:
     files:
       - docs/*
