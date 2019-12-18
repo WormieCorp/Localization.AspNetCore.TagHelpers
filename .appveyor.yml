@@ -1,7 +1,7 @@
 image:
-#- Visual Studio 2019
-#- Ubuntu
+- Ubuntu
 - macos
+- Visual Studio 2019
 matrix:
   fast_finish: true
 for:
