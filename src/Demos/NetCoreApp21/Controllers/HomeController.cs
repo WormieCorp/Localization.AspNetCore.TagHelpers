@@ -50,7 +50,7 @@ namespace NetCoreApp21.Controllers
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult SetLanguage(string culture, string returnUrl)
+    public IActionResult SetLanguage(string culture, Uri returnUrl)
     {
       Response.Cookies.Append(
         CookieRequestCultureProvider.DefaultCookieName,
@@ -61,7 +61,7 @@ namespace NetCoreApp21.Controllers
           IsEssential = true
         });
 
-      return LocalRedirect(returnUrl);
+      return LocalRedirect(returnUrl.ToString());
     }
   }
 }
