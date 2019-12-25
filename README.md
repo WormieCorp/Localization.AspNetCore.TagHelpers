@@ -1,5 +1,6 @@
 # Localization.AspNetCore.TagHelpers
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
 [![Liberapay receiving](https://img.shields.io/liberapay/receives/WormieCorp.svg?logo=liberapay&style=flat-square)](https://liberapay.com/WormieCorp)
 
 [![Join the chat at https://gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers](https://badges.gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers.svg)](https://gitter.im/WormieCorp/Localization.AspNetCore.TagHelpers?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
