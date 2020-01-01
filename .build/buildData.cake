@@ -1,3 +1,36 @@
+private static string ReadDescription(ICakeContext context, FilePath filePath)
+{
+  var sb = new StringBuilder();
+
+  using (var reader = new StreamReader(filePath.ToString()))
+  {
+    bool addText = false;
+    string line;
+
+    while ((line = reader.ReadLine()) != null)
+    {
+      if (line.Contains("DESCRIPTION:START") || line.Contains("DESCRIPTION:CONTINUE"))
+      {
+        addText = true;
+      }
+      else if (line.Contains("DESCRIPTION:PAUSE"))
+      {
+        addText = false;
+      }
+      else if (line.Contains("DESCRIPTION:STOP"))
+      {
+        break;
+      }
+      else if (addText)
+      {
+        sb.AppendLine(line);
+      }
+    }
+  }
+
+  return sb.ToString();
+}
+
 Setup<ICiProvider>(context =>
 {
   var buildSystem = context.BuildSystem();
@@ -85,6 +118,7 @@ Setup<BuildData>(context =>
   return new BuildData
   {
     Configuration = context.Argument("configuration", "Release"),
+    Description   = ReadDescription(context, File("./README.md")),
     Target = context.Argument("target", "Default"),
     Ci = context.Data.Get<ICiProvider>(),
     Dirs = context.Data.Get<BuildDirectories>(),
@@ -96,6 +130,7 @@ Setup<BuildData>(context =>
 public sealed class BuildData
 {
   public string Configuration { get; set; }
+  public string Description { get; set; }
   public string Target { get; set; }
   public string TestReportsFilter => Dirs.TestReports + "/**/*.opencover.xml";
 

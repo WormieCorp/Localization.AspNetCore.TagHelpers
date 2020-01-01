@@ -22,7 +22,8 @@ BuildTask
     MSBuildSettings = new DotNetCoreMSBuildSettings()
       .SetVersionPrefix(data.Version.MajorMinorPatch)
       .SetInformationalVersion(data.Version.InformationalVersion)
-      .WithProperty("PackageOutputPath",data.Dirs.NugetPackages)
+      .WithProperty("PackageOutputPath", data.Dirs.NugetPackages)
+      .WithProperty("Description", data.Description)
       .ValidateProjectFile()
   };
 

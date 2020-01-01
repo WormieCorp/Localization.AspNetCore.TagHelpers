@@ -39,7 +39,11 @@ BeforeBuildTask
     Url = "https://sonarcloud.io",
     Exclusions = "**/Demos/**/*.*,**/*.Tests/*.cs",
     OpenCoverReportsPath = "**/*.opencover.xml",
-    Login = data.SonarCloud.Login
+    Login = data.SonarCloud.Login,
+    ArgumentCustomization = args => args
+      .AppendQuoted($"/v:{data.Version.SemVer}")
+      .AppendQuoted($"/d:sonar.projectDescription={data.Description}")
+      .Append($"/d:sonar.sourceEncoding=UTF-8")
   });
 });
 
