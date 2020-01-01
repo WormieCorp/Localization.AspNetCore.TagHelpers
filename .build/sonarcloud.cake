@@ -16,6 +16,40 @@ public sealed class SonarCloudAuthentication
   public string Organization { get; }
 }
 
+private static readonly IReadOnlyDictionary<char, string> _escapeLookup = new Dictionary<char, string>
+{
+  { ':', "%3A" },
+  { ';', "%3B" },
+  { ',', "%2C" },
+  { ' ', "%20" },
+  { '\r', "%0D" },
+  { '\n', "%0A" }
+};
+
+private static string EscapeMSBuildPropertySpecialCharacters(string value)
+{
+  if (string.IsNullOrEmpty(value))
+  {
+    return string.Empty;
+  }
+
+  var escapedBuilder = new StringBuilder();
+
+  foreach (var c in value)
+  {
+    if (_escapeLookup.TryGetValue(c, out string newChar))
+    {
+      escapedBuilder.Append(newChar);
+    }
+    else
+    {
+      escapedBuilder.Append(c);
+    }
+  }
+
+  return escapedBuilder.ToString();
+}
+
 BeforeBuildTask
   .Does<BuildData>((data) =>
 {
@@ -40,9 +74,9 @@ BeforeBuildTask
     Exclusions = "**/Demos/**/*.*,**/*.Tests/*.cs",
     OpenCoverReportsPath = "**/*.opencover.xml",
     Login = data.SonarCloud.Login,
+    Version = data.Version.SemVer,
     ArgumentCustomization = args => args
-      .AppendQuoted($"/v:{data.Version.SemVer}")
-      .AppendQuoted($"/d:sonar.projectDescription={data.Description}")
+      .AppendQuoted($"/d:sonar.projectDescription={EscapeMSBuildPropertySpecialCharacters(data.Description)}")
       .Append($"/d:sonar.sourceEncoding=UTF-8")
   });
 });
