@@ -29,7 +29,7 @@ namespace Localization.AspNetCore.TagHelpers
     ///   <see cref="GenericLocalizeTagHelper" /> or a <see cref="LocalizeTagHelper" />.
     /// </summary>
     /// <inheritdoc />
-    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
       if (context is null)
       {
@@ -41,7 +41,13 @@ namespace Localization.AspNetCore.TagHelpers
         throw new System.ArgumentNullException(nameof(output));
       }
 
+      return ProcessInternalAsync(context, output);
+    }
+
+    private static async Task ProcessInternalAsync(TagHelperContext context, TagHelperOutput output)
+    {
       var content = await output.GetChildContentAsync(NullHtmlEncoder.Default).ConfigureAwait(false);
+
       if (output.IsContentModified)
       {
         content = output.Content;

@@ -29,7 +29,7 @@ namespace Localization.AspNetCore.TagHelpers
   /// Adds support to localize the inner text for a tag, when one of the following attributes have
   /// been added: <c>localize</c>, <c>localize-html</c> or <c>localize-type</c>.
   /// </summary>
-  /// <seealso cref="Microsoft.AspNetCore.Razor.TagHelpers.TagHelper"/>
+  /// <seealso cref="TagHelper"/>
   /// <example>
   /// <code>
   /// <![CDATA[
@@ -236,60 +236,14 @@ namespace Localization.AspNetCore.TagHelpers
     /// to pass to the localized text and replacing the old text with the new localized text.
     /// </summary>
     /// <inheritdoc/>
-    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
       if (output is null)
       {
         throw new ArgumentNullException(nameof(output));
       }
 
-      if (output.Attributes.ContainsName("localize"))
-      {
-        var index = output.Attributes.IndexOfName("localize");
-        output.Attributes.RemoveAt(index);
-      }
-
-      var content = await GetContentAsync(context, output).ConfigureAwait(false);
-
-      if (TrimWhitespace || TrimEachLine)
-      {
-        content = content?.Trim();
-      }
-
-      if (NewLineHandling != NewLineHandling.None || TrimEachLine)
-      {
-        content = HandleNormalization(content, NewLineHandling, TrimEachLine);
-      }
-
-      var parameters = GetParameters(context);
-      if (IsHtml)
-      {
-        LocalizedHtmlString locString;
-        if (parameters.Any())
-        {
-          locString = Localizer[content, parameters.ToArray()];
-        }
-        else
-        {
-          locString = Localizer[content];
-        }
-
-        SetHtmlContent(context, output.Content, locString);
-      }
-      else
-      {
-        LocalizedString locString;
-        if (parameters.Any())
-        {
-          locString = Localizer.GetString(content, parameters.ToArray());
-        }
-        else
-        {
-          locString = Localizer.GetString(content);
-        }
-
-        SetContent(context, output.Content, locString);
-      }
+      return ProcessInternalAsync(context, output);
     }
 
     /// <summary>
@@ -298,20 +252,14 @@ namespace Localization.AspNetCore.TagHelpers
     /// <param name="context">Contains information associated with the current HTML tag.</param>
     /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
     /// <returns>An asynchronous task with the found content.</returns>
-    protected virtual async Task<string> GetContentAsync(TagHelperContext context, TagHelperOutput output)
+    protected virtual Task<string> GetContentAsync(TagHelperContext context, TagHelperOutput output)
     {
       if (output is null)
       {
         throw new ArgumentNullException(nameof(output));
       }
 
-      var content = await output.GetChildContentAsync(true).ConfigureAwait(false);
-      if (output.IsContentModified)
-      {
-        return output.Content.GetContent(NullHtmlEncoder.Default);
-      }
-
-      return content.GetContent(NullHtmlEncoder.Default);
+      return GetContentInternalAsync(output);
     }
 
     /// <summary>
@@ -368,7 +316,7 @@ namespace Localization.AspNetCore.TagHelpers
       outputContent.SetHtmlContent(htmlContent);
     }
 
-    private static void AppendContent(string content, bool trimEachLine, StringBuilder newContent, int lastIndex, int index)
+    private static void AppendContent(ref StringBuilder newContent, in string content, in bool trimEachLine, in int lastIndex, in int index)
     {
 #pragma warning disable IDE0057 // Use range operator
       var substring = content.Substring(lastIndex, index - lastIndex);
@@ -383,9 +331,9 @@ namespace Localization.AspNetCore.TagHelpers
       }
     }
 
-    private static void AppendNewLine(string content, bool trimEachLine, StringBuilder newContent, int index, string newLine)
+    private static void AppendNewLine(ref StringBuilder newContent, in string content, in bool trimEachLine, in int index, in string newLine)
     {
-      if (newLine == null)
+      if (newLine is null)
       {
         if (trimEachLine && index > 0 && content[index - 1] == '\r')
         {
@@ -402,7 +350,18 @@ namespace Localization.AspNetCore.TagHelpers
       }
     }
 
-    private static string GetDefaultNewLine(NewLineHandling newLineHandling)
+    private static async Task<string> GetContentInternalAsync(TagHelperOutput output)
+    {
+      var content = await output.GetChildContentAsync(true).ConfigureAwait(false);
+      if (output.IsContentModified)
+      {
+        return output.Content.GetContent(NullHtmlEncoder.Default);
+      }
+
+      return content.GetContent(NullHtmlEncoder.Default);
+    }
+
+    private static string GetDefaultNewLine(in NewLineHandling newLineHandling)
     {
       string newLine = null;
       switch (newLineHandling)
@@ -423,16 +382,21 @@ namespace Localization.AspNetCore.TagHelpers
       return newLine;
     }
 
-    private static string HandleNormalization(string content, NewLineHandling newLineHandling, bool trimEachLine)
+    private static void HandleNormalization(ref string content, in NewLineHandling newLineHandling, in bool trimWhitespace, in bool trimEachLine)
     {
       if (string.IsNullOrEmpty(content))
       {
-        return content;
+        return;
       }
 
-      if (trimEachLine)
+      if (trimWhitespace || trimEachLine)
       {
         content = content.Trim();
+      }
+
+      if (newLineHandling == NewLineHandling.None && !trimEachLine)
+      {
+        return;
       }
 
       var newContent = new StringBuilder();
@@ -442,15 +406,63 @@ namespace Localization.AspNetCore.TagHelpers
 
       while ((index = content.IndexOf('\n', lastIndex)) >= 0)
       {
-        AppendContent(content, trimEachLine, newContent, lastIndex, index);
-        AppendNewLine(content, trimEachLine, newContent, index, newLine);
+        AppendContent(ref newContent, content, trimEachLine, lastIndex, index);
+        AppendNewLine(ref newContent, content, trimEachLine, index, newLine);
 
         lastIndex = index + 1;
       }
 
-      AppendContent(content, trimEachLine, newContent, lastIndex, content.Length);
+      AppendContent(ref newContent, content, trimEachLine, lastIndex, content.Length);
 
-      return newContent.ToString();
+      content = newContent.ToString();
+    }
+
+    private static void RemoveAttribute(ref TagHelperOutput output, in string name)
+    {
+      if (output.Attributes.ContainsName(name))
+      {
+        var index = output.Attributes.IndexOfName(name);
+        output.Attributes.RemoveAt(index);
+      }
+    }
+
+    private async Task ProcessInternalAsync(TagHelperContext context, TagHelperOutput output)
+    {
+      RemoveAttribute(ref output, "localize");
+
+      var content = await GetContentAsync(context, output).ConfigureAwait(false);
+
+      HandleNormalization(ref content, NewLineHandling, TrimWhitespace, TrimEachLine);
+
+      var parameters = GetParameters(context);
+      if (IsHtml)
+      {
+        LocalizedHtmlString locString;
+        if (parameters.Any())
+        {
+          locString = Localizer[content, parameters.ToArray()];
+        }
+        else
+        {
+          locString = Localizer[content];
+        }
+
+        SetHtmlContent(context, output.Content, locString);
+      }
+      else
+      {
+        LocalizedString locString;
+        if (parameters.Any())
+        {
+          locString = Localizer.GetString(content, parameters.ToArray());
+        }
+        else
+        {
+          locString = Localizer.GetString(content);
+        }
+
+        SetContent(context, output.Content, locString);
+      }
     }
   }
 }

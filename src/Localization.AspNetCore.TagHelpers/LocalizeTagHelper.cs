@@ -56,16 +56,16 @@ namespace Localization.AspNetCore.TagHelpers
     /// </summary>
     /// <seealso cref="GenericLocalizeTagHelper.ProcessAsync(TagHelperContext, TagHelperOutput)" />
     /// <inheritdoc />
-    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
       if (output is null)
       {
         throw new System.ArgumentNullException(nameof(output));
       }
 
-      await base.ProcessAsync(context, output).ConfigureAwait(false);
-
       output.TagName = null;
+
+      return base.ProcessAsync(context, output);
     }
   }
 }
