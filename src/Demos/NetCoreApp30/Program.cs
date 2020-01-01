@@ -7,14 +7,16 @@ namespace NetCoreApp30
   {
     public static void Main(string[] args)
     {
-      CreateHostBuilder(args).Build().Run();
+      using (var host = CreateHostBuilder(args).Build())
+      {
+        host.Run();
+      }
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-              webBuilder.UseStartup<Startup>();
-            });
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+      return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+    }
   }
 }

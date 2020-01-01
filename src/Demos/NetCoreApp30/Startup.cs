@@ -46,8 +46,8 @@ namespace NetCoreApp30
         };
 
         options.AddSupportedCultures(supportedCultures)
-               .AddSupportedUICultures(supportedCultures)
-               .SetDefaultCulture(supportedCultures[0]);
+              .AddSupportedUICultures(supportedCultures)
+              .SetDefaultCulture(supportedCultures[0]);
       });
     }
 
@@ -73,12 +73,9 @@ namespace NetCoreApp30
 
       app.UseAuthorization();
 
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapControllerRoute(
+      app.UseEndpoints(endpoints => endpoints.MapControllerRoute(
                   name: "default",
-                  pattern: "{controller=Home}/{action=Index}/{id?}");
-      });
+                  pattern: "{controller=Home}/{action=Index}/{id?}"));
     }
   }
 }
