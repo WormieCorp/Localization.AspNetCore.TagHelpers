@@ -37,7 +37,7 @@ BeforeBuildTask
     Branch = data.Ci.Branch,
     Organization = data.SonarCloud.Organization,
     Url = "https://sonarcloud.io",
-    Exclusions = "**/Demos/**/*.cs,**/*.Tests/*.cs",
+    Exclusions = "**/Demos/**/*.*,**/*.Tests/*.cs",
     OpenCoverReportsPath = "**/*.opencover.xml",
     Login = data.SonarCloud.Login
   });
