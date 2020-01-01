@@ -53,11 +53,10 @@ Setup<GitVersion>(context =>
       OutputType = GitVersionOutput.Json,
     });
 
-    using (var file = System.IO.File.OpenWrite(filePath))
-    using (var writer = System.Xml.XmlWriter.Create(file))
+    using (var file = System.IO.File.Create(filePath))
     {
       var serializer = new System.Xml.Serialization.XmlSerializer(typeof(GitVersion));
-      serializer.Serialize(writer, version);
+      serializer.Serialize(file, version);
     }
   }
 
