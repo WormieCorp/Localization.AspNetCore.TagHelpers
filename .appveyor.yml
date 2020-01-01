@@ -46,10 +46,7 @@ init:
       }
 
 build_script:
-  - pwsh: ./build.ps1 --target=Build
-
-test_script:
-  - pwsh: ./build.ps1 --target=Tests --only-tests=true
+  - pwsh: ./build.ps1 --target=Tests
 
 after_test:
   - pwsh: Remove-Item -Path "$env:PKG_CACHE_DIR","./tools" -Recurse -Include "*.nupkg","*.snupkg"
