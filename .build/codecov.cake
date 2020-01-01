@@ -1,6 +1,6 @@
 #load "./tasks.cake"
 
-AfterTestsTask
+BeforeDeploymentTask
   .Does<BuildData>((data) =>
 {
   if (!data.Ci.IsCiProvider("AppVeyor") && !HasEnvironmentVariable("CODECOV_TOKEN"))
