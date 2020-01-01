@@ -61,7 +61,7 @@ namespace NetCoreApp21.Controllers
           IsEssential = true
         });
 
-      return LocalRedirect(returnUrl.ToString());
+      return LocalRedirect(returnUrl?.ToString() ?? "/");
     }
   }
 }

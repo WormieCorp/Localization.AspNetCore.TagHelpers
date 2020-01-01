@@ -1,15 +1,28 @@
 create:
   include-footer: true
   footer-heading: Where to get it
-  footer-content: You can download this release from [NuGet](https://www.nuget.org/packages/Localization.AspNetCore.TagHelpers/{milestone})
+  footer-content: |
+    You can download this release from [NuGet](https://www.nuget.org/packages/Localization.AspNetCore.TagHelpers/{milestone})
   footer-includes-milestone: true
   milestone-replace-text: '{milestone}'
+  include-sha-section: true
 export:
   include-created-date-in-title: true
   created-date-string-format: MM-dd-yyyy
   perform-regex-removal: true
   regex-text: '### Where to get it[\r\n]+You can .*\)'
   multiline-regex: true
+close:
+  use-issue-comments: true
+  issue-comment: |
+    :tada: This issue has been resolved in version {milestone} :tada:
+
+    The release is available on:
+
+    - [GitHub Release](https://github.com/{owner}/{repository}/releases/tag/{milestone})
+    - [NuGet](https://nuget.org/packages/{repository}/{milestone})
+
+    Your friendly **[GitReleaseManager](https://github.com/GitTools/GitReleaseManager) bot** :package::rocket:
 issue-labels-include:
 - Breaking change
 - Feature

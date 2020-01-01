@@ -3,17 +3,18 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "twitter-bootstrap@4.3.1",
+      "provider": "jsdelivr",
+      "library": "bootstrap@4.3.1",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
-        "css/bootstrap.css",
-        "css/bootstrap.css.map",
-        "css/bootstrap.min.css",
-        "css/bootstrap.min.css.map",
-        "js/bootstrap.bundle.js",
-        "js/bootstrap.bundle.js.map",
-        "js/bootstrap.bundle.min.js",
-        "js/bootstrap.bundle.min.js.map"
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.css.map",
+        "dist/css/bootstrap.min.css",
+        "dist/css/bootstrap.min.css.map",
+        "dist/js/bootstrap.bundle.js",
+        "dist/js/bootstrap.bundle.js.map",
+        "dist/js/bootstrap.bundle.min.js",
+        "dist/js/bootstrap.bundle.min.js.map"
       ]
     },
     {

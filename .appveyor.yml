@@ -1,10 +1,19 @@
 image:
-- Ubuntu
-- macos
-- Visual Studio 2019
+  - Ubuntu
+  - macos
+  - Visual Studio 2019
 matrix:
   fast_finish: true
 for:
+-
+  matrix:
+    only:
+      - image: macos
+  environment:
+    DOTNET_ROOT: "/Users/appveyor/.dotnet"
+  install:
+    - brew update
+    - brew install mono
 -
   matrix:
     except:
@@ -12,6 +21,8 @@ for:
   skip_commits:
     files:
       - docs/*
+  skip_tags: true
+
 pull_requests:
   do_not_increment_build_number: true
 skip_branch_with_pr: true
@@ -19,37 +30,33 @@ environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: "-t7z -m0=lzma -mx=9"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  PKG_CACHE_DIR: "C:\\cache\\netcore"
 branches:
   except:
-  - ci/travis
-  - ci/wercker
-  - gh-pages
-  - /dependabot\/.*/
+    - ci/travis
+    - ci/wercker
+    - gh-pages
+    - /dependabot\/.*/
 
 init:
-- dotnet --info
-
-install:
-- ps: |
-    if ($IsMacOS) {
-      brew update
-      brew install mono
-    }
+  - dotnet --info
+  - pwsh: |
+      if (!$IsWindows) {
+        $env:PKG_CACHE_DIR = [System.IO.Path]::Join("$env:HOME", "cache", "netcore")
+      }
 
 build_script:
-- ps: |
-    if ($isWindows) {
-      .\build.ps1 -Configuration Release -Target AppVeyor
-    } else {
-      .\build.ps1 -Configuration Release -Target AppVeyor-Linux
-    }
-- ps: |
-    $wc = New-Object 'System.Net.WebClient'
-    Get-ChildItem -Path "./" -Name "TestResult*.xml" -Recurse -File | % {
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $_))
-    }
+  - pwsh: ./build.ps1 --target=Build
 
-test: off
+test_script:
+  - pwsh: ./build.ps1 --target=Tests --only-tests=true
+
+after_test:
+  - pwsh: Remove-Item -Path "$env:PKG_CACHE_DIR","./tools" -Recurse -Include "*.nupkg","*.snupkg"
+
+deploy_script:
+  - pwsh: ./build.ps1 --target=Deployment
 
 cache:
-- tools -> build.ps1,setup.cake
+  - 'tools -> .build/addins.cake,.build/modules.cake,.build/tools.cake,build.config'
+  - "%PKG_CACHE_DIR% -> **/*.csproj,global.json"

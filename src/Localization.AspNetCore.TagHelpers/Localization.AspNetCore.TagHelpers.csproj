@@ -1,8 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
+    <NoWarn>NU5105</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -22,17 +23,17 @@ Ability to localize html attribute using the following: `&lt;span localize-title
 Please see the documentation for all available attributes and their usage:
 https://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/docs/helpers
     </Description>
-    <Copyright>Copyright 2016-$([System.DateTime]::Today.Year - Kim Nordmo</Copyright>
+    <Copyright>Copyright 2016-$([System.DateTime]::Today.Year) - Kim Nordmo</Copyright>
     <Authors>AdmiringWorm</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Localization.AspNetCore.TagHelpers</AssemblyName>
     <PackageId>Localization.AspNetCore.TagHelpers</PackageId>
-    <PackageTags>localization;asp-net-core;web;taghelpers;localization-aspnetcore-taghelpers</PackageTags>
+    <PackageTags>localization;asp-net-core;web;taghelpers;razer</PackageTags>
     <PackageProjectUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/WormieCorp/Localization.AspNetCore.TagHelpers.git</RepositoryUrl>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
@@ -52,10 +53,12 @@ https://wormiecorp.github.io/Localization.AspNetCore.TagHelpers/docs/helpers
   <ItemGroup Condition="'$(TargetFramework)'!='netcoreapp3.0'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="2.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.1.2" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 </Project>
