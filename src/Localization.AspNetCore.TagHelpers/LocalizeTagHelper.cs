@@ -10,8 +10,6 @@ namespace Localization.AspNetCore.TagHelpers
 {
   using System.Threading.Tasks;
 
-  using Localization.AspNetCore.TagHelpers.Internals;
-
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Mvc.Localization;
   using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -20,7 +18,7 @@ namespace Localization.AspNetCore.TagHelpers
   /// <summary>
   ///   Adds support to localize the everything with the <c>localize</c> tag.
   /// </summary>
-  /// <seealso cref="Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
+  /// <seealso cref="TagHelper" />
   /// <seealso cref="GenericLocalizeTagHelper" />
   /// <example>
   ///   <code>

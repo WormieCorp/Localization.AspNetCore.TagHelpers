@@ -11,15 +11,13 @@ namespace Localization.AspNetCore.TagHelpers
   using System.Collections.Generic;
   using System.Threading.Tasks;
 
-  using Localization.AspNetCore.TagHelpers.Internals;
-
   using Microsoft.AspNetCore.Razor.TagHelpers;
 
   /// <summary>
   ///   Adds parameters to <see cref="GenericLocalizeTagHelper" /> and
   ///   <see cref="LocalizeTagHelper" />. Used through a <c>parameter</c> html tag.
   /// </summary>
-  /// <seealso cref="Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
+  /// <seealso cref="TagHelper" />
   [HtmlTargetElement("parameter", TagStructure = TagStructure.NormalOrSelfClosing)]
   public class ParameterTagHelper : TagHelper
   {
