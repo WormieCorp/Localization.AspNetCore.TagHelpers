@@ -30,7 +30,6 @@ environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: "-t7z -m0=lzma -mx=9"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  PKG_CACHE_DIR: "C:\\cache\\netcore"
 branches:
   except:
     - ci/travis
@@ -40,10 +39,6 @@ branches:
 
 init:
   - dotnet --info
-  - pwsh: |
-      if (!$IsWindows) {
-        $env:PKG_CACHE_DIR = [System.IO.Path]::Join("$env:HOME", "cache", "netcore")
-      }
 
 build_script:
   - pwsh: ./build.ps1 --target=Tests
@@ -56,4 +51,3 @@ deploy_script:
 
 cache:
   - 'tools -> .build/addins.cake,.build/modules.cake,.build/tools.cake,build.config'
-  - "%PKG_CACHE_DIR% -> **/*.csproj,global.json"
