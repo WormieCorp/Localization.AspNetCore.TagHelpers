@@ -44,7 +44,7 @@ build_script:
   - pwsh: ./build.ps1 --target=Tests
 
 after_test:
-  - pwsh: Remove-Item -Path "$env:PKG_CACHE_DIR","./tools" -Recurse -Include "*.nupkg","*.snupkg"
+  - pwsh: Remove-Item -Path "./tools" -Recurse -Include "*.nupkg","*.snupkg"
 
 deploy_script:
   - pwsh: ./build.ps1 --target=Deployment
