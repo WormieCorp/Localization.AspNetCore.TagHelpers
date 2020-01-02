@@ -143,16 +143,9 @@ namespace Localization.AspNetCore.TagHelpers
         var value = attribute.Value;
         if (!string.IsNullOrWhiteSpace(value))
         {
-          string newValue = null;
-
-          if (ParameterValues.ContainsKey(key))
-          {
-            newValue = localizer.GetString(value, ParameterValues[key].Split(';'));
-          }
-          else
-          {
-            newValue = localizer.GetString(value);
-          }
+          string newValue = ParameterValues.ContainsKey(key)
+            ? localizer.GetString(value, ParameterValues[key].Split(';'))
+            : localizer.GetString(value);
 
           output.Attributes.Add(key, newValue);
         }

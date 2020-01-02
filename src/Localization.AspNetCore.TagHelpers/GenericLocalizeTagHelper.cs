@@ -318,17 +318,9 @@ namespace Localization.AspNetCore.TagHelpers
 
     private static void AppendContent(ref StringBuilder newContent, in string content, in bool trimEachLine, in int lastIndex, in int index)
     {
-#pragma warning disable IDE0057 // Use range operator
       var substring = content.Substring(lastIndex, index - lastIndex);
-#pragma warning restore IDE0057 // Use range operator
-      if (trimEachLine)
-      {
-        newContent.Append(substring.Trim());
-      }
-      else
-      {
-        newContent.Append(substring.TrimEnd('\r'));
-      }
+
+      newContent.Append(trimEachLine ? substring.Trim() : substring.TrimEnd('\r'));
     }
 
     private static void AppendNewLine(ref StringBuilder newContent, in string content, in bool trimEachLine, in int index, in string newLine)
@@ -363,21 +355,13 @@ namespace Localization.AspNetCore.TagHelpers
 
     private static string GetDefaultNewLine(in NewLineHandling newLineHandling)
     {
-      string newLine = null;
-      switch (newLineHandling)
+      var newLine = newLineHandling switch
       {
-        case NewLineHandling.Auto:
-          newLine = Environment.NewLine;
-          break;
-
-        case NewLineHandling.Windows:
-          newLine = "\r\n";
-          break;
-
-        case NewLineHandling.Unix:
-          newLine = "\n";
-          break;
-      }
+        NewLineHandling.Auto => Environment.NewLine,
+        NewLineHandling.Windows => "\r\n",
+        NewLineHandling.Unix => "\n",
+        _ => null,
+      };
 
       return newLine;
     }
@@ -437,29 +421,17 @@ namespace Localization.AspNetCore.TagHelpers
       var parameters = GetParameters(context);
       if (IsHtml)
       {
-        LocalizedHtmlString locString;
-        if (parameters.Any())
-        {
-          locString = Localizer[content, parameters.ToArray()];
-        }
-        else
-        {
-          locString = Localizer[content];
-        }
+        var locString = parameters.Any()
+          ? Localizer[content, parameters.ToArray()]
+          : Localizer[content];
 
         SetHtmlContent(context, output.Content, locString);
       }
       else
       {
-        LocalizedString locString;
-        if (parameters.Any())
-        {
-          locString = Localizer.GetString(content, parameters.ToArray());
-        }
-        else
-        {
-          locString = Localizer.GetString(content);
-        }
+        var locString = parameters.Any()
+          ? Localizer.GetString(content, parameters.ToArray())
+          : Localizer.GetString(content);
 
         SetContent(context, output.Content, locString);
       }

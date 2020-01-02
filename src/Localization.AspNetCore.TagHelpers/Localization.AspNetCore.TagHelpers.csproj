@@ -20,6 +20,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <CodeAnalysisRuleSet>../LAT.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

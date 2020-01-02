@@ -1,9 +1,8 @@
-* text=auto  whitespace=tab-in-indent,trailing-space,tabwidth=2
+* text eol=lf  whitespace=tab-in-indent,trailing-space,tabwidth=2
 
 *.cs  diff=csharp
 
 *.sln eol=crlf whitespace=-tab-in-indent
-*.csproj eol=crlf whitespace=-tab-in-indent
 
 *.sh eol=lf
 *.ps1 eol=crlf

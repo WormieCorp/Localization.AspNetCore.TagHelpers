@@ -67,15 +67,15 @@ namespace Localization.AspNetCore.TagHelpers.Internals
       Type resourceType,
       string resourceName)
     {
-      if (resourceType != null)
-      {
-        return GetLocalizerForType(factory, context, resourceType);
-      }
-      else
+      if (resourceType is null)
       {
         return string.IsNullOrEmpty(resourceName)
           ? GetLocalizerForPath(factory, context, applicationName)
           : GetLocalizerForName(factory, context, resourceName, applicationName);
+      }
+      else
+      {
+        return GetLocalizerForType(factory, context, resourceType);
       }
     }
 

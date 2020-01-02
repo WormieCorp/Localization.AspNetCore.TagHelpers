@@ -4,13 +4,14 @@ charset = utf-8
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
-
-[*.sh]
 end_of_line = lf
 
-[*.{sln,xproj,ps}]
+[*.{sln,ps1}]
 charset = utf-8-bom
 end_of_line = crlf
+
+[*.sln]
+indent_style = tab
 
 [*.md]
 trim_trailing_whitespace = false
