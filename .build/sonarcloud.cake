@@ -32,7 +32,7 @@ BeforeBuildTask
   }
 
   Information("Starting SonarCloud integration...");
-  var description = data.Description.Substring(data.Description.IndexOfAny(new [] { '\r', '\n' }));
+  var description = data.Description.Substring(0, data.Description.IndexOfAny(new [] { '\r', '\n' }));
   SonarBegin(new SonarBeginSettings {
     Key = data.SonarCloud.ProjectKey,
     Branch = data.Ci.Branch,
