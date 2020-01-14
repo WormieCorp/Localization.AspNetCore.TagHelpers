@@ -1,0 +1,15 @@
+{
+  "ServerUri": "https://sonarcloud.io/",
+  "Organization": {
+    "Key": "wormiecorp",
+    "Name": "WORMIE CORP"
+  },
+  "ProjectKey": "WormieCorp_Localization.AspNetCore.TagHelpers",
+  "ProjectName": "Localization.AspNetCore.TagHelpers",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AW9jZMgPelSU8X8M23A8",
+      "ProfileTimestamp": "2020-01-14T12:18:02+01:00"
+    }
+  }
+}

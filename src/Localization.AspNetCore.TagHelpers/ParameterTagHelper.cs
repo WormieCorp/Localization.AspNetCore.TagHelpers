@@ -21,8 +21,10 @@ namespace Localization.AspNetCore.TagHelpers
   [HtmlTargetElement("parameter", TagStructure = TagStructure.NormalOrSelfClosing)]
   public class ParameterTagHelper : TagHelper
   {
+    private const int TAG_HELPER_ORDER = 2;
+
     /// <inheritdoc />
-    public override int Order => 2;
+    public override int Order => TAG_HELPER_ORDER;
 
     /// <summary>
     ///   This method adds parameters to the parent tag helper if they are a

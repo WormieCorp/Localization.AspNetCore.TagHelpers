@@ -20,7 +20,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <CodeAnalysisRuleSet>../LAT.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Localization.AspNetCore.TagHelpers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +40,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.1.2" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.2.0.14119">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
       <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
         <PrivateAssets>all</PrivateAssets>

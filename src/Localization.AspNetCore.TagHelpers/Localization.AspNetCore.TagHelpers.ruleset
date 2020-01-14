@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - Localization.AspNetCore.TagHelpers The Wormie Way" ToolsVersion="16.0">
+  <Include Path="../lat.ruleset" Action="Default" />
+  <Include Path="..\..\.sonarlint\wormiecorp_localization.aspnetcore.taghelperscsharp.ruleset" Action="Default" />
+</RuleSet>

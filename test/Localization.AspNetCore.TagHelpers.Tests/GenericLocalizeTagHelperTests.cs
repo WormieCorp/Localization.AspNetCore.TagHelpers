@@ -7,21 +7,24 @@
 //-----------------------------------------------------------------------
 
 #pragma warning disable CA1707 // Identifiers should not contain underscores
+
 namespace Localization.AspNetCore.TagHelpers.Tests
 {
   using System;
-  using System.Collections;
   using System.Collections.Generic;
   using System.Globalization;
   using System.Text.Encodings.Web;
   using System.Threading.Tasks;
+
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Mvc.Localization;
   using Microsoft.AspNetCore.Mvc.Rendering;
   using Microsoft.AspNetCore.Mvc.ViewEngines;
   using Microsoft.Extensions.Localization;
   using Microsoft.Extensions.Options;
+
   using Moq;
+
   using Xunit;
 
   public class GenericLocalizeTagHelperTests
@@ -427,12 +430,14 @@ namespace Localization.AspNetCore.TagHelpers.Tests
     }
 
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
+
     private class NoParametersSupported : GenericLocalizeTagHelper
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
 #if NETCOREAPP3_0
       public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IWebHostEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
 #else
+
       public NoParametersSupported(IHtmlLocalizerFactory localizerFactory, IHostingEnvironment hostingEnvironment, IOptions<LocalizeTagHelperOptions> options)
 #endif
         : base(localizerFactory, hostingEnvironment, options)
