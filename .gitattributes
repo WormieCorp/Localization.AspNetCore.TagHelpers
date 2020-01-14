@@ -9,6 +9,9 @@
 *.resx whitespace=-blank-at-eol
 *.md whitespace=-trailing-space
 
+*.slconfig text eol=crlf
+*.ruleset text eol=crlf
+
 # Files that should not be packed inside archives
 .github/        export-ignore
 docs/           export-ignore

@@ -10,6 +10,13 @@ end_of_line = lf
 charset = utf-8-bom
 end_of_line = crlf
 
+[*.{ruleset,slconfig}]
+end_of_line = crlf
+insert_final_newline = false
+
+[*.ruleset]
+charset = utf-8-bom
+
 [*.sln]
 indent_style = tab
 
