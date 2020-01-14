@@ -30,6 +30,8 @@ BeforeDeploymentTask
     Name = data.Version.SemVer,
     TargetCommitish = data.Ci.Branch,
     Prerelease = data.Version.SemVer != data.Version.MajorMinorPatch,
+    ArgumentCustomization = (args) => args.Append("--no-logo"),
+    LogFilePath = "./artifacts/grm.log",
   };
 
   GitReleaseManagerCreate(EnvironmentVariable("GITHUB_TOKEN"), "WormieCorp", "Localization.AspNetCore.TagHelpers", settings);
@@ -62,7 +64,13 @@ DeploymentTask
     throw new Exception();
   }
 
-  GitReleaseManagerAddAssets(EnvironmentVariable("GITHUB_TOKEN"), "WormieCorp", "Localization.AspNetCore.TagHelpers", data.Version.SemVer, string.Join(',', assets));
+  var settings = new GitReleaseManagerAddAssetsSettings
+  {
+    ArgumentCustomization = (args) => args.Append("--no-logo"),
+    LogFilePath = "./artifacts/grm.log",
+  };
+
+  GitReleaseManagerAddAssets(EnvironmentVariable("GITHUB_TOKEN"), "WormieCorp", "Localization.AspNetCore.TagHelpers", data.Version.SemVer, string.Join(',', assets), settings);
 });
 
 AfterDeploymentTask
@@ -88,7 +96,13 @@ AfterDeploymentTask
     return;
   }
 
-  GitReleaseManagerPublish(EnvironmentVariable("GITHUB_TOKEN"), "WormieCorp", "Localization.AspNetCore.TagHelpers", data.Version.SemVer);
+  var publishSettings = new GitReleaseManagerPublishSettings
+  {
+    ArgumentCustomization = (args) => args.Append("--no-logo"),
+    LogFilePath = "./artifacts/grm.log",
+  };
+
+  GitReleaseManagerPublish(EnvironmentVariable("GITHUB_TOKEN"), "WormieCorp", "Localization.AspNetCore.TagHelpers", data.Version.SemVer, publishSettings);
 
   if (data.Version.SemVer != data.Version.MajorMinorPatch)
   {
@@ -96,5 +110,11 @@ AfterDeploymentTask
     return;
   }
 
-  GitReleaseManagerClose(EnvironmentVariable("GITHUB_TOKEN"), "WormieCorp", "Localization.AspNetCore.TagHelpers", data.Version.MajorMinorPatch);
+  var closeSettings = new GitReleaseManagerCloseMilestoneSettings
+  {
+    ArgumentCustomization = publishSettings.ArgumentCustomization,
+    LogFilePath = publishSettings.LogFilePath,
+  };
+
+  GitReleaseManagerClose(EnvironmentVariable("GITHUB_TOKEN"), "WormieCorp", "Localization.AspNetCore.TagHelpers", data.Version.MajorMinorPatch, closeSettings);
 });

@@ -82,6 +82,10 @@ AfterTestsTask
   }
 
   Information("Uploading artifacts to CI provider");
+  var logArtifacts = new[]
+  {
+    data.Dirs.ArtifactsBaseDir + "/grm.log"
+  }.SelectMany(l => context.GetFiles(l));
   var artifacts = new[]
   {
     "/*.nupkg",
@@ -89,4 +93,5 @@ AfterTestsTask
   }.SelectMany(a => context.GetFiles(data.Dirs.NugetPackages + a));
 
   data.Ci.UploadArtifacts(artifacts);
+  data.Ci.UploadArtifacts(logArtifacts.Where(l => context.FileExists(l)));
 });
