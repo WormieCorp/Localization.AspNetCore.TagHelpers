@@ -11,9 +11,6 @@ for:
       - image: macos
   environment:
     DOTNET_ROOT: "/Users/appveyor/.dotnet"
-  install:
-    - brew update
-    - brew install mono
 -
   matrix:
     except:
@@ -39,6 +36,7 @@ branches:
 
 init:
   - dotnet --info
+  - sh: mono --version
 
 build_script:
   - pwsh: ./build.ps1 --target=Tests
