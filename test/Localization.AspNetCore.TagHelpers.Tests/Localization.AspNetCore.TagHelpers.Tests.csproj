@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" Condition="'$(TargetFramework)'=='netcoreapp2.0'" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" Condition="'$(TargetFramework)'!='netcoreapp2.0'" />
     <PackageReference Include="Moq" Version="4.13.1" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.6.0.16497">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.6.1.17183">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
