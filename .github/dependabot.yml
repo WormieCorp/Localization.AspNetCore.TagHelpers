@@ -1,0 +1,35 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  labels:
+  - ".NET"
+  - dependencies
+  - cla-not-needed
+  ignore:
+  - dependency-name: Microsoft.AspNetCore.Razor.Design
+    versions:
+    - ">= 2.2.a"
+    - "< 2.3"
+  - dependency-name: Microsoft.AspNetCore.Razor.Runtime
+    versions:
+    - ">= 2.2.a"
+    - "< 2.3"
+  - dependency-name: Microsoft.NET.Test.Sdk
+    versions:
+    - "> 16.2.0"
+  - dependency-name: Microsoft.NET.Test.Sdk
+    versions:
+    - ">= 16.4.a"
+    - "< 16.5"
+  - dependency-name: Microsoft.VisualStudio.Web.CodeGeneration.Design
+    versions:
+    - ">= 2.2.a"
+    - "< 2.3"
+  - dependency-name: Microsoft.VisualStudio.Web.CodeGeneration.Design
+    versions:
+    - ">= 3.a"
+    - "< 4"
